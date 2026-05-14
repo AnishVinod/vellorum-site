@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vellorum — Quantitative Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=JetBrains+Mono:wght@300;400;500;700&family=Cinzel:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ── CUSTOM CURSOR ── */
+*{cursor:none!important;}
+#cursor{
+  position:fixed;width:12px;height:12px;
+  background:#b8963e;border-radius:50%;
+  pointer-events:none;z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.08s ease,width 0.2s ease,height 0.2s ease,background 0.2s ease;
+  mix-blend-mode:normal;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1px solid rgba(184,150,62,0.5);
+  border-radius:50%;pointer-events:none;z-index:99998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.18s ease,width 0.25s ease,height 0.25s ease,border-color 0.2s ease;
+}
+body.hovering #cursor{width:8px;height:8px;background:#d4aa55;}
+body.hovering #cursor-ring{width:56px;height:56px;border-color:rgba(184,150,62,0.9);}
+
+/* ── VARIABLES ── */
+:root{
+  --ink:#080810;
+  --ink2:#0e0e1a;
+  --gold:#b8963e;
+  --gold2:#d4aa55;
+  --gold3:#f0e4c0;
+  --parchment:#f0ebe0;
+  --mist:#4a4a62;
+  --smoke:#1c1c2a;
+  --dim:#2e2e42;
+}
+
+/* ── GRAIN OVERLAY ── */
+body{
+  background:var(--ink);
+  color:var(--parchment);
+  font-family:'JetBrains Mono',monospace;
+  overflow-x:hidden;
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity:0.035;
+  pointer-events:none;
+  z-index:9990;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal.d1{transition-delay:0.1s;}
+.reveal.d2{transition-delay:0.2s;}
+.reveal.d3{transition-delay:0.3s;}
+.reveal.d4{transition-delay:0.4s;}
+.reveal.d5{transition-delay:0.5s;}
+.reveal.d6{transition-delay:0.6s;}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 40px;
+  background:rgba(8,8,16,0.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(184,150,62,0.1);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:12px;
+}
+.nav-wordmark{
+  font-family:'Cinzel',serif;
+  font-size:16px;letter-spacing:0.3em;
+  color:var(--parchment);
+}
+.nav-wordmark span{color:var(--gold);}
+.nav-tag{
+  font-size:9px;letter-spacing:0.15em;
+  color:var(--mist);
+  border:1px solid var(--dim);
+  padding:4px 10px;border-radius:1px;
+}
+.nav-links{display:flex;gap:32px;}
+.nav-links a{
+  font-size:10px;letter-spacing:0.2em;
+  color:var(--mist);text-decoration:none;
+  text-transform:uppercase;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--gold);}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  padding:140px 40px 80px;
+  position:relative;
+  overflow:hidden;
+}
+.hero-grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(184,150,62,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(184,150,62,0.04) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.hero-glow{
+  position:absolute;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(184,150,62,0.07) 0%,transparent 65%);
+  top:-100px;right:-100px;
+  pointer-events:none;
+}
+.hero-glow2{
+  position:absolute;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(184,150,62,0.04) 0%,transparent 65%);
+  bottom:0;left:10%;
+  pointer-events:none;
+}
+
+.status-tag{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:0.15em;
+  color:var(--gold);
+  border:1px solid rgba(184,150,62,0.3);
+  padding:6px 14px;
+  margin-bottom:32px;
+  position:relative;
+  animation:blink-border 3s ease infinite;
+}
+@keyframes blink-border{
+  0%,100%{border-color:rgba(184,150,62,0.3);}
+  50%{border-color:rgba(184,150,62,0.8);}
+}
+.status-tag::before{
+  content:'';
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);
+  display:inline-block;margin-right:8px;
+  animation:pulse-dot 1.5s ease infinite;
+}
+@keyframes pulse-dot{
+  0%,100%{opacity:1;}50%{opacity:0.3;}
+}
+
+.hero-heading{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(72px,14vw,180px);
+  font-weight:900;
+  line-height:0.88;
+  letter-spacing:-0.03em;
+  color:var(--parchment);
+  position:relative;
+  z-index:1;
+}
+.hero-heading .gold-letter{
+  color:var(--gold);
+  display:inline-block;
+}
+.hero-heading .italic-part{
+  font-style:italic;
+  color:rgba(240,235,224,0.25);
+}
+
+.hero-sub{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(14px,2vw,20px);
+  font-style:italic;
+  color:rgba(240,235,224,0.55);
+  max-width:520px;
+  line-height:1.7;
+  margin-top:28px;
+  position:relative;z-index:1;
+}
+
+.hero-bottom{
+  display:flex;align-items:flex-end;
+  justify-content:space-between;
+  margin-top:60px;
+  flex-wrap:wrap;gap:20px;
+  position:relative;z-index:1;
+}
+.hero-stat{
+  display:flex;flex-direction:column;gap:4px;
+}
+.hero-stat-num{
+  font-family:'Playfair Display',serif;
+  font-size:36px;font-weight:700;
+  color:var(--gold);line-height:1;
+}
+.hero-stat-label{
+  font-size:9px;letter-spacing:0.2em;
+  color:var(--mist);text-transform:uppercase;
+}
+.hero-divider{
+  width:1px;height:50px;
+  background:linear-gradient(180deg,transparent,var(--gold),transparent);
+}
+.hero-scroll{
+  font-size:9px;letter-spacing:0.25em;
+  color:var(--mist);text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+  animation:float 2s ease infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
+}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  border-top:1px solid var(--dim);
+  border-bottom:1px solid var(--dim);
+  padding:14px 0;
+  overflow:hidden;
+  background:var(--smoke);
+}
+.marquee-track{
+  display:flex;gap:60px;
+  animation:marquee 22s linear infinite;
+  white-space:nowrap;
+}
+.marquee-track:hover{animation-play-state:paused;}
+@keyframes marquee{
+  from{transform:translateX(0);}
+  to{transform:translateX(-50%);}
+}
+.marquee-item{
+  font-size:10px;letter-spacing:0.3em;
+  color:var(--mist);text-transform:uppercase;
+  flex-shrink:0;
+}
+.marquee-item span{color:var(--gold);margin-right:4px;}
+
+/* ── SECTION BASE ── */
+section{padding:100px 40px;}
+.section-label{
+  font-size:9px;letter-spacing:0.35em;
+  color:var(--gold);text-transform:uppercase;
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::after{
+  content:'';flex:1;max-width:60px;height:1px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+
+/* ── TERMINAL ── */
+#terminal{background:var(--ink2);}
+.terminal-window{
+  max-width:800px;margin:0 auto;
+  border:1px solid var(--dim);
+  border-radius:4px;
+  overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 60px rgba(184,150,62,0.04);
+}
+.terminal-bar{
+  background:var(--smoke);
+  padding:12px 16px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--dim);
+}
+.t-dot{width:11px;height:11px;border-radius:50%;}
+.t-red{background:#ff5f56;}
+.t-yellow{background:#ffbd2e;}
+.t-green{background:#27c93f;}
+.terminal-title{
+  font-size:11px;color:var(--mist);
+  letter-spacing:0.1em;margin-left:8px;
+}
+.terminal-body{
+  padding:28px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;line-height:2;
+  background:var(--ink);
+  min-height:320px;
+}
+.t-line{opacity:0;transform:translateX(-10px);}
+.t-line.typed{opacity:1;transform:translateX(0);transition:all 0.3s ease;}
+.t-prompt{color:var(--gold);}
+.t-cmd{color:var(--parchment);}
+.t-out{color:#4af;padding-left:16px;}
+.t-out.success{color:#4f9;}
+.t-out.warn{color:#fa4;}
+.t-out.data{color:#a9f;}
+.t-cursor-blink{
+  display:inline-block;width:8px;height:14px;
+  background:var(--gold);vertical-align:middle;
+  animation:blink 1s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* ── PROJECTS ── */
+#projects{background:var(--ink);}
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--dim);
+  border:1px solid var(--dim);
+  margin-top:48px;
+}
+.project-card{
+  background:var(--ink);
+  padding:40px 32px;
+  position:relative;
+  overflow:hidden;
+  transition:background 0.3s ease;
+}
+.project-card::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(184,150,62,0.06) 0%,transparent 60%);
+  opacity:0;transition:opacity 0.3s ease;
+}
+.project-card:hover{background:var(--smoke);}
+.project-card:hover::before{opacity:1;}
+.project-card:hover .card-arrow{transform:translate(4px,-4px);}
+.project-card:hover .card-num{color:var(--gold2);}
+
+.card-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:0.2em;
+  color:var(--mist);
+  margin-bottom:24px;
+  transition:color 0.3s;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-arrow{
+  font-size:18px;color:var(--gold);
+  transition:transform 0.3s ease;
+}
+.card-tag{
+  display:inline-block;
+  font-size:8px;letter-spacing:0.2em;
+  border:1px solid rgba(184,150,62,0.25);
+  color:var(--gold);
+  padding:3px 8px;
+  margin-bottom:16px;
+  text-transform:uppercase;
+}
+.card-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(20px,2.5vw,26px);
+  font-weight:700;
+  color:var(--parchment);
+  line-height:1.2;
+  margin-bottom:16px;
+}
+.card-desc{
+  font-size:11px;color:var(--mist);
+  line-height:1.8;letter-spacing:0.02em;
+}
+.card-logo-bg{
+  position:absolute;
+  bottom:-20px;right:-20px;
+  opacity:0.03;
+  pointer-events:none;
+}
+
+/* ── MANIFESTO ── */
+#manifesto{
+  background:var(--ink2);
+  position:relative;overflow:hidden;
+}
+.manifesto-glow{
+  position:absolute;
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(184,150,62,0.05) 0%,transparent 65%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.manifesto-inner{
+  max-width:800px;
+  position:relative;z-index:1;
+}
+.manifesto-quote{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(22px,3.5vw,40px);
+  font-weight:400;
+  font-style:italic;
+  color:var(--parchment);
+  line-height:1.55;
+  letter-spacing:-0.01em;
+}
+.manifesto-quote .highlight{
+  color:var(--gold);
+  font-style:normal;
+  font-weight:700;
+}
+.manifesto-rule{
+  width:80px;height:1px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  margin:36px 0;
+}
+.manifesto-meta{
+  font-size:10px;letter-spacing:0.25em;
+  color:var(--mist);text-transform:uppercase;
+}
+
+/* ── CREDENTIALS STRIP ── */
+#credentials{
+  background:var(--smoke);
+  padding:60px 40px;
+  border-top:1px solid var(--dim);
+  border-bottom:1px solid var(--dim);
+}
+.cred-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--dim);
+}
+.cred-item{
+  background:var(--smoke);
+  padding:32px 28px;
+  transition:background 0.3s;
+}
+.cred-item:hover{background:var(--ink2);}
+.cred-icon{
+  font-size:20px;margin-bottom:12px;
+}
+.cred-title{
+  font-family:'Playfair Display',serif;
+  font-size:15px;font-weight:700;
+  color:var(--parchment);margin-bottom:6px;
+}
+.cred-sub{
+  font-size:9px;letter-spacing:0.12em;
+  color:var(--mist);line-height:1.6;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink);
+  padding:80px 40px 40px;
+  border-top:1px solid var(--dim);
+}
+.footer-top{
+  display:flex;justify-content:space-between;
+  align-items:flex-end;
+  flex-wrap:wrap;gap:40px;
+  margin-bottom:60px;
+}
+.footer-heading{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,6vw,80px);
+  font-weight:900;
+  line-height:0.9;
+  letter-spacing:-0.03em;
+}
+.footer-heading span{color:var(--gold);}
+.footer-heading .dim{color:rgba(240,235,224,0.15);}
+
+.connect-btn{
+  position:relative;
+  display:inline-block;
+  padding:16px 40px;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:0.2em;
+  text-transform:uppercase;
+  text-decoration:none;
+  transition:all 0.3s ease;
+  background:transparent;
+  overflow:hidden;
+}
+.connect-btn::before{
+  content:'';
+  position:absolute;inset:0;
+  background:var(--gold);
+  transform:translateX(-100%);
+  transition:transform 0.3s ease;
+  z-index:-1;
+}
+.connect-btn:hover{
+  color:var(--ink);
+  box-shadow:0 0 40px rgba(184,150,62,0.4),0 0 80px rgba(184,150,62,0.1);
+}
+.connect-btn:hover::before{transform:translateX(0);}
+
+.footer-bottom{
+  display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:16px;
+  padding-top:32px;
+  border-top:1px solid var(--dim);
+}
+.footer-disclaimer{
+  font-size:9px;letter-spacing:0.1em;
+  color:var(--mist);
+  border:1px solid var(--dim);
+  padding:6px 12px;
+}
+.footer-copy{
+  font-size:9px;letter-spacing:0.1em;
+  color:var(--mist);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  nav{padding:16px 20px;}
+  .nav-links{display:none;}
+  section{padding:70px 20px;}
+  #hero{padding:120px 20px 60px;}
+  .hero-bottom{flex-direction:column;align-items:flex-start;gap:24px;}
+  .hero-divider{display:none;}
+  .projects-grid{grid-template-columns:1fr;}
+  .cred-grid{grid-template-columns:1fr 1fr;}
+  footer{padding:60px 20px 32px;}
+  .footer-top{flex-direction:column;align-items:flex-start;}
+  .terminal-body{padding:16px;font-size:11px;}
+}
+@media(max-width:480px){
+  .projects-grid{grid-template-columns:1fr;}
+  .cred-grid{grid-template-columns:1fr;}
+}
+
+/* ── LOADING SCREEN ── */
+#loader{
+  position:fixed;inset:0;
+  background:var(--ink);
+  z-index:99997;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:16px;
+  transition:opacity 0.8s ease,visibility 0.8s ease;
+}
+#loader.hidden{opacity:0;visibility:hidden;}
+.loader-logo{
+  font-family:'Cinzel',serif;
+  font-size:28px;letter-spacing:0.4em;
+  color:var(--parchment);
+  animation:fadeInOut 0.8s ease forwards;
+}
+.loader-logo span{color:var(--gold);}
+.loader-bar-wrap{
+  width:200px;height:1px;
+  background:var(--dim);overflow:hidden;
+}
+.loader-bar{
+  height:100%;background:var(--gold);
+  width:0%;animation:load 1.4s ease forwards;
+}
+@keyframes load{to{width:100%;}}
+.loader-text{
+  font-size:9px;letter-spacing:0.25em;
+  color:var(--mist);text-transform:uppercase;
+  animation:fadeInOut 1.4s ease forwards;
+}
+@keyframes fadeInOut{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <svg width="48" height="48" viewBox="0 0 90 90" fill="none">
+    <polygon points="45,4 76,18 86,50 72,79 45,86 18,79 4,50 14,18" stroke="#b8963e" stroke-width="1.5" fill="none" style="animation:draw 1.2s ease forwards;stroke-dasharray:400;stroke-dashoffset:400;"/>
+    <polygon points="45,18 68,45 45,72 22,45" stroke="#b8963e" stroke-width="1" fill="none" style="animation:draw 1.2s 0.3s ease forwards;stroke-dasharray:300;stroke-dashoffset:300;"/>
+    <path d="M30 30 L45 58 L60 30" stroke="#d4aa55" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" style="animation:draw 0.8s 0.6s ease forwards;stroke-dasharray:80;stroke-dashoffset:80;"/>
+  </svg>
+  <div class="loader-logo">VELL<span>O</span>RUM</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-text">Initialising Vellorum-1 Engine</div>
+</div>
+
+<style>
+@keyframes draw{to{stroke-dashoffset:0;}}
+</style>
+
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">
+    <svg width="22" height="22" viewBox="0 0 90 90" fill="none">
+      <polygon points="45,4 76,18 86,50 72,79 45,86 18,79 4,50 14,18" stroke="#b8963e" stroke-width="2" fill="none"/>
+      <polygon points="45,18 68,45 45,72 22,45" stroke="#b8963e" stroke-width="1.2" fill="none"/>
+      <path d="M30 30 L45 58 L60 30" stroke="#d4aa55" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="nav-wordmark">VELL<span>O</span>RUM</span>
+  </div>
+  <div class="nav-links">
+    <a href="#terminal">Lab</a>
+    <a href="#projects">Research</a>
+    <a href="#manifesto">Manifesto</a>
+    <a href="#footer">Connect</a>
+  </div>
+  <div class="nav-tag">[ BENGALURU / EST. 2026 ]</div>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="status-tag reveal">[ STATUS: ANISH VINOD &nbsp;/&nbsp; BENGALURU &nbsp;/&nbsp; BUILDING ]</div>
+
+  <h1 class="hero-heading reveal d1">
+    VELL<span class="gold-letter">O</span><br/>
+    <span class="italic-part">RUM.</span>
+  </h1>
+
+  <p class="hero-sub reveal d2">
+    Engineering equanimity in the face of market chaos.<br/>
+    A student-led laboratory for quantitative research.
+  </p>
+
+  <div class="hero-bottom reveal d3">
+    <div style="display:flex;gap:40px;align-items:flex-end;flex-wrap:wrap;">
+      <div class="hero-stat">
+        <div class="hero-stat-num">1,000+</div>
+        <div class="hero-stat-label">Monte Carlo Paths</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Research Projects</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">∞</div>
+        <div class="hero-stat-label">Compounding Ahead</div>
+      </div>
+    </div>
+    <div class="hero-scroll">↓ &nbsp; Scroll to explore</div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span>◈</span> Quantitative Research</span>
+    <span class="marquee-item"><span>◈</span> Monte Carlo Simulation</span>
+    <span class="marquee-item"><span>◈</span> Portfolio Backtesting</span>
+    <span class="marquee-item"><span>◈</span> Risk Modelling</span>
+    <span class="marquee-item"><span>◈</span> Geometric Brownian Motion</span>
+    <span class="marquee-item"><span>◈</span> Nifty 50 Alpha</span>
+    <span class="marquee-item"><span>◈</span> Investment Banking</span>
+    <span class="marquee-item"><span>◈</span> DCF Analysis</span>
+    <span class="marquee-item"><span>◈</span> Quantitative Research</span>
+    <span class="marquee-item"><span>◈</span> Monte Carlo Simulation</span>
+    <span class="marquee-item"><span>◈</span> Portfolio Backtesting</span>
+    <span class="marquee-item"><span>◈</span> Risk Modelling</span>
+    <span class="marquee-item"><span>◈</span> Geometric Brownian Motion</span>
+    <span class="marquee-item"><span>◈</span> Nifty 50 Alpha</span>
+    <span class="marquee-item"><span>◈</span> Investment Banking</span>
+    <span class="marquee-item"><span>◈</span> DCF Analysis</span>
+  </div>
+</div>
+
+<!-- Terminal -->
+<section id="terminal">
+  <div class="section-label reveal">01 &nbsp; The Lab</div>
+  <h2 class="reveal d1" style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:700;margin-bottom:48px;max-width:600px;line-height:1.2;">
+    Live inside<br/><em style="color:var(--gold);">the engine.</em>
+  </h2>
+
+  <div class="terminal-window reveal d2">
+    <div class="terminal-bar">
+      <div class="t-dot t-red"></div>
+      <div class="t-dot t-yellow"></div>
+      <div class="t-dot t-green"></div>
+      <span class="terminal-title">vellorum-1 — quant-engine — bash</span>
+    </div>
+    <div class="terminal-body" id="terminal-body">
+      <!-- Lines injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects">
+  <div class="section-label reveal">02 &nbsp; Research</div>
+  <h2 class="reveal d1" style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:700;max-width:560px;line-height:1.2;">
+    Three projects.<br/><em style="color:var(--gold);">Institutional rigour.</em>
+  </h2>
+
+  <div class="projects-grid">
+
+    <div class="project-card reveal d1">
+      <div class="card-num">01 — STOCHASTIC<div class="card-arrow">↗</div></div>
+      <div class="card-tag">Monte Carlo · GBM</div>
+      <h3 class="card-title">The Cone of Uncertainty</h3>
+      <p class="card-desc">A Geometric Brownian Motion model simulating 1,000+ futures of a multi-asset portfolio. Identifies tail risk, expected shortfall, and the full probability distribution of outcomes — not just the mean.</p>
+      <div class="card-logo-bg">
+        <svg width="120" height="120" viewBox="0 0 90 90" fill="none">
+          <polygon points="45,4 76,18 86,50 72,79 45,86 18,79 4,50 14,18" stroke="#b8963e" stroke-width="1" fill="none"/>
+          <polygon points="45,18 68,45 45,72 22,45" stroke="#b8963e" stroke-width="0.8" fill="none"/>
+          <path d="M30 30 L45 58 L60 30" stroke="#d4aa55" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="project-card reveal d2">
+      <div class="card-num">02 — INSTITUTIONAL<div class="card-arrow">↗</div></div>
+      <div class="card-tag">IB · Valuation</div>
+      <h3 class="card-title">The JPM Simulation</h3>
+      <p class="card-desc">Applying JPMorgan Investment Banking valuation logic to high-stakes deal scenarios. M&A structuring, pitch book construction, and LBO analysis — the same frameworks that move billions on Wall Street.</p>
+      <div class="card-logo-bg">
+        <svg width="120" height="120" viewBox="0 0 90 90" fill="none">
+          <polygon points="45,4 76,18 86,50 72,79 45,86 18,79 4,50 14,18" stroke="#b8963e" stroke-width="1" fill="none"/>
+          <polygon points="45,18 68,45 45,72 22,45" stroke="#b8963e" stroke-width="0.8" fill="none"/>
+          <path d="M30 30 L45 58 L60 30" stroke="#d4aa55" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="project-card reveal d3">
+      <div class="card-num">03 — HYPER-LOCAL<div class="card-arrow">↗</div></div>
+      <div class="card-tag">DCF · Private Equity</div>
+      <h3 class="card-title">The Bengaluru Unicorn Index</h3>
+      <p class="card-desc">Quantitative DCF analysis of Bengaluru's most disruptive private companies. A hyper-local alpha engine that maps the city's innovation density against intrinsic value estimates. Nifty 50 multi-asset backtest included.</p>
+      <div class="card-logo-bg">
+        <svg width="120" height="120" viewBox="0 0 90 90" fill="none">
+          <polygon points="45,4 76,18 86,50 72,79 45,86 18,79 4,50 14,18" stroke="#b8963e" stroke-width="1" fill="none"/>
+          <polygon points="45,18 68,45 45,72 22,45" stroke="#b8963e" stroke-width="0.8" fill="none"/>
+          <path d="M30 30 L45 58 L60 30" stroke="#d4aa55" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Credentials -->
+<section id="credentials">
+  <div class="cred-grid">
+    <div class="cred-item reveal d1">
+      <div class="cred-icon">◈</div>
+      <div class="cred-title">Monte Carlo Engine</div>
+      <div class="cred-sub">1,000+ simulated paths · GBM · Tail risk identification · S&P 500 + Nifty coverage</div>
+    </div>
+    <div class="cred-item reveal d2">
+      <div class="cred-icon">⬡</div>
+      <div class="cred-title">JPMorgan IB Simulation</div>
+      <div class="cred-sub">Forage Programme · Deal structuring · Pitch book · M&A valuation frameworks</div>
+    </div>
+    <div class="cred-item reveal d3">
+      <div class="cred-icon">∑</div>
+      <div class="cred-title">Multi-Asset Backtest Thesis</div>
+      <div class="cred-sub">Nifty 50 · Global indices · Sharpe ratio analysis · Drawdown metrics · Regime testing</div>
+    </div>
+    <div class="cred-item reveal d4">
+      <div class="cred-icon">◊</div>
+      <div class="cred-title">Anish Vinod — Founder</div>
+      <div class="cred-sub">Bengaluru, India · Quantitative researcher · Building Vellorum · Est. 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- Manifesto -->
+<section id="manifesto">
+  <div class="manifesto-glow"></div>
+  <div class="manifesto-inner">
+    <div class="section-label reveal">03 &nbsp; Manifesto</div>
+    <div class="manifesto-quote reveal d1">
+      "I chose to build before I had permission. Before a degree. Before a team. Before anyone told me I was ready. <span class="highlight">Vellorum is the proof</span> — that rigour belongs to those who pursue it, not those who inherit it. I am building <span class="highlight">the evidence today</span> for the career I launch tomorrow."
+    </div>
+    <div class="manifesto-rule reveal d2"></div>
+    <div class="manifesto-meta reveal d3">
+      — Anish Vinod &nbsp;·&nbsp; Founder, Vellorum &nbsp;·&nbsp; Bengaluru, India &nbsp;·&nbsp; Est. 2026
+    </div>
+
+    <div style="margin-top:60px;display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:600px;" class="reveal d4">
+      <div>
+        <div style="font-size:9px;letter-spacing:0.2em;color:var(--gold);margin-bottom:10px;text-transform:uppercase;">The Belief</div>
+        <p style="font-family:'Playfair Display',serif;font-size:15px;font-style:italic;color:rgba(240,235,224,0.6);line-height:1.75;">
+          Rigour doesn't belong to institutions. It belongs to anyone willing to do the work.
+        </p>
+      </div>
+      <div>
+        <div style="font-size:9px;letter-spacing:0.2em;color:var(--gold);margin-bottom:10px;text-transform:uppercase;">The Mission</div>
+        <p style="font-family:'Playfair Display',serif;font-size:15px;font-style:italic;color:rgba(240,235,224,0.6);line-height:1.75;">
+          Institutional-grade quant tools, built for everyone who can't afford the Bloomberg terminal.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+  <div class="footer-top">
+    <div>
+      <div class="section-label reveal">04 &nbsp; Connect</div>
+      <h2 class="footer-heading reveal d1">
+        LET'S<br/>
+        <span>BUILD</span><br/>
+        <span class="dim">TOGETHER.</span>
+      </h2>
+    </div>
+    <div class="reveal d2" style="display:flex;flex-direction:column;gap:16px;align-items:flex-start;">
+      <a href="mailto:hello@vellorum.in" class="connect-btn">→ &nbsp; Connect with Vellorum</a>
+      <a href="https://linkedin.com" class="connect-btn" style="font-size:10px;padding:12px 28px;">LinkedIn &nbsp; ↗</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <svg width="20" height="20" viewBox="0 0 90 90" fill="none">
+        <polygon points="45,4 76,18 86,50 72,79 45,86 18,79 4,50 14,18" stroke="#b8963e" stroke-width="2" fill="none"/>
+        <path d="M30 30 L45 58 L60 30" stroke="#d4aa55" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div style="font-family:'Cinzel',serif;font-size:12px;letter-spacing:0.25em;color:var(--parchment);">VELL<span style="color:var(--gold)">O</span>RUM</div>
+    </div>
+    <div class="footer-disclaimer">⚠ Research Project. Not Financial Advice.</div>
+    <div class="footer-copy">© 2026 Vellorum &nbsp;·&nbsp; Bengaluru, India</div>
+  </div>
+</footer>
+
+<script>
+// ── LOADER ──
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+    startTerminal();
+  }, 1800);
+});
+
+// ── CUSTOM CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
+
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a,button,.project-card,.cred-item').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+});
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── TERMINAL ANIMATION ──
+const lines = [
+  { type:'prompt', text:'> Booting Vellorum-1 Engine...', delay:0 },
+  { type:'out',    text:'  System initialised. Python 3.11 / NumPy 1.26 / Pandas 2.1', delay:400 },
+  { type:'prompt', text:'> Loading asset universe: [NSEI, SPX, EURUSD, GOLD, BTC]', delay:900 },
+  { type:'out success', text:'  ✓ 5 assets loaded. Historical data: 2018–2025.', delay:1300 },
+  { type:'prompt', text:'> Running Geometric Brownian Motion simulation (n=1000)...', delay:1800 },
+  { type:'out data', text:'  μ (drift):    0.0842  |  σ (vol):  0.1934', delay:2300 },
+  { type:'out data', text:'  Paths generated: 1,000  |  Horizon: 252 trading days', delay:2600 },
+  { type:'out warn', text:'  ⚠  Tail risk detected — left tail kurtosis > 3.2', delay:3100 },
+  { type:'out success', text:'  ✓ S&P 500 Tail Risk identified at 12.4% (95% CVaR)', delay:3500 },
+  { type:'prompt', text:'> Backtesting multi-asset portfolio vs Nifty 50 benchmark...', delay:4100 },
+  { type:'out data', text:'  Sharpe Ratio: 1.47  |  Max Drawdown: -18.2%  |  CAGR: 14.6%', delay:4600 },
+  { type:'out success', text:'  ✓ Portfolio outperforms benchmark by 340 bps annualised.', delay:5000 },
+  { type:'prompt', text:'> Status: Vellorum-1 engine operational. Awaiting next input.', delay:5500 },
+];
+
+let terminalStarted = false;
+
+function startTerminal() {
+  if (terminalStarted) return;
+  terminalStarted = true;
+  const body = document.getElementById('terminal-body');
+
+  lines.forEach(({ type, text, delay }) => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.className = 't-line ' + (type.startsWith('out') ? 't-out ' + type.replace('out','').trim() : 't-prompt');
+      if (!type.startsWith('out')) {
+        div.innerHTML = `<span class="t-prompt">$&nbsp;</span><span class="t-cmd">${text.replace('> ','')}</span>`;
+      } else {
+        div.innerHTML = text;
+      }
+      div.style.opacity = '0';
+      body.appendChild(div);
+      requestAnimationFrame(() => {
+        div.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        div.style.transform = 'translateX(-8px)';
+        requestAnimationFrame(() => {
+          div.style.opacity = '1';
+          div.style.transform = 'translateX(0)';
+        });
+      });
+      body.scrollTop = body.scrollHeight;
+    }, delay);
+  });
+
+  // Blinking cursor at end
+  setTimeout(() => {
+    const cur = document.createElement('div');
+    cur.innerHTML = `<span class="t-prompt">$&nbsp;</span><span class="t-cursor-blink"></span>`;
+    cur.style.opacity = '1';
+    body.appendChild(cur);
+  }, 6200);
+}
+
+// Trigger terminal when visible
+const terminalObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && !document.getElementById('loader').classList.contains('hidden') === false) {
+    startTerminal();
+  }
+}, { threshold: 0.3 });
+const termEl = document.getElementById('terminal');
+if (termEl) terminalObs.observe(termEl);
+</script>
+</body>
+</html>
