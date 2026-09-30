@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VELLORUM // Consumer Decision Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #090c0b;
+      --grid-line: rgba(255, 255, 255, 0.035);
+      --gold-accent: #dcb368;
+      --border-line: #1b2320;
+    }
+    
+    body {
+      background-color: var(--bg-dark);
+      color: #cfd8d3;
+      font-family: 'JetBrains Mono', monospace;
+      background-image: 
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+      background-size: 52px 52px;
+    }
+
+    .font-editorial { font-family: 'Cinzel', serif; }
+    .font-italic-serif { font-family: 'Newsreader', serif; font-style: italic; }
+    input[type=range] { accent-color: #dcb368; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#dcb368] selection:text-black">
+
+  <!-- TOP NAV -->
+  <header class="border-b border-[#1b2320] px-6 py-4 flex justify-between items-center bg-[#090c0b]/80 backdrop-blur-sm sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+      <div class="w-2.5 h-2.5 rounded-full bg-[#dcb368]"></div>
+      <a href="index.html" class="text-xs tracking-[0.25em] font-semibold text-white uppercase hover:text-[#dcb368] transition">VELLORUM</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="text-[10px] tracking-wider text-[#788a82] border border-[#1b2320] px-3 py-1 bg-[#0d1210] hover:text-white transition">
+        &larr; BACK TO MAIN
+      </a>
+      <div class="text-[10px] tracking-wider text-[#788a82] border border-[#1b2320] px-3 py-1 bg-[#0d1210]">
+        [ BENGALURU / EST. 2024 ]
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <main class="max-w-5xl mx-auto px-6 pt-12 pb-10 w-full">
+    <div class="mb-6 inline-flex">
+      <div class="border border-[#232f2a] bg-[#0c110f] px-3 py-1 text-[10px] tracking-widest uppercase text-[#8ea39a] flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>[ STATUS: CONSUMER DECISION ENGINE / LIVE ]</span>
+      </div>
+    </div>
+
+    <div class="border-t border-[#1b2320] pt-6 mb-6">
+      <h1 class="font-editorial text-6xl md:text-8xl font-bold tracking-tight text-[#e8eee9] leading-[0.9]">
+        VELLO<span class="text-[#dcb368]">RUM.</span>
+      </h1>
+    </div>
+
+    <div class="max-w-xl space-y-1 mb-10 text-[#9fb3a9]">
+      <p class="font-italic-serif text-xl md:text-2xl text-[#cfded6]">
+        Engineering clarity before you spend, quit, or borrow.
+      </p>
+      <p class="text-[11px] uppercase tracking-wider text-[#63756e]">
+        A zero-jargon simulator testing your choices against 1,000 market scenarios.
+      </p>
+    </div>
+
+    <!-- QUICK PRESET BUTTONS -->
+    <div class="mb-8">
+      <span class="text-[10px] uppercase tracking-widest text-[#5c6e67] block mb-2">Select a Life Scenario:</span>
+      <div class="flex flex-wrap gap-2 text-xs">
+        <button onclick="setScenario('iphone')" class="px-3 py-1.5 border border-[#1b2320] hover:border-[#dcb368] bg-[#0c110f] text-[#cfd8d3] transition">
+          📱 The Big Gadget Purchase (₹75k)
+        </button>
+        <button onclick="setScenario('trip')" class="px-3 py-1.5 border border-[#1b2320] hover:border-[#dcb368] bg-[#0c110f] text-[#cfd8d3] transition">
+          🏖️ The Goa Trip with Friends (₹25k)
+        </button>
+        <button onclick="setScenario('sabbatical')" class="px-3 py-1.5 border border-[#1b2320] hover:border-[#dcb368] bg-[#0c110f] text-[#cfd8d3] transition">
+          🛑 3-Month Job Break / Freelance
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN DECISION CALCULATOR CARD -->
+    <div class="bg-[#0a0e0c] border border-[#1b2320] p-6 rounded-lg grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Inputs (Left Column) -->
+      <div class="lg:col-span-5 space-y-5">
+        <h2 class="text-xs font-semibold text-[#dcb368] tracking-widest uppercase">Your Financial Snapshot</h2>
+        
+        <div>
+          <label class="text-[11px] text-[#8ea39a] flex justify-between">Monthly In-Hand Salary <span id="labelSalary" class="text-white">₹50,000</span></label>
+          <input id="inputSalary" type="range" min="20000" max="250000" step="5000" value="50000" class="w-full mt-1">
+        </div>
+
+        <div>
+          <label class="text-[11px] text-[#8ea39a] flex justify-between">Current Liquid Savings <span id="labelSavings" class="text-white">₹60,000</span></label>
+          <input id="inputSavings" type="range" min="5000" max="500000" step="5000" value="60000" class="w-full mt-1">
+        </div>
+
+        <div>
+          <label class="text-[11px] text-[#8ea39a] flex justify-between">Item / Expense Cost <span id="labelCost" class="text-[#dcb368]">₹45,000</span></label>
+          <input id="inputCost" type="range" min="5000" max="200000" step="2500" value="45000" class="w-full mt-1">
+        </div>
+
+        <div>
+          <label class="text-[11px] text-[#8ea39a] flex justify-between">Monthly Fixed Living Costs <span id="labelFixed" class="text-white">₹28,000</span></label>
+          <input id="inputFixed" type="range" min="10000" max="150000" step="2000" value="28000" class="w-full mt-1">
+        </div>
+
+        <button onclick="runConsumerSim()" class="w-full bg-[#dcb368] hover:bg-[#c99f57] text-[#090c0b] text-xs uppercase tracking-widest py-3 font-bold transition rounded">
+          Calculate True Affordability
+        </button>
+      </div>
+
+      <!-- Verdict & Visualization (Right Column) -->
+      <div class="lg:col-span-7 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-[#1b2320] lg:pl-8 pt-6 lg:pt-0">
+        
+        <!-- Big Consumer Verdict Card -->
+        <div id="verdictBox" class="border border-[#263830] bg-[#0c1411] p-5 rounded">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-[10px] uppercase tracking-widest text-[#8ea39a]">Simulated Outcome</span>
+            <span id="scoreTag" class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">SAFE PURCHASE</span>
+          </div>
+          <div id="verdictHeadline" class="text-xl md:text-2xl font-bold text-white mb-2">
+            "You can buy this with high confidence."
+          </div>
+          <p id="verdictExplanation" class="text-xs text-[#9fb3a9] leading-relaxed">
+            Even if surprise expenses hit over the next 90 days, your probability of going into credit debt remains under 8%.
+          </p>
+        </div>
+
+        <!-- 3 Simple Consumer Stats -->
+        <div class="grid grid-cols-3 gap-2 my-4">
+          <div class="border border-[#1b2320] bg-[#0b100e] p-3 rounded text-center">
+            <span class="text-[9px] uppercase tracking-wider text-[#5c6e67] block">Survival Odds</span>
+            <span id="statSurvival" class="text-base font-bold text-[#dcb368]">92%</span>
+          </div>
+          <div class="border border-[#1b2320] bg-[#0b100e] p-3 rounded text-center">
+            <span class="text-[9px] uppercase tracking-wider text-[#5c6e67] block">Safe Runway</span>
+            <span id="statRunway" class="text-base font-bold text-white">4.2 Mo</span>
+          </div>
+          <div class="border border-[#1b2320] bg-[#0b100e] p-3 rounded text-center">
+            <span class="text-[9px] uppercase tracking-wider text-[#5c6e67] block">Worst 90-Day Cash</span>
+            <span id="statFloor" class="text-base font-bold text-rose-400">₹14,200</span>
+          </div>
+        </div>
+
+        <!-- Trajectory Chart -->
+        <div class="relative h-44 w-full">
+          <canvas id="consumerChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-[#1b2320] px-6 py-4 flex flex-col md:flex-row justify-between text-[10px] text-[#4d5d56] uppercase tracking-widest">
+    <div>VELLORUM SYSTEMS // ANISH VINOD</div>
+    <div>CONSUMER DECISION ARCHITECTURE</div>
+  </footer>
+
+  <script>
+    let chart = null;
+
+    function setScenario(type) {
+      if (type === 'iphone') {
+        document.getElementById('inputCost').value = 75000;
+        document.getElementById('inputSalary').value = 65000;
+        document.getElementById('inputSavings').value = 80000;
+        document.getElementById('inputFixed').value = 35000;
+      } else if (type === 'trip') {
+        document.getElementById('inputCost').value = 25000;
+        document.getElementById('inputSalary').value = 45000;
+        document.getElementById('inputSavings').value = 40000;
+        document.getElementById('inputFixed').value = 25000;
+      } else if (type === 'sabbatical') {
+        document.getElementById('inputCost').value = 15000;
+        document.getElementById('inputSalary').value = 20000;
+        document.getElementById('inputSavings').value = 120000;
+        document.getElementById('inputFixed').value = 30000;
+      }
+      runConsumerSim();
+    }
+
+    function runConsumerSim() {
+      const salary = parseFloat(document.getElementById('inputSalary').value);
+      const savings = parseFloat(document.getElementById('inputSavings').value);
+      const cost = parseFloat(document.getElementById('inputCost').value);
+      const fixedCost = parseFloat(document.getElementById('inputFixed').value);
+
+      document.getElementById('labelSalary').innerText = '₹' + salary.toLocaleString();
+      document.getElementById('labelSavings').innerText = '₹' + savings.toLocaleString();
+      document.getElementById('labelCost').innerText = '₹' + cost.toLocaleString();
+      document.getElementById('labelFixed').innerText = '₹' + fixedCost.toLocaleString();
+
+      const days = 90;
+      const dailyFixed = fixedCost / 30;
+      const postPurchaseSavings = savings - cost;
+
+      const paths = [];
+      const terminalCash = [];
+      let brokeCount = 0;
+
+      for (let p = 0; p < 30; p++) {
+        let currentCash = postPurchaseSavings;
+        const series = [currentCash];
+
+        for (let d = 1; d <= days; d++) {
+          if (d % 30 === 0) currentCash += salary;
+          currentCash -= dailyFixed;
+
+          if (Math.random() < 0.08) {
+            currentCash -= (Math.random() * 4500 + 800);
+          }
+
+          if (currentCash < 0 && p === 0) brokeCount++;
+          series.push(Math.round(currentCash));
+        }
+
+        paths.push(series);
+        terminalCash.push(currentCash);
+      }
+
+      terminalCash.sort((a, b) => a - b);
+      const worstFloor = Math.round(terminalCash[Math.floor(terminalCash.length * 0.05)]);
+      const runwayMonths = Math.max(0, (postPurchaseSavings / (fixedCost || 1))).toFixed(1);
+
+      document.getElementById('statRunway').innerText = runwayMonths + ' Mo';
+      document.getElementById('statFloor').innerText = (worstFloor < 0 ? '-₹' : '₹') + Math.abs(worstFloor).toLocaleString();
+      
+      const vTag = document.getElementById('scoreTag');
+      const vHead = document.getElementById('verdictHeadline');
+      const vExp = document.getElementById('verdictExplanation');
+
+      if (postPurchaseSavings < 5000 || worstFloor < 0) {
+        vTag.className = "text-xs font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-400";
+        vTag.innerText = "DANGER: HIGH DEBT RISK";
+        vHead.innerText = "Do not buy this right now.";
+        vExp.innerText = "This purchase empties your liquidity buffer. A single surprise expense within 60 days forces you into credit card debt or asking family for money.";
+        document.getElementById('statSurvival').innerText = "34%";
+      } else if (postPurchaseSavings < fixedCost) {
+        vTag.className = "text-xs font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400";
+        vTag.innerText = "TIGHT: EXTREME DISCIPLINE REQUIRED";
+        vHead.innerText = "You can afford it, but barely.";
+        vExp.innerText = "You have less than 1 month of emergency runway post-purchase. You'll need to cut dining out and discretionary leisure to stay above zero.";
+        document.getElementById('statSurvival').innerText = "68%";
+      } else {
+        vTag.className = "text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400";
+        vTag.innerText = "SAFE TO PURCHASE";
+        vHead.innerText = "Green light. Buy it guilt-free.";
+        vExp.innerText = "Your emergency cushion remains intact. Even under conservative scenarios, you finish the quarter with healthy cash reserves.";
+        document.getElementById('statSurvival').innerText = "94%";
+      }
+
+      renderConsumerChart(paths, days);
+    }
+
+    function renderConsumerChart(paths, days) {
+      const ctx = document.getElementById('consumerChart').getContext('2d');
+      const labels = Array.from({ length: days + 1 }, (_, i) => i % 15 === 0 ? `Day ${i}` : '');
+
+      const datasets = paths.map((path) => ({
+        data: path,
+        borderColor: path[path.length - 1] >= 0 ? 'rgba(220, 179, 104, 0.25)' : 'rgba(244, 63, 94, 0.35)',
+        borderWidth: 1,
+        pointRadius: 0,
+        tension: 0.1
+      }));
+
+      datasets.push({
+        data: Array(days + 1).fill(0),
+        borderColor: '#f43f5e',
+        borderWidth: 1.5,
+        borderDash: [4, 4],
+        pointRadius: 0
+      });
+
+      if (chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: 'rgba(255, 255, 255, 0.02)' }, ticks: { color: '#4d5d56', font: { size: 9 } } },
+            y: { grid: { color: 'rgba(255, 255, 255, 0.02)' }, ticks: { color: '#4d5d56', font: { size: 9 } } }
+          }
+        }
+      });
+    }
+
+    ['inputSalary', 'inputSavings', 'inputCost', 'inputFixed'].forEach(id => {
+      document.getElementById(id).addEventListener('input', runConsumerSim);
+    });
+
+    runConsumerSim();
+  </script>
+</body>
+</html>
