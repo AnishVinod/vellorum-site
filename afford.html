@@ -15,7 +15,6 @@
     }
 
     :root {
-      /* Vellorum Obsidian Luxury Theme */
       --bg: #080b0a;
       --card-bg: #0f1412;
       --card-border: #1a221e;
@@ -25,7 +24,6 @@
       --text: #e1e7e4;
       --muted: #6b7a73;
       
-      /* Real Market / Bloomberg / Terminal Theme */
       --terminal-bg: #06090e;
       --terminal-card: #0b1118;
       --terminal-border: #141f2d;
@@ -50,7 +48,6 @@
       line-height: 1.5;
     }
 
-    /* Top Navigation */
     .top-nav {
       width: 100%;
       max-width: 1100px;
@@ -80,7 +77,6 @@
       background: var(--gold);
     }
 
-    /* Primary Mode Switcher Tab */
     .view-switcher {
       display: flex;
       gap: 6px;
@@ -134,350 +130,102 @@
       display: flex;
     }
 
-    /* ─── CONSUMER DECISION LAB STYLES ─── */
-    .header-area {
-      text-align: center;
-    }
-
-    .header-area h1 {
-      font-family: var(--font-serif);
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-
-    .header-area p {
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 0.05em;
-    }
-
-    .presets-container {
+    /* ─── ELI5 / BABY EXPLANATION BANNER ─── */
+    .eli5-banner {
+      background: linear-gradient(135deg, #0e1724 0%, #06090e 100%);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 6px;
+      padding: 20px;
       display: flex;
+      flex-direction: column;
       gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
     }
 
-    .preset-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text);
-      padding: 8px 16px;
-      font-family: var(--font-mono);
-      font-size: 11px;
+    .eli5-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       cursor: pointer;
-      border-radius: 3px;
-      transition: all 0.2s;
     }
 
-    .preset-btn:hover {
-      border-color: var(--gold);
-      color: var(--gold-bright);
-    }
-
-    .decision-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    @media (max-width: 800px) {
-      .decision-grid { grid-template-columns: 1fr; }
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 4px;
-      padding: 24px;
+    .eli5-title {
+      font-size: 13px;
+      color: var(--neon-cyan);
+      letter-spacing: 0.1em;
+      font-weight: 700;
       display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .card-title {
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold);
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 8px;
-    }
-
-    .input-group {
-      display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 8px;
     }
 
-    .input-label-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .input-val {
-      color: #fff;
-      font-weight: 700;
-    }
-
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--gold);
-      cursor: pointer;
-    }
-
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--muted);
-      cursor: pointer;
-    }
-
-    .toggle-row input {
-      accent-color: var(--gold);
-    }
-
-    .verdict-box {
-      border: 1px solid var(--card-border);
-      border-radius: 4px;
-      padding: 16px;
-      text-align: center;
-    }
-
-    .verdict-label {
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .verdict-text {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 4px;
-    }
-
-    .verdict-sub {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .metrics-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      text-align: center;
-    }
-
-    .metric-item {
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px solid var(--card-border);
-      border-radius: 4px;
-      padding: 10px 4px;
-    }
-
-    .metric-value {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .metric-label {
-      font-size: 9px;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    /* 90-Day Trajectory Bar Graph */
-    .graph-card {
-      background: rgba(0,0,0,0.25);
-      border: 1px solid var(--card-border);
-      padding: 16px;
-      border-radius: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .graph-bars {
-      display: flex;
-      align-items: flex-end;
-      height: 100px;
-      gap: 14px;
-      padding-top: 10px;
-      border-bottom: 1px dashed var(--card-border);
-    }
-
-    .bar-group {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      height: 100%;
-      justify-content: flex-end;
-    }
-
-    .bar-fill {
-      width: 100%;
-      background: var(--gold);
-      border-radius: 2px 2px 0 0;
-      transition: height 0.3s ease, background 0.3s ease;
-      min-height: 4px;
-    }
-
-    .bar-label {
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    .shock-card {
-      background: var(--gold-dim);
-      border: 1px solid rgba(184, 150, 62, 0.3);
-      padding: 14px;
-      border-radius: 4px;
-      font-size: 11px;
-    }
-
-    .shock-card span {
-      color: var(--gold-bright);
-      font-weight: 700;
-    }
-
-    /* Course Grid */
-    .edu-grid {
+    .eli5-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
-
-    .course-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 16px;
-      border-radius: 4px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .course-badge {
-      display: inline-block;
-      align-self: flex-start;
-      font-size: 9px;
-      padding: 2px 6px;
-      border-radius: 2px;
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--gold);
-      text-transform: uppercase;
-    }
-
-    .course-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .course-desc {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .course-link {
-      font-size: 11px;
-      color: var(--gold-bright);
-      text-decoration: none;
-    }
-
-    /* Subscription Tiers */
-    .sub-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    @media (max-width: 650px) {
-      .sub-grid { grid-template-columns: 1fr; }
-    }
-
-    .sub-tier {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 20px;
-      border-radius: 4px;
-      display: flex;
-      flex-direction: column;
       gap: 14px;
+      margin-top: 8px;
     }
 
-    .sub-tier.featured {
-      border-color: var(--gold);
-      background: linear-gradient(180deg, #111614 0%, #171d1a 100%);
-    }
-
-    .tier-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .tier-title {
-      font-size: 13px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .tier-price {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--gold-bright);
-    }
-
-    .tier-features {
-      list-style: none;
+    .eli5-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--terminal-border);
+      border-radius: 4px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       gap: 6px;
+    }
+
+    .eli5-card-title {
       font-size: 11px;
-      color: var(--muted);
+      font-weight: 700;
+      color: var(--terminal-gold);
     }
 
-    .tier-features li::before {
-      content: "• ";
-      color: var(--gold);
+    .eli5-card-text {
+      font-size: 10px;
+      color: var(--text);
+      line-height: 1.5;
     }
 
-    .sub-btn {
-      padding: 8px;
+    /* ─── INTERACTIVE LIVE CHART ─── */
+    .chart-container {
+      background: var(--terminal-card);
+      border: 1px solid var(--terminal-border);
+      border-radius: 6px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chart-asset-select {
+      background: #06090e;
+      border: 1px solid var(--terminal-border);
+      color: var(--neon-cyan);
       font-family: var(--font-mono);
       font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: transparent;
-      border: 1px solid var(--card-border);
-      color: var(--muted);
-      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 3px;
+      outline: none;
     }
 
-    .sub-btn.active {
-      background: var(--gold);
-      border-color: var(--gold);
-      color: #000;
-      font-weight: 700;
+    #liveMarketCanvas {
+      width: 100%;
+      height: 220px;
+      background: #040609;
+      border-radius: 4px;
+      border: 1px solid rgba(20, 31, 45, 0.8);
     }
 
-    /* ─── REAL MARKET GAMIFIED TERMINAL STYLES ─── */
+    /* ─── TERMINAL HUD & GRID ─── */
     .terminal-container {
       background: var(--terminal-bg);
       border: 1px solid var(--terminal-border);
@@ -499,18 +247,6 @@
       gap: 12px;
     }
 
-    .terminal-ticker {
-      display: flex;
-      gap: 16px;
-      font-size: 12px;
-      align-items: center;
-    }
-
-    .terminal-currency {
-      display: flex;
-      gap: 6px;
-    }
-
     .cur-btn {
       background: var(--terminal-card);
       border: 1px solid var(--terminal-border);
@@ -528,7 +264,6 @@
       box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
     }
 
-    /* Terminal HUD Stats */
     .hud-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -574,7 +309,6 @@
       box-shadow: 0 0 8px var(--neon-cyan);
     }
 
-    /* Terminal Split Floor */
     .terminal-floor {
       display: grid;
       grid-template-columns: 2.2fr 1fr;
@@ -676,7 +410,7 @@
       box-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
     }
 
-    /* Gamified Bounties / Achievements */
+    /* Bounties & Syndicate */
     .bounty-list {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -698,39 +432,6 @@
       background: rgba(0, 242, 254, 0.05);
     }
 
-    .bounty-name {
-      font-size: 11px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .bounty-sub {
-      font-size: 9px;
-      color: var(--muted);
-    }
-
-    /* Syndicate / Competitions */
-    .room-tabs {
-      display: flex;
-      gap: 6px;
-    }
-
-    .room-btn {
-      flex: 1;
-      padding: 6px;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      border: 1px solid var(--terminal-border);
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-    }
-
-    .room-btn.active {
-      border-color: var(--neon-cyan);
-      color: var(--neon-cyan);
-    }
-
     .leader-row {
       display: flex;
       justify-content: space-between;
@@ -742,7 +443,159 @@
       margin-top: 6px;
     }
 
-    /* Certificate Modal */
+    /* ─── DECISION LAB STYLES ─── */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card-title {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .input-val {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+
+    .verdict-box {
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .verdict-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .verdict-text {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .verdict-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+
+    .metric-item {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 10px 4px;
+    }
+
+    .metric-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .metric-label {
+      font-size: 9px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .graph-card {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .graph-bars {
+      display: flex;
+      align-items: flex-end;
+      height: 100px;
+      gap: 14px;
+      padding-top: 10px;
+      border-bottom: 1px dashed var(--card-border);
+    }
+
+    .bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .bar-fill {
+      width: 100%;
+      background: var(--gold);
+      border-radius: 2px 2px 0 0;
+      transition: height 0.3s ease;
+      min-height: 4px;
+    }
+
+    .bar-label {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .shock-card {
+      background: var(--gold-dim);
+      border: 1px solid rgba(184, 150, 62, 0.3);
+      padding: 14px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    .shock-card span {
+      color: var(--gold-bright);
+      font-weight: 700;
+    }
+
+    /* Modal for Certificate */
     .modal {
       display: none;
       position: fixed;
@@ -767,48 +620,11 @@
       border-radius: 6px;
       box-shadow: 0 0 60px rgba(184, 150, 62, 0.25);
     }
-
-    .cert-title {
-      font-family: var(--font-serif);
-      font-size: 24px;
-      color: var(--gold-bright);
-      margin-bottom: 6px;
-    }
-
-    .cert-sub {
-      color: var(--muted);
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-
-    .cert-body {
-      font-size: 12px;
-      line-height: 1.8;
-      color: #fff;
-      margin-bottom: 24px;
-    }
-
-    .cert-code {
-      display: inline-block;
-      border: 1px dashed var(--gold);
-      padding: 6px 16px;
-      color: var(--gold);
-      font-size: 11px;
-      margin-bottom: 24px;
-    }
-
-    .cert-actions {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-    }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation & Global Switcher -->
+  <!-- Top Nav -->
   <header class="top-nav">
     <a href="index.html" class="brand">
       <span class="brand-dot"></span>
@@ -816,216 +632,83 @@
     </a>
     
     <div class="view-switcher">
-      <button class="switch-tab active" id="tabDecision" onclick="switchView('decision')">Decision Lab</button>
-      <button class="switch-tab terminal-tab" id="tabMarket" onclick="switchView('market')">Pro Market Terminal</button>
+      <button class="switch-tab active" id="tabMarket" onclick="switchView('market')">Pro Market Terminal</button>
+      <button class="switch-tab" id="tabDecision" onclick="switchView('decision')">Decision Lab</button>
     </div>
 
-    <a href="index.html" style="color:var(--muted); text-decoration:none; font-size:11px; text-transform:uppercase;">&larr; Return</a>
+    <a href="index.html" style="color:var(--muted); text-decoration:none; font-size:11px; text-transform:uppercase;">&larr; Exit to Main</a>
   </header>
 
   <div class="container">
 
-    <!-- ═══════════════ VIEW 1: CONSUMER DECISION LAB ═══════════════ -->
-    <div id="decisionView" class="view-panel active">
-      
-      <div class="header-area">
-        <h1>Consumer Decision Lab</h1>
-        <p>Stress-test large personal purchases against cash flow, buffer limits, and debt traps.</p>
-      </div>
+    <!-- ═══════════════ VIEW 1: PRO MARKET TERMINAL ═══════════════ -->
+    <div id="marketView" class="view-panel active">
 
-      <div class="presets-container">
-        <button class="preset-btn" onclick="applyPreset(75000, 65000, 80000, 28000)">📱 Flagship Gadget</button>
-        <button class="preset-btn" onclick="applyPreset(25000, 45000, 40000, 20000)">🏖️ Weekend Trip</button>
-        <button class="preset-btn" onclick="applyPreset(15000, 20000, 120000, 22000)">🛑 3-Month Job Break</button>
-      </div>
-
-      <div class="decision-grid">
-        <!-- Sliders -->
-        <div class="card">
-          <div class="card-title">Liquidity Parameters</div>
-
-          <div class="input-group">
-            <div class="input-label-row">
-              <span>Purchase / Goal Cost</span>
-              <span id="costDisplay" class="input-val">₹45,000</span>
-            </div>
-            <input type="range" id="costInput" min="5000" max="250000" step="2500" value="45000" oninput="runSimulation()" />
-          </div>
-
-          <div class="input-group">
-            <div class="input-label-row">
-              <span>Current Bank Balance</span>
-              <span id="savingsDisplay" class="input-val">₹60,000</span>
-            </div>
-            <input type="range" id="savingsInput" min="5000" max="500000" step="5000" value="60000" oninput="runSimulation()" />
-          </div>
-
-          <div class="input-group">
-            <div class="input-label-row">
-              <span>Monthly In-Hand Salary</span>
-              <span id="salaryDisplay" class="input-val">₹50,000</span>
-            </div>
-            <input type="range" id="salaryInput" min="15000" max="300000" step="5000" value="50000" oninput="runSimulation()" />
-          </div>
-
-          <div class="input-group">
-            <div class="input-label-row">
-              <span>Fixed Monthly Living Costs</span>
-              <span id="fixedDisplay" class="input-val">₹25,000</span>
-            </div>
-            <input type="range" id="fixedInput" min="10000" max="150000" step="2500" value="25000" oninput="runSimulation()" />
-          </div>
-
-          <label class="toggle-row">
-            <input type="checkbox" id="emiToggle" onchange="runSimulation()" />
-            Split with 6-Month No-Cost EMI (Diverts cash flow to ongoing debt)
-          </label>
+      <!-- ELI5: THE BABY GUIDE TO HOW MARKETS WORK -->
+      <section class="eli5-banner">
+        <div class="eli5-header">
+          <span class="eli5-title">👶 How the Stock Market Works (In Plain English)</span>
+          <span style="font-size:10px; color:var(--muted)">Beginner Blueprint</span>
         </div>
-
-        <!-- Verdict & Trajectory Graph -->
-        <div class="card">
-          <div class="card-title">Dynamic Assessment</div>
-
-          <div id="verdictContainer" class="verdict-box">
-            <div class="verdict-label">Projected Solvency</div>
-            <div id="verdictText" class="verdict-text">ANALYZING</div>
-            <div id="verdictSub" class="verdict-sub">Computing runway...</div>
+        <div class="eli5-grid">
+          <div class="eli5-card">
+            <span class="eli5-card-title">1. What is a Stock?</span>
+            <p class="eli5-card-text">Imagine your friend opens a lemonade stand for $100. If you give them $10, you own 10% of the stand. That tiny slice of ownership is a <strong>stock share</strong>.</p>
           </div>
-
-          <div class="metrics-row">
-            <div class="metric-item">
-              <div id="safeScoreVal" class="metric-value">0%</div>
-              <div class="metric-label">Solvency Odds</div>
-            </div>
-            <div class="metric-item">
-              <div id="runwayVal" class="metric-value">0 mo</div>
-              <div class="metric-label">Post Runway</div>
-            </div>
-            <div class="metric-item">
-              <div id="floorVal" class="metric-value">₹0</div>
-              <div class="metric-label">Lowest Floor</div>
-            </div>
+          <div class="eli5-card">
+            <span class="eli5-card-title">2. Why Do Prices Move?</span>
+            <p class="eli5-card-text">It's just supply and demand. If it's 40°C outside and 100 people want lemonade, the price jumps. If it rains and nobody wants it, the price drops. Buyers push prices up; sellers pull them down.</p>
           </div>
-
-          <!-- 90-Day Trajectory Bar Graph -->
-          <div class="graph-card">
-            <div style="font-size:10px; color:var(--muted); text-transform:uppercase;">90-Day Projected Cash Balance:</div>
-            <div class="graph-bars">
-              <div class="bar-group">
-                <div id="barM0" class="bar-fill" style="height:60%;"></div>
-                <span class="bar-label">Day 1</span>
-              </div>
-              <div class="bar-group">
-                <div id="barM1" class="bar-fill" style="height:50%;"></div>
-                <span class="bar-label">Day 30</span>
-              </div>
-              <div class="bar-group">
-                <div id="barM2" class="bar-fill" style="height:70%;"></div>
-                <span class="bar-label">Day 60</span>
-              </div>
-              <div class="bar-group">
-                <div id="barM3" class="bar-fill" style="height:85%;"></div>
-                <span class="bar-label">Day 90</span>
-              </div>
-            </div>
+          <div class="eli5-card">
+            <span class="eli5-card-title">3. How Do You Win?</span>
+            <p class="eli5-card-text">Buy when prices are low or quiet, and sell when prices rise. Never put all your eggs in one basket—hold different types of assets so one drop doesn't wipe you out.</p>
           </div>
-
-          <div class="shock-card">
-            <div>Life-Hours Reality Check:</div>
-            <div>This purchase burns <span id="hoursVal">0 hrs</span> (<span id="daysVal">0 work days</span>) of your active time.</div>
+          <div class="eli5-card">
+            <span class="eli5-card-title">4. The $1,000,000 Goal</span>
+            <p class="eli5-card-text">You start with $100k virtual cash on Tier 1 penny stocks. As your balance grows, you unlock bigger tech leaders, blue chips, and crypto until you cross $1M for your official accreditation.</p>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Curated Courses -->
-      <div>
-        <div class="card-title" style="margin-bottom:16px;">Curated Financial Intelligence & Certifications</div>
-        <div class="edu-grid">
-          <div class="course-card">
-            <span class="course-badge">Free</span>
-            <div class="course-name">Zerodha Varsity</div>
-            <div class="course-desc">Personal finance, cash allocation, debt avoidance, and market fundamentals.</div>
-            <a href="https://zerodha.com/varsity/" target="_blank" rel="noopener" class="course-link">Access Varsity &rarr;</a>
+      <!-- LIVE CANVAS PRICE GRAPH -->
+      <section class="chart-container">
+        <div class="chart-header">
+          <div>
+            <span style="font-size:12px; font-weight:700; color:#fff;" id="chartAssetName">MicroNano Semi (NANO)</span>
+            <span id="chartAssetPrice" style="font-size:14px; color:var(--neon-green); margin-left:8px; font-weight:800;">$12.80</span>
           </div>
-          <div class="course-card">
-            <span class="course-badge">Free / Audit</span>
-            <div class="course-name">Financial Markets (Yale)</div>
-            <div class="course-desc">Macro markets, risk management structures, and behavioral economics.</div>
-            <a href="https://www.coursera.org/learn/financial-markets-global" target="_blank" rel="noopener" class="course-link">View Module &rarr;</a>
-          </div>
-          <div class="course-card">
-            <span class="course-badge">Paid / Cert</span>
-            <div class="course-name">NISM Series V-A</div>
-            <div class="course-desc">Regulatory mutual fund advisory, capital preservation, and institutional planning.</div>
-            <a href="https://www.nism.ac.in/" target="_blank" rel="noopener" class="course-link">Examine Path &rarr;</a>
-          </div>
-          <div class="course-card">
-            <span class="course-badge">Behavioral</span>
-            <div class="course-name">Duke Behavioral Finance</div>
-            <div class="course-desc">Cognitive spending biases, impulse control, and choice architecture.</div>
-            <a href="https://www.coursera.org/learn/behavioral-finance" target="_blank" rel="noopener" class="course-link">Study Bias &rarr;</a>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label style="font-size:10px; color:var(--muted)">Select Chart:</label>
+            <select id="assetSelectDropdown" class="chart-asset-select" onchange="changeChartAsset(this.value)">
+              <!-- Options populated via JS -->
+            </select>
           </div>
         </div>
-      </div>
 
-      <!-- Subscriptions -->
-      <div>
-        <div class="card-title" style="margin-bottom:16px;">Vellorum Pass Memberships</div>
-        <div class="sub-grid">
-          <div class="sub-tier">
-            <div class="tier-header">
-              <span class="tier-title">Tier I: Base</span>
-              <span class="tier-price">Free</span>
-            </div>
-            <ul class="tier-features">
-              <li>Standard Affordability Engine</li>
-              <li>90-Day Liquidity Projections</li>
-              <li>Life-Hours Conversion</li>
-              <li>Curated Public Course Directory</li>
-            </ul>
-            <button class="sub-btn" disabled>Active Plan</button>
-          </div>
-
-          <div class="sub-tier featured">
-            <div class="tier-header">
-              <span class="tier-title">Tier II: Black Pass</span>
-              <span class="tier-price">₹299 <span style="font-size:11px;color:var(--muted)">/mo</span></span>
-            </div>
-            <ul class="tier-features">
-              <li>365-Day Extended Horizon Model</li>
-              <li>10,000-Path Monte Carlo Engine</li>
-              <li>No-Cost EMI Trap & Surcharge Audit</li>
-              <li>Career Sabbatical Runway Mode</li>
-            </ul>
-            <button class="sub-btn active" onclick="alert('Black Pass reservations open shortly.')">Join Waitlist</button>
-          </div>
+        <!-- The Canvas Element -->
+        <canvas id="liveMarketCanvas" width="1050" height="220"></canvas>
+        <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--muted);">
+          <span>Past 30 Ticks</span>
+          <span>Live Order Stream (Updates every 2.5s)</span>
+          <span>Latest Fill</span>
         </div>
-      </div>
+      </section>
 
-    </div>
-
-    <!-- ═══════════════ VIEW 2: GAMIFIED REAL MARKET TERMINAL ═══════════════ -->
-    <div id="marketView" class="view-panel">
-      
+      <!-- TERMINAL WORKSPACE -->
       <div class="terminal-container">
-        
-        <!-- Live Market Header / Ticker -->
         <div class="terminal-bar">
-          <div class="terminal-ticker">
-            <span style="color:var(--neon-cyan); font-weight:700;">● VELLORUM PRO DESK</span>
-            <span style="color:var(--muted)">FEED: LIVE</span>
-            <span id="marketSessionTime" style="color:var(--terminal-gold)">SESSION: NYC/MUMBAI</span>
+          <div style="font-size:11px; display:flex; gap:12px; align-items:center;">
+            <span style="color:var(--neon-cyan); font-weight:700;">● VELLORUM MATCHING ENGINE</span>
+            <span style="color:var(--muted)">TICK: ACTIVE</span>
           </div>
-
-          <!-- Currency Selector -->
-          <div class="terminal-currency">
+          <div style="display:flex; gap:6px;">
             <button class="cur-btn active" onclick="setCurrency('USD')">USD ($)</button>
             <button class="cur-btn" onclick="setCurrency('INR')">INR (₹)</button>
             <button class="cur-btn" onclick="setCurrency('EUR')">EUR (€)</button>
           </div>
         </div>
 
-        <!-- HUD Stat Cards -->
+        <!-- HUD Stats -->
         <div class="hud-grid">
           <div class="hud-card">
             <span class="hud-label">Net Liquid Portfolio</span>
@@ -1033,69 +716,86 @@
             <div class="hud-progression">
               <div id="goalProgressBar" class="hud-progression-fill"></div>
             </div>
-            <span style="font-size:9px; color:var(--muted)">Target: <span id="targetDisplay" style="color:#fff">$1,000,000</span> for Accreditation</span>
+            <span style="font-size:9px; color:var(--muted)">Target: <span id="targetDisplay" style="color:#fff">$1,000,000</span></span>
           </div>
 
           <div class="hud-card">
-            <span class="hud-label">Unallocated Cash</span>
+            <span class="hud-label">Cash In Hand</span>
             <div id="cashDisplay" class="hud-value" style="color:var(--neon-green)">$100,000</div>
             <span style="font-size:9px; color:var(--muted)">Available Buying Power</span>
           </div>
 
           <div class="hud-card">
-            <span class="hud-label">Operative Rank</span>
+            <span class="hud-label">Clearance Tier</span>
             <div id="tierDisplay" class="hud-value" style="color:var(--neon-cyan)">Tier 1: Novice</div>
-            <span style="font-size:9px; color:var(--muted)"><span id="xpDisplay">0</span> XP Acquired</span>
+            <span style="font-size:9px; color:var(--muted)"><span id="xpDisplay">0</span> XP</span>
           </div>
 
           <div class="hud-card">
-            <span class="hud-label">Vellorum Accreditation</span>
-            <div id="certStatus" class="hud-value" style="font-size:13px; margin-top:2px;">Locked ($1M Required)</div>
-            <span id="certNotice" style="font-size:9px; color:var(--muted)">10% Complete</span>
+            <span class="hud-label">Accreditation</span>
+            <div id="certStatus" class="hud-value" style="font-size:12px; margin-top:2px;">Locked (Reach $1M)</div>
+            <span id="certNotice" style="font-size:9px; color:var(--muted)">10% Progress</span>
           </div>
         </div>
 
-        <!-- Split Order Floor -->
+        <!-- Order Book & Leaderboard -->
         <div class="terminal-floor">
-          
-          <!-- Market Watch & Trading Deck -->
           <div class="terminal-pane">
             <div class="terminal-title">
-              <span>Active Order Deck</span>
-              <span style="font-size:9px; color:var(--muted)">Tick Speed: 2.5s</span>
+              <span>Order Execution Deck</span>
+              <span style="font-size:9px; color:var(--muted)">Instant Market Fills</span>
             </div>
-
             <table class="order-table">
               <thead>
                 <tr>
                   <th>Instrument</th>
-                  <th>Tier Req</th>
-                  <th>Live Ask</th>
-                  <th>Change</th>
-                  <th>Holdings</th>
-                  <th>Trade Order</th>
+                  <th>Tier</th>
+                  <th>Price</th>
+                  <th>24h Chg</th>
+                  <th>You Own</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody id="assetsTableBody">
-                <!-- Dynamically populated -->
+                <!-- Injected via JS -->
               </tbody>
             </table>
           </div>
 
-          <!-- Right Column: Syndicate Rooms & Bounties -->
+          <!-- Bounties & Syndicate -->
           <div style="display:flex; flex-direction:column; gap:16px;">
-            
-            <!-- Rooms / Leaderboard -->
             <div class="terminal-pane">
               <div class="terminal-title">
-                <span>Trading Syndicate</span>
+                <span>Micro Bounties</span>
               </div>
-
-              <div class="room-tabs">
-                <button class="room-btn active" id="publicRoomBtn" onclick="toggleRoom('public')">Public Global</button>
-                <button class="room-btn" id="privateRoomBtn" onclick="toggleRoom('private')">Private Room</button>
+              <div class="bounty-list">
+                <div id="badgeFirst" class="bounty-box">
+                  <span class="bounty-name">First Trade</span>
+                  <span class="bounty-sub">Buy 1 share</span>
+                  <span style="font-size:8px; color:var(--neon-green); margin-top:2px;">+$500 Cash</span>
+                </div>
+                <div id="badgeDiversify" class="bounty-box">
+                  <span class="bounty-name">Diversified</span>
+                  <span class="bounty-sub">Hold 3 tiers</span>
+                  <span style="font-size:8px; color:var(--neon-green); margin-top:2px;">+$2,000 Cash</span>
+                </div>
+                <div id="badgeApex" class="bounty-box">
+                  <span class="bounty-name">Apex Allocator</span>
+                  <span class="bounty-sub">Cross $1M mark</span>
+                  <span style="font-size:8px; color:var(--neon-cyan); margin-top:2px;">LinkedIn Cert</span>
+                </div>
+                <div id="badgeLeverage" class="bounty-box">
+                  <span class="bounty-name">Risk Master</span>
+                  <span class="bounty-sub">Unlock Tier 4</span>
+                  <span style="font-size:8px; color:var(--neon-cyan); margin-top:2px;">+300 XP</span>
+                </div>
               </div>
+            </div>
 
+            <div class="terminal-pane">
+              <div class="terminal-title">
+                <span>Global Syndicate Rank</span>
+              </div>
               <div id="leaderboardContainer">
                 <div class="leader-row">
                   <span><strong style="color:var(--neon-cyan)">#1</strong> K. Thorne</span>
@@ -1111,164 +811,110 @@
                 </div>
               </div>
             </div>
-
-            <!-- Bounties & Achievements -->
-            <div class="terminal-pane">
-              <div class="terminal-title">
-                <span>Micro Bounties</span>
-              </div>
-              <div class="bounty-list">
-                <div id="badgeFirst" class="bounty-box">
-                  <span class="bounty-name">First Fill</span>
-                  <span class="bounty-sub">Execute 1 order</span>
-                  <span style="font-size:8px; color:var(--neon-green); margin-top:2px;">+$500 Bonus</span>
-                </div>
-                <div id="badgeDiversify" class="bounty-box">
-                  <span class="bounty-name">Multi-Asset</span>
-                  <span class="bounty-sub">Hold 3 tiers</span>
-                  <span style="font-size:8px; color:var(--neon-green); margin-top:2px;">+$2,000 Bonus</span>
-                </div>
-                <div id="badgeApex" class="bounty-box">
-                  <span class="bounty-name">Apex Trader</span>
-                  <span class="bounty-sub">Cross $1M mark</span>
-                  <span style="font-size:8px; color:var(--neon-cyan); margin-top:2px;">LinkedIn Pass</span>
-                </div>
-                <div id="badgeLeverage" class="bounty-box">
-                  <span class="bounty-name">Risk Architect</span>
-                  <span class="bounty-sub">Trade Tier 4</span>
-                  <span style="font-size:8px; color:var(--neon-cyan); margin-top:2px;">+300 XP</span>
-                </div>
-              </div>
-            </div>
-
           </div>
-
         </div>
 
       </div>
+    </div>
 
+    <!-- ═══════════════ VIEW 2: CONSUMER DECISION LAB ═══════════════ -->
+    <div id="decisionView" class="view-panel">
+      <div style="text-align:center;">
+        <h1 style="font-family:var(--font-serif); font-size:2.2rem; color:#fff;">Consumer Decision Lab</h1>
+        <p style="color:var(--muted); font-size:12px;">Test purchases against cash flow, buffer safety, and debt traps.</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+        <div class="card">
+          <div class="card-title">Liquidity Parameters</div>
+
+          <div class="input-group">
+            <div class="input-label-row"><span>Goal Cost</span><span id="costDisplay" class="input-val">₹45,000</span></div>
+            <input type="range" id="costInput" min="5000" max="250000" step="2500" value="45000" oninput="runSimulation()" />
+          </div>
+
+          <div class="input-group">
+            <div class="input-label-row"><span>Bank Balance</span><span id="savingsDisplay" class="input-val">₹60,000</span></div>
+            <input type="range" id="savingsInput" min="5000" max="500000" step="5000" value="60000" oninput="runSimulation()" />
+          </div>
+
+          <div class="input-group">
+            <div class="input-label-row"><span>Monthly Salary</span><span id="salaryDisplay" class="input-val">₹50,000</span></div>
+            <input type="range" id="salaryInput" min="15000" max="300000" step="5000" value="50000" oninput="runSimulation()" />
+          </div>
+
+          <div class="input-group">
+            <div class="input-label-row"><span>Monthly Fixed Bills</span><span id="fixedDisplay" class="input-val">₹25,000</span></div>
+            <input type="range" id="fixedInput" min="10000" max="150000" step="2500" value="25000" oninput="runSimulation()" />
+          </div>
+
+          <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted); cursor:pointer;">
+            <input type="checkbox" id="emiToggle" onchange="runSimulation()" />
+            Split with 6-Month No-Cost EMI
+          </label>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Dynamic Assessment</div>
+          <div id="verdictContainer" class="verdict-box">
+            <div class="verdict-label">Projected Solvency</div>
+            <div id="verdictText" class="verdict-text">ANALYZING</div>
+            <div id="verdictSub" class="verdict-sub">Computing runway...</div>
+          </div>
+
+          <div class="metrics-row">
+            <div class="metric-item"><div id="safeScoreVal" class="metric-value">0%</div><div class="metric-label">Solvency</div></div>
+            <div class="metric-item"><div id="runwayVal" class="metric-value">0 mo</div><div class="metric-label">Runway</div></div>
+            <div class="metric-item"><div id="floorVal" class="metric-value">₹0</div><div class="metric-label">Lowest Cash</div></div>
+          </div>
+
+          <div class="graph-card">
+            <div style="font-size:10px; color:var(--muted);">90-Day Cash Trajectory:</div>
+            <div class="graph-bars">
+              <div class="bar-group"><div id="barM0" class="bar-fill"></div><span class="bar-label">Day 1</span></div>
+              <div class="bar-group"><div id="barM1" class="bar-fill"></div><span class="bar-label">Day 30</span></div>
+              <div class="bar-group"><div id="barM2" class="bar-fill"></div><span class="bar-label">Day 60</span></div>
+              <div class="bar-group"><div id="barM3" class="bar-fill"></div><span class="bar-label">Day 90</span></div>
+            </div>
+          </div>
+
+          <div class="shock-card">
+            <div>Life-Hours Conversion:</div>
+            <div>Requires <span id="hoursVal">0 hrs</span> (<span id="daysVal">0 work days</span>) of labor.</div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
 
-  <!-- LinkedIn Accreditation Modal -->
+  <!-- Certification Modal -->
   <div id="certModal" class="modal">
     <div class="cert-frame">
-      <div class="cert-title">Vellorum Certified Alpha Architect</div>
-      <div class="cert-sub">Institutional Quantitative Competence Verification</div>
-      <div class="cert-body">
-        This certifies that the operative has demonstrated institutional risk discipline, survived simulated market volatility, and surpassed <strong>$1,000,000 net portfolio liquidity</strong> across progressive market gates.
-      </div>
-      <div class="cert-code" id="certId">CREDENTIAL: VEL-ALPHA-8921-VERIFIED</div>
-      <div class="cert-actions">
-        <button class="trade-btn buy" style="padding:8px 16px; font-size:11px;" onclick="shareLinkedIn()">Post Credential to LinkedIn</button>
-        <button class="trade-btn sell" style="padding:8px 16px; font-size:11px;" onclick="closeCert()">Dismiss</button>
+      <h2 style="font-family:var(--font-serif); color:var(--gold-bright); margin-bottom:8px;">Vellorum Certified Alpha Architect</h2>
+      <p style="color:var(--muted); font-size:11px; margin-bottom:20px; text-transform:uppercase;">Institutional Quantitative Competence</p>
+      <p style="color:#fff; font-size:13px; line-height:1.7; margin-bottom:24px;">
+        This credential certifies that the operative has demonstrated strict risk control, survived simulated price shocks, and reached <strong>$1,000,000 net portfolio liquidity</strong> across progressive market gates.
+      </p>
+      <div style="border:1px dashed var(--gold); padding:8px 16px; font-size:11px; color:var(--gold); margin-bottom:24px;">CREDENTIAL: VEL-ALPHA-8921-VERIFIED</div>
+      <div style="display:flex; justify-content:center; gap:12px;">
+        <button class="trade-btn buy" style="padding:8px 16px;" onclick="shareLinkedIn()">Post Credential to LinkedIn</button>
+        <button class="trade-btn sell" style="padding:8px 16px;" onclick="closeCert()">Dismiss</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ═══════════════ TOP SWITCHER ═══════════════
+    // ═══════════════ NAVIGATION SWITCHER ═══════════════
     function switchView(mode) {
       document.getElementById('decisionView').classList.toggle('active', mode === 'decision');
       document.getElementById('marketView').classList.toggle('active', mode === 'market');
       document.getElementById('tabDecision').classList.toggle('active', mode === 'decision');
       document.getElementById('tabMarket').classList.toggle('active', mode === 'market');
+      if (mode === 'market') drawChart();
     }
 
-    // ═══════════════ CONSUMER LAB ENGINE ═══════════════
-    function formatINR(val) {
-      return '₹' + Math.round(val).toLocaleString('en-IN');
-    }
-
-    function applyPreset(cost, salary, savings, fixed) {
-      document.getElementById('costInput').value = cost;
-      document.getElementById('salaryInput').value = salary;
-      document.getElementById('savingsInput').value = savings;
-      document.getElementById('fixedInput').value = fixed;
-      document.getElementById('emiToggle').checked = false;
-      runSimulation();
-    }
-
-    function runSimulation() {
-      const cost = parseFloat(document.getElementById('costInput').value);
-      const savings = parseFloat(document.getElementById('savingsInput').value);
-      const salary = parseFloat(document.getElementById('salaryInput').value);
-      const fixed = parseFloat(document.getElementById('fixedInput').value);
-      const isEMI = document.getElementById('emiToggle').checked;
-
-      document.getElementById('costDisplay').textContent = formatINR(cost);
-      document.getElementById('savingsDisplay').textContent = formatINR(savings);
-      document.getElementById('salaryDisplay').textContent = formatINR(salary);
-      document.getElementById('fixedDisplay').textContent = formatINR(fixed);
-
-      // Hourly work calculation (160 hrs/mo)
-      const hourlyWage = salary / 160;
-      const hoursRequired = Math.round(cost / hourlyWage);
-      document.getElementById('hoursVal').textContent = hoursRequired + ' hrs';
-      document.getElementById('daysVal').textContent = (hoursRequired / 8).toFixed(1) + ' work days';
-
-      let startBal = savings;
-      let emiPerMonth = 0;
-      if (isEMI) {
-        emiPerMonth = cost / 6;
-      } else {
-        startBal -= cost;
-      }
-
-      const totalMonthlyBurn = fixed + emiPerMonth;
-      const netPerMonth = salary - totalMonthlyBurn;
-
-      // Trajectory values
-      const b0 = Math.max(0, startBal);
-      const b1 = Math.max(0, b0 + netPerMonth);
-      const b2 = Math.max(0, b1 + netPerMonth);
-      const b3 = Math.max(0, b2 + netPerMonth);
-      const lowestBalance = Math.min(b0, b1, b2, b3);
-
-      // Bar heights relative to highest peak
-      const peak = Math.max(b0, b1, b2, b3, 10000);
-      document.getElementById('barM0').style.height = `${Math.max(5, (b0 / peak) * 100)}%`;
-      document.getElementById('barM1').style.height = `${Math.max(5, (b1 / peak) * 100)}%`;
-      document.getElementById('barM2').style.height = `${Math.max(5, (b2 / peak) * 100)}%`;
-      document.getElementById('barM3').style.height = `${Math.max(5, (b3 / peak) * 100)}%`;
-
-      const runway = (startBal > 0 && totalMonthlyBurn > 0) ? (startBal / totalMonthlyBurn).toFixed(1) : '0.0';
-
-      let score = 100;
-      if (lowestBalance < 0) score -= 65;
-      else if (lowestBalance < fixed) score -= 35;
-      if (runway < 1.0) score -= 25;
-      else if (runway < 3.0) score -= 10;
-      score = Math.max(5, Math.min(99, score));
-
-      document.getElementById('safeScoreVal').textContent = score + '%';
-      document.getElementById('runwayVal').textContent = runway + ' mo';
-      document.getElementById('floorVal').textContent = formatINR(lowestBalance);
-
-      const vBox = document.getElementById('verdictContainer');
-      const vText = document.getElementById('verdictText');
-      const vSub = document.getElementById('verdictSub');
-
-      if (score >= 80) {
-        vText.textContent = "SAFE TO PURCHASE";
-        vText.style.color = "var(--neon-green)";
-        vSub.textContent = "Emergency buffer remains fully intact across 90 days.";
-        vBox.style.borderColor = "var(--neon-green)";
-      } else if (score >= 50) {
-        vText.textContent = "CAUTION // TIGHT BUFFER";
-        vText.style.color = "var(--terminal-gold)";
-        vSub.textContent = "Runway drops under 1.5 months. Strict spending discipline required.";
-        vBox.style.borderColor = "var(--terminal-gold)";
-      } else {
-        vText.textContent = "HIGH RISK OF DEBT";
-        vText.style.color = "var(--neon-red)";
-        vSub.textContent = "Any unexpected medical or repair bill triggers revolving debt.";
-        vBox.style.borderColor = "var(--neon-red)";
-      }
-    }
-
-    // ═══════════════ PRO MARKET TERMINAL ENGINE ═══════════════
+    // ═══════════════ MULTI-CURRENCY & ASSET ENGINE ═══════════════
     let currentCurrency = 'USD';
     const fxRates = {
       USD: { symbol: '$', rate: 1.0, target: 1000000 },
@@ -1281,15 +927,16 @@
     let playerTier = 1;
     let portfolio = {};
     let hasCertified = false;
+    let activeChartAssetId = 'nano_spec';
 
     const assets = [
-      { id: 'nano_spec', name: 'MicroNano Semi', tag: 'Micro Cap', tier: 1, priceUSD: 12.80, change: 0 },
-      { id: 'bio_gen', name: 'BioGenix Labs', tag: 'Penny Spec', tier: 1, priceUSD: 4.10, change: 0 },
-      { id: 'apex_ai', name: 'Apex AI Systems', tag: 'Mid Tech', tier: 2, priceUSD: 94.50, change: 0 },
-      { id: 'volt_ev', name: 'Volt Mobility Global', tag: 'Growth Mid', tier: 2, priceUSD: 142.00, change: 0 },
-      { id: 'titan_blue', name: 'Titan Global Trust', tag: 'Blue Chip', tier: 3, priceUSD: 380.00, change: 0 },
-      { id: 'gold_vault', name: 'Physical Gold Trust', tag: 'Commodity', tier: 3, priceUSD: 2050.00, change: 0 },
-      { id: 'alpha_btc', name: 'Alpha Crypto Index', tag: 'Derivatives', tier: 4, priceUSD: 66500.00, change: 0 }
+      { id: 'nano_spec', name: 'MicroNano Semi', tag: 'Micro Cap', tier: 1, priceUSD: 12.80, change: 0, history: [12.4, 12.6, 12.8] },
+      { id: 'bio_gen', name: 'BioGenix Labs', tag: 'Penny Spec', tier: 1, priceUSD: 4.10, change: 0, history: [4.0, 4.15, 4.1] },
+      { id: 'apex_ai', name: 'Apex AI Systems', tag: 'Mid Tech', tier: 2, priceUSD: 94.50, change: 0, history: [92, 93.5, 94.5] },
+      { id: 'volt_ev', name: 'Volt Mobility', tag: 'Growth Mid', tier: 2, priceUSD: 142.00, change: 0, history: [138, 140, 142] },
+      { id: 'titan_blue', name: 'Titan Global Equities', tag: 'Blue Chip', tier: 3, priceUSD: 380.00, change: 0, history: [375, 378, 380] },
+      { id: 'gold_vault', name: 'Gold Bullion Trust', tag: 'Commodity', tier: 3, priceUSD: 2050.00, change: 0, history: [2040, 2045, 2050] },
+      { id: 'alpha_btc', name: 'Alpha Crypto Index', tag: 'Derivatives', tier: 4, priceUSD: 66500.00, change: 0, history: [65000, 66000, 66500] }
     ];
 
     function formatMoney(amountUSD) {
@@ -1303,6 +950,7 @@
         b.classList.toggle('active', b.innerText.includes(cur));
       });
       renderTerminal();
+      drawChart();
     }
 
     function calculateNetWorth() {
@@ -1313,6 +961,88 @@
       return total;
     }
 
+    // ═══════════════ CANVAS CHART ENGINE ═══════════════
+    function changeChartAsset(assetId) {
+      activeChartAssetId = assetId;
+      const asset = assets.find(a => a.id === assetId);
+      if (asset) {
+        document.getElementById('chartAssetName').innerText = `${asset.name} (${asset.tag})`;
+        document.getElementById('chartAssetPrice').innerText = formatMoney(asset.priceUSD);
+      }
+      drawChart();
+    }
+
+    function drawChart() {
+      const canvas = document.getElementById('liveMarketCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const asset = assets.find(a => a.id === activeChartAssetId);
+      if (!asset || !asset.history || asset.history.length < 2) return;
+
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      // Grid background
+      ctx.strokeStyle = '#0e1724';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 70) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      const data = asset.history;
+      const minVal = Math.min(...data) * 0.98;
+      const maxVal = Math.max(...data) * 1.02;
+      const range = maxVal - minVal || 1;
+
+      // Draw area fill
+      ctx.beginPath();
+      const points = [];
+      const step = w / (data.length - 1);
+
+      data.forEach((val, i) => {
+        const x = i * step;
+        const y = h - ((val - minVal) / range) * (h - 40) - 20;
+        points.push({ x, y });
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+
+      // Neon stroke
+      const isPositive = asset.change >= 0;
+      ctx.strokeStyle = isPositive ? '#00ff88' : '#ff3366';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Area gradient
+      ctx.lineTo(points[points.length - 1].x, h);
+      ctx.lineTo(points[0].x, h);
+      ctx.closePath();
+
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, isPositive ? 'rgba(0, 255, 136, 0.25)' : 'rgba(255, 51, 102, 0.25)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Pulsing head point
+      const last = points[points.length - 1];
+      ctx.fillStyle = isPositive ? '#00ff88' : '#ff3366';
+      ctx.beginPath();
+      ctx.arc(last.x, last.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // ═══════════════ RENDER TERMINAL WORKSPACE ═══════════════
     function renderTerminal() {
       const netWorth = calculateNetWorth();
       document.getElementById('netWorthDisplay').innerText = formatMoney(netWorth);
@@ -1327,30 +1057,34 @@
       else if (netWorth >= 140000) playerTier = 2;
       else playerTier = 1;
 
-      const titles = {
-        1: 'Tier 1: Novice',
-        2: 'Tier 2: Growth Operator',
-        3: 'Tier 3: Blue-Chip Partner',
-        4: 'Tier 4: Apex Allocator'
-      };
+      const titles = { 1: 'Tier 1: Novice', 2: 'Tier 2: Growth Operator', 3: 'Tier 3: Blue-Chip Partner', 4: 'Tier 4: Apex Allocator' };
       document.getElementById('tierDisplay').innerText = titles[playerTier];
 
-      // Accreditation Gate
+      // Goal Progress
       const progress = Math.min(100, Math.max(5, (netWorth / 1000000) * 100));
       document.getElementById('goalProgressBar').style.width = progress + '%';
 
       if (netWorth >= 1000000 && !hasCertified) {
         hasCertified = true;
         document.getElementById('certStatus').innerHTML = '<span style="color:var(--neon-cyan); cursor:pointer; text-decoration:underline;" onclick="openCert()">VIEW ACCREDITATION</span>';
-        document.getElementById('certNotice').innerText = 'Eligible for LinkedIn Export';
         document.getElementById('badgeApex').classList.add('cleared');
         openCert();
       }
 
-      // Render Order Table
+      // Populate dropdown if empty
+      const dropdown = document.getElementById('assetSelectDropdown');
+      if (dropdown && dropdown.options.length === 0) {
+        assets.forEach(a => {
+          const opt = document.createElement('option');
+          opt.value = a.id;
+          opt.innerText = `${a.name} (Tier ${a.tier})`;
+          dropdown.appendChild(opt);
+        });
+      }
+
+      // Populate Order Deck
       const tbody = document.getElementById('assetsTableBody');
       tbody.innerHTML = '';
-
       assets.forEach(a => {
         const isLocked = a.tier > playerTier;
         const currentQty = portfolio[a.id] || 0;
@@ -1361,7 +1095,7 @@
         const chgColor = a.change >= 0 ? 'var(--neon-green)' : 'var(--neon-red)';
 
         tr.innerHTML = `
-          <td><strong>${a.name}</strong> <span class="asset-tag-pill">${a.tag}</span></td>
+          <td><strong style="cursor:pointer;" onclick="changeChartAsset('${a.id}')">${a.name}</strong><span class="asset-tag-pill">${a.tag}</span></td>
           <td style="color:var(--muted)">Tier ${a.tier}</td>
           <td style="font-weight:700">${formatMoney(a.priceUSD)}</td>
           <td style="color:${chgColor}">${chgSign}${a.change.toFixed(2)}%</td>
@@ -1381,13 +1115,10 @@
     function tradeBuy(id) {
       const a = assets.find(x => x.id === id);
       if (!a) return;
-
       if (cashUSD >= a.priceUSD) {
         cashUSD -= a.priceUSD;
         portfolio[a.id] = (portfolio[a.id] || 0) + 1;
         xp += 25;
-
-        // Bounties
         document.getElementById('badgeFirst').classList.add('cleared');
         if (Object.keys(portfolio).filter(k => portfolio[k] > 0).length >= 3) {
           document.getElementById('badgeDiversify').classList.add('cleared');
@@ -1395,17 +1126,15 @@
         if (a.tier === 4) {
           document.getElementById('badgeLeverage').classList.add('cleared');
         }
-
         renderTerminal();
       } else {
-        alert('Insufficient unallocated liquidity to execute buy order.');
+        alert("Insufficient liquidity to execute market fill.");
       }
     }
 
     function tradeSell(id) {
       const a = assets.find(x => x.id === id);
       if (!a) return;
-
       if ((portfolio[a.id] || 0) > 0) {
         portfolio[a.id] -= 1;
         cashUSD += a.priceUSD;
@@ -1414,49 +1143,105 @@
       }
     }
 
-    // Live Tick Fluctuation Engine (Every 2.5s)
+    // Dynamic Live Tick Generator (Every 2.5 seconds)
     setInterval(() => {
       assets.forEach(a => {
         const volatility = a.tier === 1 ? 0.05 : (a.tier === 4 ? 0.07 : 0.02);
         const delta = (Math.random() * (volatility * 2)) - volatility;
         a.priceUSD = Math.max(1, a.priceUSD * (1 + delta));
         a.change = delta * 100;
+
+        if (!a.history) a.history = [a.priceUSD];
+        a.history.push(a.priceUSD);
+        if (a.history.length > 25) a.history.shift();
       });
+
       renderTerminal();
+      const currentAsset = assets.find(a => a.id === activeChartAssetId);
+      if (currentAsset) {
+        document.getElementById('chartAssetPrice').innerText = formatMoney(currentAsset.priceUSD);
+        document.getElementById('chartAssetPrice').style.color = currentAsset.change >= 0 ? 'var(--neon-green)' : 'var(--neon-red)';
+      }
+      drawChart();
     }, 2500);
 
-    // Certificate
+    // Certificate Handlers
     function openCert() { document.getElementById('certModal').classList.add('active'); }
     function closeCert() { document.getElementById('certModal').classList.remove('active'); }
     function shareLinkedIn() {
-      const text = encodeURIComponent("I crossed $1,000,000 in simulated liquidity and earned the Vellorum Certified Alpha Architect credential.");
+      const text = encodeURIComponent("I reached $1,000,000 in simulated liquidity and earned the Vellorum Certified Alpha Architect credential.");
       window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}&summary=${text}`, '_blank');
     }
 
-    // Syndicate Switcher
-    function toggleRoom(type) {
-      document.getElementById('publicRoomBtn').classList.toggle('active', type === 'public');
-      document.getElementById('privateRoomBtn').classList.toggle('active', type === 'private');
-      const container = document.getElementById('leaderboardContainer');
+    // ═══════════════ DECISION LAB RUNNER ═══════════════
+    function formatINR(val) { return '₹' + Math.round(val).toLocaleString('en-IN'); }
+    function runSimulation() {
+      const cost = parseFloat(document.getElementById('costInput').value);
+      const savings = parseFloat(document.getElementById('savingsInput').value);
+      const salary = parseFloat(document.getElementById('salaryInput').value);
+      const fixed = parseFloat(document.getElementById('fixedInput').value);
+      const isEMI = document.getElementById('emiToggle').checked;
 
-      if (type === 'private') {
-        container.innerHTML = `
-          <div style="padding:6px; font-size:10px; color:var(--muted); text-align:center;">
-            Private Syndicate: #ALPHA-SYNDICATE<br/>
-            <span style="color:var(--neon-cyan)">3 Traders Connected</span>
-          </div>
-          <div class="leader-row"><span><strong style="color:var(--neon-cyan)">#1</strong> You (Operative)</span><span style="color:var(--neon-cyan)">$100,000</span></div>
-          <div class="leader-row"><span><strong style="color:var(--neon-cyan)">#2</strong> Marco_Apex</span><span>$92,400</span></div>
-          <div class="leader-row"><span><strong style="color:var(--neon-cyan)">#3</strong> Zero_Hedge</span><span>$84,100</span></div>
-        `;
+      document.getElementById('costDisplay').textContent = formatINR(cost);
+      document.getElementById('savingsDisplay').textContent = formatINR(savings);
+      document.getElementById('salaryDisplay').textContent = formatINR(salary);
+      document.getElementById('fixedDisplay').textContent = formatINR(fixed);
+
+      const hours = Math.round(cost / (salary / 160));
+      document.getElementById('hoursVal').textContent = hours + ' hrs';
+      document.getElementById('daysVal').textContent = (hours / 8).toFixed(1) + ' work days';
+
+      let startBal = savings;
+      let emi = isEMI ? (cost / 6) : 0;
+      if (!isEMI) startBal -= cost;
+
+      const monthlyBurn = fixed + emi;
+      const netMonthly = salary - monthlyBurn;
+
+      const b0 = Math.max(0, startBal);
+      const b1 = Math.max(0, b0 + netMonthly);
+      const b2 = Math.max(0, b1 + netMonthly);
+      const b3 = Math.max(0, b2 + netMonthly);
+      const lowest = Math.min(b0, b1, b2, b3);
+
+      const peak = Math.max(b0, b1, b2, b3, 10000);
+      document.getElementById('barM0').style.height = `${Math.max(5, (b0 / peak) * 100)}%`;
+      document.getElementById('barM1').style.height = `${Math.max(5, (b1 / peak) * 100)}%`;
+      document.getElementById('barM2').style.height = `${Math.max(5, (b2 / peak) * 100)}%`;
+      document.getElementById('barM3').style.height = `${Math.max(5, (b3 / peak) * 100)}%`;
+
+      const runway = (startBal > 0 && monthlyBurn > 0) ? (startBal / monthlyBurn).toFixed(1) : '0.0';
+      let score = 100;
+      if (lowest < 0) score -= 65;
+      else if (lowest < fixed) score -= 35;
+      if (runway < 1.0) score -= 25;
+      score = Math.max(5, Math.min(99, score));
+
+      document.getElementById('safeScoreVal').textContent = score + '%';
+      document.getElementById('runwayVal').textContent = runway + ' mo';
+      document.getElementById('floorVal').textContent = formatINR(lowest);
+
+      const vBox = document.getElementById('verdictContainer');
+      const vText = document.getElementById('verdictText');
+      const vSub = document.getElementById('verdictSub');
+
+      if (score >= 75) {
+        vText.textContent = "SAFE TO PURCHASE";
+        vText.style.color = "var(--neon-green)";
+        vSub.textContent = "Your cash buffer remains healthy over 90 days.";
+        vBox.style.borderColor = "var(--neon-green)";
       } else {
-        renderTerminal();
+        vText.textContent = "HIGH RISK OF DEBT";
+        vText.style.color = "var(--neon-red)";
+        vSub.textContent = "Any emergency bill forces you into credit card debt.";
+        vBox.style.borderColor = "var(--neon-red)";
       }
     }
 
-    // Initialize Both Engines
+    // Init
     runSimulation();
     renderTerminal();
+    setTimeout(drawChart, 300);
   </script>
 </body>
 </html>
