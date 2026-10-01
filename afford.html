@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vellorum // Consumer Decision Lab</title>
+  <title>Vellorum // Global Market Simulator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -20,12 +20,11 @@
       --card-border: #1b2320;
       --gold: #b8963e;
       --gold-bright: #dcb368;
-      --gold-dim: rgba(184, 150, 62, 0.15);
+      --gold-dim: rgba(184, 150, 62, 0.12);
       --text: #e6eae7;
       --muted: #728078;
-      --danger: #d9534f;
-      --warning: #f0ad4e;
-      --success: #4cae4c;
+      --danger: #e74c3c;
+      --success: #2ecc71;
       --font-mono: 'JetBrains Mono', monospace;
       --font-serif: 'Playfair Display', serif;
     }
@@ -42,16 +41,15 @@
       line-height: 1.5;
     }
 
-    /* Top Navigation */
     .top-nav {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1200px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 24px 0;
+      padding: 20px 0;
       border-bottom: 1px solid var(--card-border);
-      margin-bottom: 40px;
+      margin-bottom: 24px;
     }
 
     .brand {
@@ -72,654 +70,712 @@
       background: var(--gold);
     }
 
-    .nav-link {
-      color: var(--gold);
-      text-decoration: none;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      border: 1px solid var(--gold);
-      padding: 6px 14px;
-      border-radius: 2px;
-      transition: all 0.2s ease;
-    }
-
-    .nav-link:hover {
-      background: var(--gold);
-      color: var(--bg);
-    }
-
-    /* Main Container */
-    .container {
-      width: 100%;
-      max-width: 1000px;
+    .currency-controls {
       display: flex;
-      flex-direction: column;
-      gap: 32px;
+      gap: 8px;
+      align-items: center;
     }
 
-    .header-area {
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .header-area h1 {
-      font-family: var(--font-serif);
-      font-size: 2.4rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 8px;
-    }
-
-    .header-area p {
-      color: var(--muted);
-      font-size: 13px;
-      letter-spacing: 0.05em;
-    }
-
-    /* Presets Bar */
-    .presets-container {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .preset-btn {
+    .currency-btn {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      color: var(--text);
-      padding: 8px 16px;
+      color: var(--muted);
+      padding: 6px 12px;
       font-family: var(--font-mono);
       font-size: 11px;
-      letter-spacing: 0.05em;
       cursor: pointer;
-      border-radius: 3px;
-      transition: all 0.2s ease;
+      border-radius: 2px;
+      transition: all 0.2s;
     }
 
-    .preset-btn:hover {
+    .currency-btn.active {
       border-color: var(--gold);
       color: var(--gold-bright);
+      background: var(--gold-dim);
     }
 
-    /* Grid Layout */
-    .decision-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
       gap: 24px;
     }
 
-    @media (max-width: 800px) {
-      .decision-grid {
+    /* Stats Ribbon */
+    .stats-ribbon {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      margin-top: 4px;
+      color: var(--muted);
+    }
+
+    .progression-bar-container {
+      width: 100%;
+      height: 4px;
+      background: #1b2320;
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .progression-bar-fill {
+      height: 100%;
+      background: var(--gold);
+      width: 10%;
+      transition: width 0.3s ease;
+    }
+
+    /* Trading & Market Dashboard Grid */
+    .market-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .market-layout {
         grid-template-columns: 1fr;
       }
     }
 
-    .card {
+    .section-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 4px;
-      padding: 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
     }
 
-    .card-title {
+    .section-title {
       font-size: 12px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--gold);
       border-bottom: 1px solid var(--card-border);
       padding-bottom: 8px;
-    }
-
-    /* Form Controls */
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .input-label-row {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
-      color: var(--muted);
     }
 
-    .input-val {
-      color: #fff;
-      font-weight: 700;
-    }
-
-    input[type="range"] {
+    /* Assets Table */
+    .assets-table {
       width: 100%;
-      accent-color: var(--gold);
-      cursor: pointer;
-    }
-
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 4px;
+      border-collapse: collapse;
       font-size: 12px;
+    }
+
+    .assets-table th {
+      text-align: left;
       color: var(--muted);
-      cursor: pointer;
-    }
-
-    .toggle-row input {
-      accent-color: var(--gold);
-      cursor: pointer;
-    }
-
-    /* Engine Output */
-    .verdict-box {
-      border: 1px solid var(--card-border);
-      border-radius: 4px;
-      padding: 18px;
-      text-align: center;
-    }
-
-    .verdict-label {
+      font-weight: 400;
       font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .verdict-text {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
-    }
-
-    .verdict-sub {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .metrics-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      text-align: center;
-    }
-
-    .metric-item {
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid var(--card-border);
-      border-radius: 4px;
-      padding: 12px 6px;
-    }
-
-    .metric-value {
-      font-size: 16px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 2px;
-    }
-
-    .metric-label {
-      font-size: 9px;
-      color: var(--muted);
       letter-spacing: 0.1em;
       text-transform: uppercase;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--card-border);
     }
 
-    /* Reality Shock: Work Hours */
-    .shock-card {
-      background: var(--gold-dim);
-      border: 1px solid rgba(184, 150, 62, 0.3);
-      padding: 16px;
+    .assets-table td {
+      padding: 12px 8px;
+      border-bottom: 1px solid rgba(27, 35, 32, 0.4);
+    }
+
+    .asset-name {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .asset-tag {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      margin-left: 6px;
+    }
+
+    .locked-row {
+      opacity: 0.45;
+      filter: grayscale(1);
+    }
+
+    .action-btn {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 5px 10px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .action-btn.buy {
+      border-color: rgba(46, 204, 113, 0.4);
+      color: var(--success);
+    }
+
+    .action-btn.buy:hover {
+      background: var(--success);
+      color: #000;
+    }
+
+    .action-btn.sell {
+      border-color: rgba(231, 76, 60, 0.4);
+      color: var(--danger);
+    }
+
+    .action-btn.sell:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    /* Gamified Bounties & Badges */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .badge-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--card-border);
+      padding: 12px;
       border-radius: 4px;
-      font-size: 12px;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .shock-card span {
-      color: var(--gold-bright);
-      font-weight: 700;
-    }
-
-    /* Courses & Resources */
-    .edu-section {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .edu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
-
-    .course-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 16px;
-      border-radius: 4px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 12px;
-      transition: all 0.2s ease;
-    }
-
-    .course-card:hover {
+    .badge-card.unlocked {
       border-color: var(--gold);
+      background: var(--gold-dim);
     }
 
-    .course-badge {
-      display: inline-block;
-      align-self: flex-start;
-      font-size: 9px;
-      padding: 2px 6px;
-      border-radius: 2px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--gold);
-    }
-
-    .course-name {
-      font-size: 13px;
+    .badge-title {
+      font-size: 11px;
       font-weight: 700;
       color: #fff;
     }
 
-    .course-desc {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .course-link {
-      font-size: 11px;
-      color: var(--gold-bright);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-    }
-
-    /* Subscriptions Tier Grid */
-    .sub-section {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .sub-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    @media (max-width: 650px) {
-      .sub-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .sub-tier {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 24px;
-      border-radius: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      position: relative;
-    }
-
-    .sub-tier.featured {
-      border-color: var(--gold);
-      background: linear-gradient(180deg, #111614 0%, #171d1a 100%);
-    }
-
-    .tier-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .tier-title {
-      font-size: 14px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .tier-price {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--gold-bright);
-    }
-
-    .tier-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 11px;
+    .badge-desc {
+      font-size: 10px;
       color: var(--muted);
     }
 
-    .tier-features li {
+    /* Syndicate / Competitions */
+    .server-tabs {
       display: flex;
-      align-items: center;
       gap: 8px;
     }
 
-    .tier-features li::before {
-      content: "•";
-      color: var(--gold);
-    }
-
-    .sub-btn {
-      width: 100%;
-      padding: 10px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+    .tab-btn {
+      flex: 1;
       background: transparent;
       border: 1px solid var(--card-border);
       color: var(--muted);
+      padding: 6px;
+      font-family: var(--font-mono);
+      font-size: 10px;
       cursor: pointer;
-      border-radius: 2px;
-      transition: all 0.2s ease;
     }
 
-    .sub-btn.active {
-      background: var(--gold);
+    .tab-btn.active {
       border-color: var(--gold);
-      color: var(--bg);
-      font-weight: 700;
+      color: var(--gold-bright);
     }
 
-    .sub-btn.active:hover {
-      background: var(--gold-bright);
+    .leaderboard-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .leaderboard-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid var(--card-border);
+      background: rgba(0, 0, 0, 0.2);
+      font-size: 11px;
+    }
+
+    .leaderboard-rank {
+      color: var(--gold);
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    /* Modal for Certificate */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      z-index: 99999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .cert-frame {
+      background: #090c0b;
+      border: 2px solid var(--gold);
+      padding: 40px;
+      max-width: 650px;
+      width: 100%;
+      text-align: center;
+      border-radius: 6px;
+      box-shadow: 0 0 50px rgba(184, 150, 62, 0.2);
+      position: relative;
+    }
+
+    .cert-title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      color: var(--gold-bright);
+      margin-bottom: 8px;
+    }
+
+    .cert-sub {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .cert-body {
+      font-size: 13px;
+      line-height: 1.8;
+      color: #fff;
+      margin-bottom: 28px;
+    }
+
+    .cert-code {
+      display: inline-block;
+      border: 1px dashed var(--gold);
+      padding: 6px 16px;
+      color: var(--gold);
+      font-size: 11px;
+      margin-bottom: 24px;
+    }
+
+    .cert-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation -->
-  <nav class="top-nav">
+  <!-- Top Nav & Currency Selector -->
+  <header class="top-nav">
     <a href="index.html" class="brand">
       <span class="brand-dot"></span>
-      VELLORUM
+      VELLORUM // SIMULATOR
     </a>
-    <a href="index.html" class="nav-link">&larr; Main Site</a>
-  </nav>
+    <div class="currency-controls">
+      <button class="currency-btn active" onclick="setCurrency('USD')">USD ($)</button>
+      <button class="currency-btn" onclick="setCurrency('INR')">INR (₹)</button>
+      <button class="currency-btn" onclick="setCurrency('EUR')">EUR (€)</button>
+    </div>
+  </header>
 
   <div class="container">
 
-    <!-- Header Section -->
-    <div class="header-area">
-      <h1>Consumer Decision Lab</h1>
-      <p>Instant financial viability stress-testing for discretionary spending.</p>
-    </div>
-
-    <!-- Quick Presets -->
-    <div class="presets-container">
-      <button class="preset-btn" onclick="applyPreset(75000, 65000, 80000, 28000)">📱 Flagship Gadget</button>
-      <button class="preset-btn" onclick="applyPreset(25000, 45000, 40000, 20000)">🏖️ Weekend Trip</button>
-      <button class="preset-btn" onclick="applyPreset(15000, 20000, 120000, 22000)">🛑 3-Month Job Break</button>
-    </div>
-
-    <!-- Simulator Core -->
-    <div class="decision-grid">
-
-      <!-- Sliders / Inputs -->
-      <div class="card">
-        <div class="card-title">Liquidity Parameters</div>
-
-        <div class="input-group">
-          <div class="input-label-row">
-            <span>Purchase / Goal Cost</span>
-            <span id="costDisplay" class="input-val">₹45,000</span>
-          </div>
-          <input type="range" id="costInput" min="5000" max="250000" step="2500" value="45000" oninput="runSimulation()" />
+    <!-- Trader Stats Ribbon -->
+    <section class="stats-ribbon">
+      <div class="stat-card">
+        <div class="stat-label">Net Liquidity</div>
+        <div id="netWorthDisplay" class="stat-value">$100,000</div>
+        <div class="progression-bar-container">
+          <div id="goalProgressBar" class="progression-bar-fill"></div>
         </div>
-
-        <div class="input-group">
-          <div class="input-label-row">
-            <span>Current Bank Balance</span>
-            <span id="savingsDisplay" class="input-val">₹60,000</span>
-          </div>
-          <input type="range" id="savingsInput" min="5000" max="500000" step="5000" value="60000" oninput="runSimulation()" />
-        </div>
-
-        <div class="input-group">
-          <div class="input-label-row">
-            <span>Monthly In-Hand Salary</span>
-            <span id="salaryDisplay" class="input-val">₹50,000</span>
-          </div>
-          <input type="range" id="salaryInput" min="15000" max="300000" step="5000" value="50000" oninput="runSimulation()" />
-        </div>
-
-        <div class="input-group">
-          <div class="input-label-row">
-            <span>Fixed Monthly Living Costs</span>
-            <span id="fixedDisplay" class="input-val">₹25,000</span>
-          </div>
-          <input type="range" id="fixedInput" min="10000" max="150000" step="2500" value="25000" oninput="runSimulation()" />
-        </div>
-
-        <label class="toggle-row">
-          <input type="checkbox" id="emiToggle" onchange="runSimulation()" />
-          Split with 6-Month No-Cost EMI
-        </label>
+        <div class="stat-sub">Milestone Goal: <span id="targetDisplay">$1,000,000</span></div>
       </div>
 
-      <!-- Live Analysis Box -->
-      <div class="card">
-        <div class="card-title">Dynamic Assessment</div>
-
-        <div id="verdictContainer" class="verdict-box">
-          <div class="verdict-label">Projected Status</div>
-          <div id="verdictText" class="verdict-text">ANALYZING</div>
-          <div id="verdictSub" class="verdict-sub">Adjust parameters to compute.</div>
-        </div>
-
-        <div class="metrics-row">
-          <div class="metric-item">
-            <div id="safeScoreVal" class="metric-value">0%</div>
-            <div class="metric-label">Solvency Odds</div>
-          </div>
-          <div class="metric-item">
-            <div id="runwayVal" class="metric-value">0 mo</div>
-            <div class="metric-label">Post Runway</div>
-          </div>
-          <div class="metric-item">
-            <div id="floorVal" class="metric-value">₹0</div>
-            <div class="metric-label">Lowest Floor</div>
-          </div>
-        </div>
-
-        <div class="shock-card">
-          <div>Life-Hours Conversion:</div>
-          <div>This transaction requires <span id="hoursVal">0 hrs</span> (<span id="daysVal">0 work days</span>) of dedicated labor.</div>
-        </div>
+      <div class="stat-card">
+        <div class="stat-label">Unallocated Cash</div>
+        <div id="cashDisplay" class="stat-value">$100,000</div>
+        <div class="stat-sub">Available Purchasing Power</div>
       </div>
 
-    </div>
-
-    <!-- Educational Resource Hub -->
-    <div class="edu-section">
-      <div class="card-title">Curated Financial Intelligence</div>
-      <div class="edu-grid">
-        <div class="course-card">
-          <span class="course-badge">Free</span>
-          <div class="course-name">Zerodha Varsity</div>
-          <div class="course-desc">Foundational personal finance, cash allocation, and risk management strategies.</div>
-          <a href="https://zerodha.com/varsity/" target="_blank" rel="noopener" class="course-link">Access Varsity &rarr;</a>
-        </div>
-        <div class="course-card">
-          <span class="course-badge">Free / Audit</span>
-          <div class="course-name">Financial Markets (Yale)</div>
-          <div class="course-desc">Behavioral finance, risk management, and macro liquidity structures.</div>
-          <a href="https://www.coursera.org/learn/financial-markets-global" target="_blank" rel="noopener" class="course-link">View Module &rarr;</a>
-        </div>
-        <div class="course-card">
-          <span class="course-badge">Paid / Cert</span>
-          <div class="course-name">NISM Series V-A</div>
-          <div class="course-desc">Institutional asset allocation, debt instrument audits, and wealth advisory.</div>
-          <a href="https://www.nism.ac.in/" target="_blank" rel="noopener" class="course-link">Examine Path &rarr;</a>
-        </div>
-        <div class="course-card">
-          <span class="course-badge">Behavioral</span>
-          <div class="course-name">Duke Behavioral Finance</div>
-          <div class="course-desc">Psychological spending biases, delayed gratification, and choice architecture.</div>
-          <a href="https://www.coursera.org/learn/behavioral-finance" target="_blank" rel="noopener" class="course-link">Study Bias &rarr;</a>
-        </div>
+      <div class="stat-card">
+        <div class="stat-label">Clearance Tier</div>
+        <div id="tierDisplay" class="stat-value" style="color:var(--gold)">Level 1: Novice</div>
+        <div class="stat-sub"><span id="xpDisplay">0</span> XP Earned</div>
       </div>
-    </div>
 
-    <!-- Subscriptions Section -->
-    <div class="sub-section">
-      <div class="card-title">Vellorum Pass Memberships</div>
-      <div class="sub-grid">
-        
-        <div class="sub-tier">
-          <div class="tier-header">
-            <span class="tier-title">Tier I: Base</span>
-            <span class="tier-price">Free</span>
-          </div>
-          <ul class="tier-features">
-            <li>Standard Affordability Engine</li>
-            <li>90-Day Liquidity Projections</li>
-            <li>Life-Hours Calculation</li>
-            <li>Public Curated Course Directory</li>
-          </ul>
-          <button class="sub-btn" disabled>Active Plan</button>
-        </div>
-
-        <div class="sub-tier featured">
-          <div class="tier-header">
-            <span class="tier-title">Tier II: Black Pass</span>
-            <span class="tier-price">₹299 <span style="font-size:11px;color:var(--muted)">/mo</span></span>
-          </div>
-          <ul class="tier-features">
-            <li>Full 365-Day Annual Stress Horizon</li>
-            <li>10,000-Path Monte Carlo Engine</li>
-            <li>No-Cost EMI Surcharge & Fee Audit</li>
-            <li>High-Res Shareable Clearance Slip</li>
-            <li>Sabbatical & Career Pivot Mode</li>
-          </ul>
-          <button class="sub-btn active" onclick="alert('Vellorum Black Pass reservations open soon.')">Join Waitlist</button>
-        </div>
-
+      <div class="stat-card">
+        <div class="stat-label">Certification Status</div>
+        <div id="certStatus" class="stat-value" style="font-size:14px; margin-top:4px;">Locked (Reach $1M)</div>
+        <div class="stat-sub" id="certActionNotice">Progress: 10% to Accreditation</div>
       </div>
+    </section>
+
+    <!-- Main Workspace -->
+    <div class="market-layout">
+
+      <!-- Left Column: Asset Trading Floor -->
+      <main class="section-card">
+        <div class="section-title">
+          <span>Active Asset Order Deck</span>
+          <span style="font-size:10px; color:var(--muted)">Tick Engine: Online (3s)</span>
+        </div>
+
+        <table class="assets-table">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Tier</th>
+              <th>Live Price</th>
+              <th>24h Chg</th>
+              <th>Holdings</th>
+              <th>Order Actions</th>
+            </tr>
+          </thead>
+          <tbody id="assetsTableBody">
+            <!-- Dynamically populated via JS -->
+          </tbody>
+        </table>
+      </main>
+
+      <!-- Right Column: Syndicate Leaderboards & Achievement Badges -->
+      <aside style="display:flex; flex-direction:column; gap:24px;">
+
+        <!-- Competitions / Rooms -->
+        <div class="section-card">
+          <div class="section-title">
+            <span>Trading Syndicate</span>
+          </div>
+
+          <div class="server-tabs">
+            <button class="tab-btn active" id="publicTabBtn" onclick="switchServerTab('public')">Public Global</button>
+            <button class="tab-btn" id="privateTabBtn" onclick="switchServerTab('private')">Private Room</button>
+          </div>
+
+          <div id="serverContent">
+            <ul class="leaderboard-list" id="leaderboardList">
+              <li class="leaderboard-item">
+                <span><span class="leaderboard-rank">#1</span> K. Thorne</span>
+                <span style="color:var(--success)">$1,420,800 (+1,320%)</span>
+              </li>
+              <li class="leaderboard-item">
+                <span><span class="leaderboard-rank">#2</span> Cipher_Capital</span>
+                <span style="color:var(--success)">$985,000 (+885%)</span>
+              </li>
+              <li class="leaderboard-item" style="border-color:var(--gold)">
+                <span><span class="leaderboard-rank">#3</span> You (Current)</span>
+                <span id="userLeaderboardWorth" style="color:var(--gold)">$100,000 (0%)</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Bounties & Achievements -->
+        <div class="section-card">
+          <div class="section-title">
+            <span>Protocol Bounties</span>
+          </div>
+          <div class="badge-grid">
+            <div id="badgeFirstTrade" class="badge-card">
+              <div class="badge-title">First Blood</div>
+              <div class="badge-desc">Execute your initial market fill.</div>
+              <div style="font-size:9px; color:var(--gold); margin-top:4px;">+50 XP | +$500 Bonus</div>
+            </div>
+
+            <div id="badgeDiversify" class="badge-card">
+              <div class="badge-title">Asset Architect</div>
+              <div class="badge-desc">Hold 3 unique asset tiers simultaneously.</div>
+              <div style="font-size:9px; color:var(--gold); margin-top:4px;">+150 XP | +$2,000 Bonus</div>
+            </div>
+
+            <div id="badgeMillionaire" class="badge-card">
+              <div class="badge-title">Apex Allocator</div>
+              <div class="badge-desc">Attain $1M net liquid portfolio worth.</div>
+              <div style="font-size:9px; color:var(--gold); margin-top:4px;">Accreditation Pass</div>
+            </div>
+
+            <div id="badgeHighRoller" class="badge-card">
+              <div class="badge-title">Derivative Master</div>
+              <div class="badge-desc">Unlock and execute Level 4 asset orders.</div>
+              <div style="font-size:9px; color:var(--gold); margin-top:4px;">+300 XP</div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
     </div>
 
   </div>
 
+  <!-- Certificate Modal -->
+  <div id="certModal" class="modal">
+    <div class="cert-frame">
+      <div class="cert-title">Vellorum Certified Alpha Architect</div>
+      <div class="cert-sub">Institutional Quantitative Competence Certification</div>
+      <div class="cert-body">
+        This is to certify that the operative has demonstrated disciplined capital allocation, navigating simulated volatility, multi-tiered asset gates, and strict risk bounds to surpass <strong>$1,000,000 net portfolio liquidity</strong>.
+      </div>
+      <div class="cert-code" id="certCredentialId">CREDENTIAL ID: VEL-ALPHA-9281X</div>
+      <div class="cert-actions">
+        <button class="currency-btn active" onclick="shareToLinkedIn()">Post on LinkedIn</button>
+        <button class="currency-btn" onclick="closeCert()">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    function formatINR(val) {
-      return '₹' + Math.round(val).toLocaleString('en-IN');
+    // System Currencies & FX Base (USD = 1.0)
+    let currentCurrency = 'USD';
+    const fxRates = {
+      USD: { symbol: '$', rate: 1.0, target: 1000000, startCash: 100000 },
+      INR: { symbol: '₹', rate: 83.0, target: 83000000, startCash: 8300000 },
+      EUR: { symbol: '€', rate: 0.92, target: 920000, startCash: 92000 }
+    };
+
+    // Player State
+    let cashUSD = 100000;
+    let xp = 0;
+    let playerTier = 1;
+    let portfolio = {}; // { assetId: shares }
+    let hasCertified = false;
+
+    // Assets Catalog
+    const assets = [
+      { id: 'micro_nano', name: 'NanoFab Semiconductor', tag: 'Micro Cap', tier: 1, baseUSD: 14.50, priceUSD: 14.50, change: 0 },
+      { id: 'micro_bio', name: 'BioGenix Labs', tag: 'Penny Spec', tier: 1, baseUSD: 4.20, priceUSD: 4.20, change: 0 },
+      { id: 'mid_tech', name: 'Apex Intelligence Cloud', tag: 'Mid Tech', tier: 2, baseUSD: 85.00, priceUSD: 85.00, change: 0 },
+      { id: 'mid_ev', name: 'Volt Mobility Global', tag: 'Growth Mid', tier: 2, baseUSD: 120.00, priceUSD: 120.00, change: 0 },
+      { id: 'blue_titan', name: 'Titan Global Equities', tag: 'Tier-1 Blue Chip', tier: 3, baseUSD: 340.00, priceUSD: 340.00, change: 0 },
+      { id: 'gold_vault', name: 'Physical Gold Bullion Trust', tag: 'Commodity', tier: 3, baseUSD: 1950.00, priceUSD: 1950.00, change: 0 },
+      { id: 'btc_fund', name: 'Decentralized Alpha Index', tag: 'Derivatives / Crypto', tier: 4, baseUSD: 64000.00, priceUSD: 64000.00, change: 0 }
+    ];
+
+    function formatMoney(amountUSD) {
+      const config = fxRates[currentCurrency];
+      const converted = amountUSD * config.rate;
+      return config.symbol + Math.round(converted).toLocaleString();
     }
 
-    function applyPreset(cost, salary, savings, fixed) {
-      document.getElementById('costInput').value = cost;
-      document.getElementById('salaryInput').value = salary;
-      document.getElementById('savingsInput').value = savings;
-      document.getElementById('fixedInput').value = fixed;
-      document.getElementById('emiToggle').checked = false;
-      runSimulation();
+    function setCurrency(cur) {
+      currentCurrency = cur;
+      document.querySelectorAll('.currency-btn').forEach(b => {
+        b.classList.toggle('active', b.innerText.includes(cur));
+      });
+      renderDashboard();
     }
 
-    function runSimulation() {
-      const cost = parseFloat(document.getElementById('costInput').value);
-      const savings = parseFloat(document.getElementById('savingsInput').value);
-      const salary = parseFloat(document.getElementById('salaryInput').value);
-      const fixed = parseFloat(document.getElementById('fixedInput').value);
-      const isEMI = document.getElementById('emiToggle').checked;
+    function calculateNetWorthUSD() {
+      let total = cashUSD;
+      assets.forEach(a => {
+        const qty = portfolio[a.id] || 0;
+        total += qty * a.priceUSD;
+      });
+      return total;
+    }
 
-      // Update text displays
-      document.getElementById('costDisplay').textContent = formatINR(cost);
-      document.getElementById('savingsDisplay').textContent = formatINR(savings);
-      document.getElementById('salaryDisplay').textContent = formatINR(salary);
-      document.getElementById('fixedDisplay').textContent = formatINR(fixed);
+    function updateTierAndMilestones() {
+      const netWorth = calculateNetWorthUSD();
+      
+      // Tier unlock logic
+      if (netWorth >= 500000) playerTier = 4;
+      else if (netWorth >= 250000) playerTier = 3;
+      else if (netWorth >= 140000) playerTier = 2;
+      else playerTier = 1;
 
-      // Hourly work computation (160 work hrs/month)
-      const hourlyWage = salary / 160;
-      const hoursRequired = Math.round(cost / hourlyWage);
-      const daysRequired = (hoursRequired / 8).toFixed(1);
-      document.getElementById('hoursVal').textContent = hoursRequired + ' hrs';
-      document.getElementById('daysVal').textContent = daysRequired + ' work days';
+      // Tier title string
+      const tierTitles = {
+        1: 'Level 1: Novice',
+        2: 'Level 2: Growth Operator',
+        3: 'Level 3: Blue-Chip Partner',
+        4: 'Level 4: Apex Allocator'
+      };
+      document.getElementById('tierDisplay').innerText = tierTitles[playerTier];
 
-      // Simulation logic
-      let startingLiquidity = savings;
-      let monthlyEmiExpense = 0;
+      // Accreditation Gate at $1M
+      const targetUSD = 1000000;
+      const progressPct = Math.min(100, Math.max(5, (netWorth / targetUSD) * 100));
+      document.getElementById('goalProgressBar').style.width = progressPct + '%';
 
-      if (isEMI) {
-        monthlyEmiExpense = cost / 6;
-      } else {
-        startingLiquidity -= cost;
-      }
-
-      const totalMonthlyExpenses = fixed + monthlyEmiExpense;
-      const monthlyNetCashFlow = salary - totalMonthlyExpenses;
-
-      // Project lowest balance over 90 days (Month 1, 2, and 3)
-      const balM1 = startingLiquidity + monthlyNetCashFlow;
-      const balM2 = balM1 + monthlyNetCashFlow;
-      const balM3 = balM2 + monthlyNetCashFlow;
-      const lowestBalance = Math.min(startingLiquidity, balM1, balM2, balM3);
-
-      // Runway post-purchase
-      const runwayMonths = (startingLiquidity > 0 && totalMonthlyExpenses > 0) 
-        ? (startingLiquidity / totalMonthlyExpenses).toFixed(1) 
-        : '0.0';
-
-      // Solvency odds calculation
-      let score = 100;
-      if (lowestBalance < 0) score -= 65;
-      else if (lowestBalance < fixed) score -= 35;
-      if (runwayMonths < 1.0) score -= 25;
-      else if (runwayMonths < 3.0) score -= 10;
-      score = Math.max(5, Math.min(99, score));
-
-      // Update indicators
-      document.getElementById('safeScoreVal').textContent = score + '%';
-      document.getElementById('runwayVal').textContent = runwayMonths + ' mo';
-      document.getElementById('floorVal').textContent = formatINR(lowestBalance);
-
-      const verdictContainer = document.getElementById('verdictContainer');
-      const verdictText = document.getElementById('verdictText');
-      const verdictSub = document.getElementById('verdictSub');
-
-      if (score >= 80) {
-        verdictText.textContent = "SAFE TO PROCEED";
-        verdictText.style.color = "var(--success)";
-        verdictSub.textContent = "High solvency cushion. Emergency buffer remains intact over 90 days.";
-        verdictContainer.style.borderColor = "var(--success)";
-      } else if (score >= 50) {
-        verdictText.textContent = "CAUTION // TIGHT BUFFER";
-        verdictText.style.color = "var(--warning)";
-        verdictSub.textContent = "Viable only with strict spending discipline. Runway falls below standard safety levels.";
-        verdictContainer.style.borderColor = "var(--warning)";
-      } else {
-        verdictText.textContent = "HIGH RISK OF DEBT";
-        verdictText.style.color = "var(--danger)";
-        verdictSub.textContent = "Adverse liquidity scenario. A single shock expense could cause debt accumulation.";
-        verdictContainer.style.borderColor = "var(--danger)";
+      if (netWorth >= targetUSD && !hasCertified) {
+        hasCertified = true;
+        document.getElementById('certStatus').innerHTML = '<span style="color:var(--gold); cursor:pointer; text-decoration:underline;" onclick="openCert()">VIEW ACCREDITATION</span>';
+        document.getElementById('certActionNotice').innerText = 'Eligible for LinkedIn Certification';
+        document.getElementById('badgeMillionaire').classList.add('unlocked');
+        openCert();
       }
     }
 
-    // Initialize on load
-    runSimulation();
+    function renderDashboard() {
+      const netWorth = calculateNetWorthUSD();
+      document.getElementById('netWorthDisplay').innerText = formatMoney(netWorth);
+      document.getElementById('cashDisplay').innerText = formatMoney(cashUSD);
+      document.getElementById('targetDisplay').innerText = formatMoney(1000000);
+      document.getElementById('xpDisplay').innerText = xp;
+      document.getElementById('userLeaderboardWorth').innerText = `${formatMoney(netWorth)} (${(((netWorth - 100000)/100000)*100).toFixed(1)}%)`;
+
+      // Render Asset Table
+      const tbody = document.getElementById('assetsTableBody');
+      tbody.innerHTML = '';
+
+      assets.forEach(a => {
+        const isLocked = a.tier > playerTier;
+        const currentQty = portfolio[a.id] || 0;
+        const row = document.createElement('tr');
+        if (isLocked) row.className = 'locked-row';
+
+        const changeSign = a.change >= 0 ? '+' : '';
+        const changeColor = a.change >= 0 ? 'var(--success)' : 'var(--danger)';
+
+        row.innerHTML = `
+          <td>
+            <span class="asset-name">${a.name}</span>
+            <span class="asset-tag">${a.tag}</span>
+          </td>
+          <td style="color:var(--muted)">Tier ${a.tier}</td>
+          <td style="font-weight:700">${formatMoney(a.priceUSD)}</td>
+          <td style="color:${changeColor}">${changeSign}${a.change.toFixed(2)}%</td>
+          <td style="font-weight:700">${currentQty}</td>
+          <td>
+            ${isLocked 
+              ? `<span style="font-size:10px; color:var(--muted)">Locked (Requires Tier ${a.tier})</span>`
+              : `<button class="action-btn buy" onclick="buyAsset('${a.id}')">Buy</button>
+                 <button class="action-btn sell" onclick="sellAsset('${a.id}')">Sell</button>`
+            }
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      updateTierAndMilestones();
+    }
+
+    function buyAsset(assetId) {
+      const asset = assets.find(a => a.id === assetId);
+      if (!asset) return;
+
+      if (cashUSD >= asset.priceUSD) {
+        cashUSD -= asset.priceUSD;
+        portfolio[asset.id] = (portfolio[asset.id] || 0) + 1;
+        xp += 20;
+
+        // Badge check: first order
+        document.getElementById('badgeFirstTrade').classList.add('unlocked');
+
+        // Badge check: 3 asset classes
+        const heldCount = Object.keys(portfolio).filter(k => portfolio[k] > 0).length;
+        if (heldCount >= 3) {
+          document.getElementById('badgeDiversify').classList.add('unlocked');
+        }
+
+        renderDashboard();
+      } else {
+        alert('Insufficient liquidity to execute market fill.');
+      }
+    }
+
+    function sellAsset(assetId) {
+      const asset = assets.find(a => a.id === assetId);
+      if (!asset) return;
+
+      if ((portfolio[asset.id] || 0) > 0) {
+        portfolio[asset.id] -= 1;
+        cashUSD += asset.priceUSD;
+        xp += 15;
+        renderDashboard();
+      }
+    }
+
+    // Dynamic Price Fluctuation Tick (Simulated Market Depth)
+    setInterval(() => {
+      assets.forEach(a => {
+        const volatility = a.tier === 1 ? 0.05 : (a.tier === 4 ? 0.06 : 0.02);
+        const shift = (Math.random() * (volatility * 2)) - volatility;
+        a.priceUSD = Math.max(0.5, a.priceUSD * (1 + shift));
+        a.change = shift * 100;
+      });
+      renderDashboard();
+    }, 3000);
+
+    // Certificate Handlers
+    function openCert() {
+      document.getElementById('certModal').classList.add('active');
+    }
+
+    function closeCert() {
+      document.getElementById('certModal').classList.remove('active');
+    }
+
+    function shareToLinkedIn() {
+      const text = encodeURIComponent("I just crossed $1,000,000 in simulated net worth and unlocked the Certified Alpha Architect credential on the Vellorum Decision Architecture OS.");
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${text}`, '_blank');
+    }
+
+    function switchServerTab(tab) {
+      document.getElementById('publicTabBtn').classList.toggle('active', tab === 'public');
+      document.getElementById('privateTabBtn').classList.toggle('active', tab === 'private');
+
+      const serverList = document.getElementById('leaderboardList');
+      if (tab === 'private') {
+        serverList.innerHTML = `
+          <div style="padding:10px; font-size:11px; color:var(--muted); text-align:center;">
+            Private Syndicate Lobby #ALPHA-CORP<br/>
+            <span style="color:var(--gold)">Room Status: Active (4 Members)</span>
+          </div>
+          <li class="leaderboard-item"><span><span class="leaderboard-rank">#1</span> You (Current)</span><span style="color:var(--gold)">$100,000</span></li>
+          <li class="leaderboard-item"><span><span class="leaderboard-rank">#2</span> Marco_V</span><span>$94,200</span></li>
+          <li class="leaderboard-item"><span><span class="leaderboard-rank">#3</span> DevSec_Trader</span><span>$88,100</span></li>
+        `;
+      } else {
+        renderDashboard();
+      }
+    }
+
+    // Initial Engine Bootstrap
+    renderDashboard();
   </script>
 </body>
 </html>
