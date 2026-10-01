@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vellorum // Global Market Simulator</title>
+  <title>Vellorum // Decision OS & Market Terminal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -15,16 +15,25 @@
     }
 
     :root {
-      --bg: #090c0b;
-      --card-bg: #111614;
-      --card-border: #1b2320;
+      /* Vellorum Obsidian Luxury Theme */
+      --bg: #080b0a;
+      --card-bg: #0f1412;
+      --card-border: #1a221e;
       --gold: #b8963e;
       --gold-bright: #dcb368;
       --gold-dim: rgba(184, 150, 62, 0.12);
-      --text: #e6eae7;
-      --muted: #728078;
-      --danger: #e74c3c;
-      --success: #2ecc71;
+      --text: #e1e7e4;
+      --muted: #6b7a73;
+      
+      /* Real Market / Bloomberg / Terminal Theme */
+      --terminal-bg: #06090e;
+      --terminal-card: #0b1118;
+      --terminal-border: #141f2d;
+      --neon-cyan: #00f2fe;
+      --neon-green: #00ff88;
+      --neon-red: #ff3366;
+      --terminal-gold: #ffb703;
+      
       --font-mono: 'JetBrains Mono', monospace;
       --font-serif: 'Playfair Display', serif;
     }
@@ -41,9 +50,10 @@
       line-height: 1.5;
     }
 
+    /* Top Navigation */
     .top-nav {
       width: 100%;
-      max-width: 1200px;
+      max-width: 1100px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -70,324 +80,714 @@
       background: var(--gold);
     }
 
-    .currency-controls {
+    /* Primary Mode Switcher Tab */
+    .view-switcher {
       display: flex;
-      gap: 8px;
-      align-items: center;
+      gap: 6px;
+      background: #0d1210;
+      border: 1px solid var(--card-border);
+      padding: 4px;
+      border-radius: 4px;
     }
 
-    .currency-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+    .switch-tab {
+      background: transparent;
+      border: none;
       color: var(--muted);
-      padding: 6px 12px;
       font-family: var(--font-mono);
       font-size: 11px;
+      letter-spacing: 0.08em;
+      padding: 6px 14px;
       cursor: pointer;
       border-radius: 2px;
-      transition: all 0.2s;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: all 0.2s ease;
     }
 
-    .currency-btn.active {
-      border-color: var(--gold);
-      color: var(--gold-bright);
-      background: var(--gold-dim);
+    .switch-tab.active {
+      background: var(--gold);
+      color: #000;
+    }
+
+    .switch-tab.terminal-tab.active {
+      background: var(--neon-cyan);
+      color: #000;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
     }
 
     .container {
       width: 100%;
-      max-width: 1200px;
+      max-width: 1100px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 32px;
     }
 
-    /* Stats Ribbon */
-    .stats-ribbon {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
+    .view-panel {
+      display: none;
+      flex-direction: column;
+      gap: 28px;
     }
 
-    .stat-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 16px;
-      border-radius: 4px;
-      position: relative;
+    .view-panel.active {
+      display: flex;
     }
 
-    .stat-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      margin-bottom: 4px;
+    /* ─── CONSUMER DECISION LAB STYLES ─── */
+    .header-area {
+      text-align: center;
     }
 
-    .stat-value {
-      font-size: 20px;
+    .header-area h1 {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
       font-weight: 700;
       color: #fff;
+      margin-bottom: 6px;
     }
 
-    .stat-sub {
-      font-size: 11px;
-      margin-top: 4px;
+    .header-area p {
       color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.05em;
     }
 
-    .progression-bar-container {
-      width: 100%;
-      height: 4px;
-      background: #1b2320;
-      border-radius: 2px;
-      margin-top: 8px;
-      overflow: hidden;
+    .presets-container {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
-    .progression-bar-fill {
-      height: 100%;
-      background: var(--gold);
-      width: 10%;
-      transition: width 0.3s ease;
+    .preset-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 8px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.2s;
     }
 
-    /* Trading & Market Dashboard Grid */
-    .market-layout {
+    .preset-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold-bright);
+    }
+
+    .decision-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 24px;
     }
 
-    @media (max-width: 900px) {
-      .market-layout {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 800px) {
+      .decision-grid { grid-template-columns: 1fr; }
     }
 
-    .section-card {
+    .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 4px;
-      padding: 20px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
     }
 
-    .section-title {
+    .card-title {
       font-size: 12px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--gold);
       border-bottom: 1px solid var(--card-border);
       padding-bottom: 8px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-label-row {
       display: flex;
       justify-content: space-between;
-    }
-
-    /* Assets Table */
-    .assets-table {
-      width: 100%;
-      border-collapse: collapse;
       font-size: 12px;
-    }
-
-    .assets-table th {
-      text-align: left;
       color: var(--muted);
-      font-weight: 400;
+    }
+
+    .input-val {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .toggle-row input {
+      accent-color: var(--gold);
+    }
+
+    .verdict-box {
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .verdict-label {
       font-size: 10px;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      padding: 10px 8px;
-      border-bottom: 1px solid var(--card-border);
+      color: var(--muted);
+      margin-bottom: 4px;
     }
 
-    .assets-table td {
-      padding: 12px 8px;
-      border-bottom: 1px solid rgba(27, 35, 32, 0.4);
+    .verdict-text {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
     }
 
-    .asset-name {
+    .verdict-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+
+    .metric-item {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 10px 4px;
+    }
+
+    .metric-value {
+      font-size: 15px;
       font-weight: 700;
       color: #fff;
     }
 
-    .asset-tag {
+    .metric-label {
+      font-size: 9px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* 90-Day Trajectory Bar Graph */
+    .graph-card {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .graph-bars {
+      display: flex;
+      align-items: flex-end;
+      height: 100px;
+      gap: 14px;
+      padding-top: 10px;
+      border-bottom: 1px dashed var(--card-border);
+    }
+
+    .bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .bar-fill {
+      width: 100%;
+      background: var(--gold);
+      border-radius: 2px 2px 0 0;
+      transition: height 0.3s ease, background 0.3s ease;
+      min-height: 4px;
+    }
+
+    .bar-label {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .shock-card {
+      background: var(--gold-dim);
+      border: 1px solid rgba(184, 150, 62, 0.3);
+      padding: 14px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    .shock-card span {
+      color: var(--gold-bright);
+      font-weight: 700;
+    }
+
+    /* Course Grid */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .course-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .course-badge {
+      display: inline-block;
+      align-self: flex-start;
       font-size: 9px;
       padding: 2px 6px;
       border-radius: 2px;
       background: rgba(255, 255, 255, 0.05);
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .course-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .course-desc {
+      font-size: 11px;
       color: var(--muted);
-      margin-left: 6px;
     }
 
-    .locked-row {
-      opacity: 0.45;
-      filter: grayscale(1);
+    .course-link {
+      font-size: 11px;
+      color: var(--gold-bright);
+      text-decoration: none;
     }
 
-    .action-btn {
+    /* Subscription Tiers */
+    .sub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 650px) {
+      .sub-grid { grid-template-columns: 1fr; }
+    }
+
+    .sub-tier {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sub-tier.featured {
+      border-color: var(--gold);
+      background: linear-gradient(180deg, #111614 0%, #171d1a 100%);
+    }
+
+    .tier-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .tier-title {
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .tier-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold-bright);
+    }
+
+    .tier-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .tier-features li::before {
+      content: "• ";
+      color: var(--gold);
+    }
+
+    .sub-btn {
+      padding: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       background: transparent;
       border: 1px solid var(--card-border);
-      color: #fff;
-      padding: 5px 10px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .sub-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #000;
+      font-weight: 700;
+    }
+
+    /* ─── REAL MARKET GAMIFIED TERMINAL STYLES ─── */
+    .terminal-container {
+      background: var(--terminal-bg);
+      border: 1px solid var(--terminal-border);
+      border-radius: 6px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .terminal-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--terminal-border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .terminal-ticker {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      align-items: center;
+    }
+
+    .terminal-currency {
+      display: flex;
+      gap: 6px;
+    }
+
+    .cur-btn {
+      background: var(--terminal-card);
+      border: 1px solid var(--terminal-border);
+      color: var(--muted);
+      padding: 4px 10px;
       font-family: var(--font-mono);
       font-size: 10px;
       cursor: pointer;
       border-radius: 2px;
-      transition: all 0.2s;
     }
 
-    .action-btn.buy {
-      border-color: rgba(46, 204, 113, 0.4);
-      color: var(--success);
+    .cur-btn.active {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
     }
 
-    .action-btn.buy:hover {
-      background: var(--success);
-      color: #000;
+    /* Terminal HUD Stats */
+    .hud-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
     }
 
-    .action-btn.sell {
-      border-color: rgba(231, 76, 60, 0.4);
-      color: var(--danger);
+    .hud-card {
+      background: var(--terminal-card);
+      border: 1px solid var(--terminal-border);
+      border-radius: 4px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    .action-btn.sell:hover {
-      background: var(--danger);
+    .hud-label {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hud-value {
+      font-size: 18px;
+      font-weight: 800;
       color: #fff;
     }
 
-    /* Gamified Bounties & Badges */
-    .badge-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    .hud-progression {
+      width: 100%;
+      height: 4px;
+      background: #141f2d;
+      border-radius: 2px;
+      overflow: hidden;
     }
 
-    .badge-card {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--card-border);
-      padding: 12px;
+    .hud-progression-fill {
+      height: 100%;
+      background: var(--neon-cyan);
+      width: 10%;
+      transition: width 0.3s;
+      box-shadow: 0 0 8px var(--neon-cyan);
+    }
+
+    /* Terminal Split Floor */
+    .terminal-floor {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .terminal-floor { grid-template-columns: 1fr; }
+    }
+
+    .terminal-pane {
+      background: var(--terminal-card);
+      border: 1px solid var(--terminal-border);
       border-radius: 4px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .terminal-title {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--neon-cyan);
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--terminal-border);
+      padding-bottom: 8px;
+    }
+
+    .order-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+
+    .order-table th {
+      text-align: left;
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--terminal-border);
+    }
+
+    .order-table td {
+      padding: 10px 6px;
+      border-bottom: 1px solid rgba(20, 31, 45, 0.6);
+    }
+
+    .asset-tag-pill {
+      font-size: 8px;
+      padding: 2px 5px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    .locked-asset {
+      opacity: 0.35;
+      filter: grayscale(1);
+    }
+
+    .trade-btn {
+      padding: 4px 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 2px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+    }
+
+    .trade-btn.buy {
+      background: rgba(0, 255, 136, 0.15);
+      color: var(--neon-green);
+      border: 1px solid rgba(0, 255, 136, 0.4);
+    }
+
+    .trade-btn.buy:hover {
+      background: var(--neon-green);
+      color: #000;
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    }
+
+    .trade-btn.sell {
+      background: rgba(255, 51, 102, 0.15);
+      color: var(--neon-red);
+      border: 1px solid rgba(255, 51, 102, 0.4);
+    }
+
+    .trade-btn.sell:hover {
+      background: var(--neon-red);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+    }
+
+    /* Gamified Bounties / Achievements */
+    .bounty-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .bounty-box {
+      background: #06090e;
+      border: 1px solid var(--terminal-border);
+      border-radius: 3px;
+      padding: 10px;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .badge-card.unlocked {
-      border-color: var(--gold);
-      background: var(--gold-dim);
+    .bounty-box.cleared {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 242, 254, 0.05);
     }
 
-    .badge-title {
+    .bounty-name {
       font-size: 11px;
       font-weight: 700;
       color: #fff;
     }
 
-    .badge-desc {
-      font-size: 10px;
+    .bounty-sub {
+      font-size: 9px;
       color: var(--muted);
     }
 
     /* Syndicate / Competitions */
-    .server-tabs {
+    .room-tabs {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .tab-btn {
+    .room-btn {
       flex: 1;
-      background: transparent;
-      border: 1px solid var(--card-border);
-      color: var(--muted);
       padding: 6px;
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 9px;
+      border: 1px solid var(--terminal-border);
+      background: transparent;
+      color: var(--muted);
       cursor: pointer;
     }
 
-    .tab-btn.active {
-      border-color: var(--gold);
-      color: var(--gold-bright);
+    .room-btn.active {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
     }
 
-    .leaderboard-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      list-style: none;
-    }
-
-    .leaderboard-item {
+    .leader-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       padding: 8px;
-      border: 1px solid var(--card-border);
-      background: rgba(0, 0, 0, 0.2);
-      font-size: 11px;
+      background: #06090e;
+      border: 1px solid var(--terminal-border);
+      border-radius: 3px;
+      font-size: 10px;
+      margin-top: 6px;
     }
 
-    .leaderboard-rank {
-      color: var(--gold);
-      font-weight: 700;
-      margin-right: 8px;
-    }
-
-    /* Modal for Certificate */
+    /* Certificate Modal */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(8px);
       z-index: 99999;
       justify-content: center;
       align-items: center;
       padding: 20px;
     }
 
-    .modal.active {
-      display: flex;
-    }
+    .modal.active { display: flex; }
 
     .cert-frame {
-      background: #090c0b;
+      background: #080b0a;
       border: 2px solid var(--gold);
-      padding: 40px;
-      max-width: 650px;
+      padding: 36px;
+      max-width: 620px;
       width: 100%;
       text-align: center;
       border-radius: 6px;
-      box-shadow: 0 0 50px rgba(184, 150, 62, 0.2);
-      position: relative;
+      box-shadow: 0 0 60px rgba(184, 150, 62, 0.25);
     }
 
     .cert-title {
       font-family: var(--font-serif);
-      font-size: 26px;
+      font-size: 24px;
       color: var(--gold-bright);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .cert-sub {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .cert-body {
-      font-size: 13px;
+      font-size: 12px;
       line-height: 1.8;
       color: #fff;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .cert-code {
@@ -408,374 +808,655 @@
 </head>
 <body>
 
-  <!-- Top Nav & Currency Selector -->
+  <!-- Top Navigation & Global Switcher -->
   <header class="top-nav">
     <a href="index.html" class="brand">
       <span class="brand-dot"></span>
-      VELLORUM // SIMULATOR
+      VELLORUM
     </a>
-    <div class="currency-controls">
-      <button class="currency-btn active" onclick="setCurrency('USD')">USD ($)</button>
-      <button class="currency-btn" onclick="setCurrency('INR')">INR (₹)</button>
-      <button class="currency-btn" onclick="setCurrency('EUR')">EUR (€)</button>
+    
+    <div class="view-switcher">
+      <button class="switch-tab active" id="tabDecision" onclick="switchView('decision')">Decision Lab</button>
+      <button class="switch-tab terminal-tab" id="tabMarket" onclick="switchView('market')">Pro Market Terminal</button>
     </div>
+
+    <a href="index.html" style="color:var(--muted); text-decoration:none; font-size:11px; text-transform:uppercase;">&larr; Return</a>
   </header>
 
   <div class="container">
 
-    <!-- Trader Stats Ribbon -->
-    <section class="stats-ribbon">
-      <div class="stat-card">
-        <div class="stat-label">Net Liquidity</div>
-        <div id="netWorthDisplay" class="stat-value">$100,000</div>
-        <div class="progression-bar-container">
-          <div id="goalProgressBar" class="progression-bar-fill"></div>
-        </div>
-        <div class="stat-sub">Milestone Goal: <span id="targetDisplay">$1,000,000</span></div>
+    <!-- ═══════════════ VIEW 1: CONSUMER DECISION LAB ═══════════════ -->
+    <div id="decisionView" class="view-panel active">
+      
+      <div class="header-area">
+        <h1>Consumer Decision Lab</h1>
+        <p>Stress-test large personal purchases against cash flow, buffer limits, and debt traps.</p>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-label">Unallocated Cash</div>
-        <div id="cashDisplay" class="stat-value">$100,000</div>
-        <div class="stat-sub">Available Purchasing Power</div>
+      <div class="presets-container">
+        <button class="preset-btn" onclick="applyPreset(75000, 65000, 80000, 28000)">📱 Flagship Gadget</button>
+        <button class="preset-btn" onclick="applyPreset(25000, 45000, 40000, 20000)">🏖️ Weekend Trip</button>
+        <button class="preset-btn" onclick="applyPreset(15000, 20000, 120000, 22000)">🛑 3-Month Job Break</button>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-label">Clearance Tier</div>
-        <div id="tierDisplay" class="stat-value" style="color:var(--gold)">Level 1: Novice</div>
-        <div class="stat-sub"><span id="xpDisplay">0</span> XP Earned</div>
-      </div>
+      <div class="decision-grid">
+        <!-- Sliders -->
+        <div class="card">
+          <div class="card-title">Liquidity Parameters</div>
 
-      <div class="stat-card">
-        <div class="stat-label">Certification Status</div>
-        <div id="certStatus" class="stat-value" style="font-size:14px; margin-top:4px;">Locked (Reach $1M)</div>
-        <div class="stat-sub" id="certActionNotice">Progress: 10% to Accreditation</div>
-      </div>
-    </section>
-
-    <!-- Main Workspace -->
-    <div class="market-layout">
-
-      <!-- Left Column: Asset Trading Floor -->
-      <main class="section-card">
-        <div class="section-title">
-          <span>Active Asset Order Deck</span>
-          <span style="font-size:10px; color:var(--muted)">Tick Engine: Online (3s)</span>
-        </div>
-
-        <table class="assets-table">
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>Tier</th>
-              <th>Live Price</th>
-              <th>24h Chg</th>
-              <th>Holdings</th>
-              <th>Order Actions</th>
-            </tr>
-          </thead>
-          <tbody id="assetsTableBody">
-            <!-- Dynamically populated via JS -->
-          </tbody>
-        </table>
-      </main>
-
-      <!-- Right Column: Syndicate Leaderboards & Achievement Badges -->
-      <aside style="display:flex; flex-direction:column; gap:24px;">
-
-        <!-- Competitions / Rooms -->
-        <div class="section-card">
-          <div class="section-title">
-            <span>Trading Syndicate</span>
+          <div class="input-group">
+            <div class="input-label-row">
+              <span>Purchase / Goal Cost</span>
+              <span id="costDisplay" class="input-val">₹45,000</span>
+            </div>
+            <input type="range" id="costInput" min="5000" max="250000" step="2500" value="45000" oninput="runSimulation()" />
           </div>
 
-          <div class="server-tabs">
-            <button class="tab-btn active" id="publicTabBtn" onclick="switchServerTab('public')">Public Global</button>
-            <button class="tab-btn" id="privateTabBtn" onclick="switchServerTab('private')">Private Room</button>
+          <div class="input-group">
+            <div class="input-label-row">
+              <span>Current Bank Balance</span>
+              <span id="savingsDisplay" class="input-val">₹60,000</span>
+            </div>
+            <input type="range" id="savingsInput" min="5000" max="500000" step="5000" value="60000" oninput="runSimulation()" />
           </div>
 
-          <div id="serverContent">
-            <ul class="leaderboard-list" id="leaderboardList">
-              <li class="leaderboard-item">
-                <span><span class="leaderboard-rank">#1</span> K. Thorne</span>
-                <span style="color:var(--success)">$1,420,800 (+1,320%)</span>
-              </li>
-              <li class="leaderboard-item">
-                <span><span class="leaderboard-rank">#2</span> Cipher_Capital</span>
-                <span style="color:var(--success)">$985,000 (+885%)</span>
-              </li>
-              <li class="leaderboard-item" style="border-color:var(--gold)">
-                <span><span class="leaderboard-rank">#3</span> You (Current)</span>
-                <span id="userLeaderboardWorth" style="color:var(--gold)">$100,000 (0%)</span>
-              </li>
+          <div class="input-group">
+            <div class="input-label-row">
+              <span>Monthly In-Hand Salary</span>
+              <span id="salaryDisplay" class="input-val">₹50,000</span>
+            </div>
+            <input type="range" id="salaryInput" min="15000" max="300000" step="5000" value="50000" oninput="runSimulation()" />
+          </div>
+
+          <div class="input-group">
+            <div class="input-label-row">
+              <span>Fixed Monthly Living Costs</span>
+              <span id="fixedDisplay" class="input-val">₹25,000</span>
+            </div>
+            <input type="range" id="fixedInput" min="10000" max="150000" step="2500" value="25000" oninput="runSimulation()" />
+          </div>
+
+          <label class="toggle-row">
+            <input type="checkbox" id="emiToggle" onchange="runSimulation()" />
+            Split with 6-Month No-Cost EMI (Diverts cash flow to ongoing debt)
+          </label>
+        </div>
+
+        <!-- Verdict & Trajectory Graph -->
+        <div class="card">
+          <div class="card-title">Dynamic Assessment</div>
+
+          <div id="verdictContainer" class="verdict-box">
+            <div class="verdict-label">Projected Solvency</div>
+            <div id="verdictText" class="verdict-text">ANALYZING</div>
+            <div id="verdictSub" class="verdict-sub">Computing runway...</div>
+          </div>
+
+          <div class="metrics-row">
+            <div class="metric-item">
+              <div id="safeScoreVal" class="metric-value">0%</div>
+              <div class="metric-label">Solvency Odds</div>
+            </div>
+            <div class="metric-item">
+              <div id="runwayVal" class="metric-value">0 mo</div>
+              <div class="metric-label">Post Runway</div>
+            </div>
+            <div class="metric-item">
+              <div id="floorVal" class="metric-value">₹0</div>
+              <div class="metric-label">Lowest Floor</div>
+            </div>
+          </div>
+
+          <!-- 90-Day Trajectory Bar Graph -->
+          <div class="graph-card">
+            <div style="font-size:10px; color:var(--muted); text-transform:uppercase;">90-Day Projected Cash Balance:</div>
+            <div class="graph-bars">
+              <div class="bar-group">
+                <div id="barM0" class="bar-fill" style="height:60%;"></div>
+                <span class="bar-label">Day 1</span>
+              </div>
+              <div class="bar-group">
+                <div id="barM1" class="bar-fill" style="height:50%;"></div>
+                <span class="bar-label">Day 30</span>
+              </div>
+              <div class="bar-group">
+                <div id="barM2" class="bar-fill" style="height:70%;"></div>
+                <span class="bar-label">Day 60</span>
+              </div>
+              <div class="bar-group">
+                <div id="barM3" class="bar-fill" style="height:85%;"></div>
+                <span class="bar-label">Day 90</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="shock-card">
+            <div>Life-Hours Reality Check:</div>
+            <div>This purchase burns <span id="hoursVal">0 hrs</span> (<span id="daysVal">0 work days</span>) of your active time.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Curated Courses -->
+      <div>
+        <div class="card-title" style="margin-bottom:16px;">Curated Financial Intelligence & Certifications</div>
+        <div class="edu-grid">
+          <div class="course-card">
+            <span class="course-badge">Free</span>
+            <div class="course-name">Zerodha Varsity</div>
+            <div class="course-desc">Personal finance, cash allocation, debt avoidance, and market fundamentals.</div>
+            <a href="https://zerodha.com/varsity/" target="_blank" rel="noopener" class="course-link">Access Varsity &rarr;</a>
+          </div>
+          <div class="course-card">
+            <span class="course-badge">Free / Audit</span>
+            <div class="course-name">Financial Markets (Yale)</div>
+            <div class="course-desc">Macro markets, risk management structures, and behavioral economics.</div>
+            <a href="https://www.coursera.org/learn/financial-markets-global" target="_blank" rel="noopener" class="course-link">View Module &rarr;</a>
+          </div>
+          <div class="course-card">
+            <span class="course-badge">Paid / Cert</span>
+            <div class="course-name">NISM Series V-A</div>
+            <div class="course-desc">Regulatory mutual fund advisory, capital preservation, and institutional planning.</div>
+            <a href="https://www.nism.ac.in/" target="_blank" rel="noopener" class="course-link">Examine Path &rarr;</a>
+          </div>
+          <div class="course-card">
+            <span class="course-badge">Behavioral</span>
+            <div class="course-name">Duke Behavioral Finance</div>
+            <div class="course-desc">Cognitive spending biases, impulse control, and choice architecture.</div>
+            <a href="https://www.coursera.org/learn/behavioral-finance" target="_blank" rel="noopener" class="course-link">Study Bias &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subscriptions -->
+      <div>
+        <div class="card-title" style="margin-bottom:16px;">Vellorum Pass Memberships</div>
+        <div class="sub-grid">
+          <div class="sub-tier">
+            <div class="tier-header">
+              <span class="tier-title">Tier I: Base</span>
+              <span class="tier-price">Free</span>
+            </div>
+            <ul class="tier-features">
+              <li>Standard Affordability Engine</li>
+              <li>90-Day Liquidity Projections</li>
+              <li>Life-Hours Conversion</li>
+              <li>Curated Public Course Directory</li>
             </ul>
+            <button class="sub-btn" disabled>Active Plan</button>
+          </div>
+
+          <div class="sub-tier featured">
+            <div class="tier-header">
+              <span class="tier-title">Tier II: Black Pass</span>
+              <span class="tier-price">₹299 <span style="font-size:11px;color:var(--muted)">/mo</span></span>
+            </div>
+            <ul class="tier-features">
+              <li>365-Day Extended Horizon Model</li>
+              <li>10,000-Path Monte Carlo Engine</li>
+              <li>No-Cost EMI Trap & Surcharge Audit</li>
+              <li>Career Sabbatical Runway Mode</li>
+            </ul>
+            <button class="sub-btn active" onclick="alert('Black Pass reservations open shortly.')">Join Waitlist</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════ VIEW 2: GAMIFIED REAL MARKET TERMINAL ═══════════════ -->
+    <div id="marketView" class="view-panel">
+      
+      <div class="terminal-container">
+        
+        <!-- Live Market Header / Ticker -->
+        <div class="terminal-bar">
+          <div class="terminal-ticker">
+            <span style="color:var(--neon-cyan); font-weight:700;">● VELLORUM PRO DESK</span>
+            <span style="color:var(--muted)">FEED: LIVE</span>
+            <span id="marketSessionTime" style="color:var(--terminal-gold)">SESSION: NYC/MUMBAI</span>
+          </div>
+
+          <!-- Currency Selector -->
+          <div class="terminal-currency">
+            <button class="cur-btn active" onclick="setCurrency('USD')">USD ($)</button>
+            <button class="cur-btn" onclick="setCurrency('INR')">INR (₹)</button>
+            <button class="cur-btn" onclick="setCurrency('EUR')">EUR (€)</button>
           </div>
         </div>
 
-        <!-- Bounties & Achievements -->
-        <div class="section-card">
-          <div class="section-title">
-            <span>Protocol Bounties</span>
+        <!-- HUD Stat Cards -->
+        <div class="hud-grid">
+          <div class="hud-card">
+            <span class="hud-label">Net Liquid Portfolio</span>
+            <div id="netWorthDisplay" class="hud-value">$100,000</div>
+            <div class="hud-progression">
+              <div id="goalProgressBar" class="hud-progression-fill"></div>
+            </div>
+            <span style="font-size:9px; color:var(--muted)">Target: <span id="targetDisplay" style="color:#fff">$1,000,000</span> for Accreditation</span>
           </div>
-          <div class="badge-grid">
-            <div id="badgeFirstTrade" class="badge-card">
-              <div class="badge-title">First Blood</div>
-              <div class="badge-desc">Execute your initial market fill.</div>
-              <div style="font-size:9px; color:var(--gold); margin-top:4px;">+50 XP | +$500 Bonus</div>
-            </div>
 
-            <div id="badgeDiversify" class="badge-card">
-              <div class="badge-title">Asset Architect</div>
-              <div class="badge-desc">Hold 3 unique asset tiers simultaneously.</div>
-              <div style="font-size:9px; color:var(--gold); margin-top:4px;">+150 XP | +$2,000 Bonus</div>
-            </div>
+          <div class="hud-card">
+            <span class="hud-label">Unallocated Cash</span>
+            <div id="cashDisplay" class="hud-value" style="color:var(--neon-green)">$100,000</div>
+            <span style="font-size:9px; color:var(--muted)">Available Buying Power</span>
+          </div>
 
-            <div id="badgeMillionaire" class="badge-card">
-              <div class="badge-title">Apex Allocator</div>
-              <div class="badge-desc">Attain $1M net liquid portfolio worth.</div>
-              <div style="font-size:9px; color:var(--gold); margin-top:4px;">Accreditation Pass</div>
-            </div>
+          <div class="hud-card">
+            <span class="hud-label">Operative Rank</span>
+            <div id="tierDisplay" class="hud-value" style="color:var(--neon-cyan)">Tier 1: Novice</div>
+            <span style="font-size:9px; color:var(--muted)"><span id="xpDisplay">0</span> XP Acquired</span>
+          </div>
 
-            <div id="badgeHighRoller" class="badge-card">
-              <div class="badge-title">Derivative Master</div>
-              <div class="badge-desc">Unlock and execute Level 4 asset orders.</div>
-              <div style="font-size:9px; color:var(--gold); margin-top:4px;">+300 XP</div>
-            </div>
+          <div class="hud-card">
+            <span class="hud-label">Vellorum Accreditation</span>
+            <div id="certStatus" class="hud-value" style="font-size:13px; margin-top:2px;">Locked ($1M Required)</div>
+            <span id="certNotice" style="font-size:9px; color:var(--muted)">10% Complete</span>
           </div>
         </div>
 
-      </aside>
+        <!-- Split Order Floor -->
+        <div class="terminal-floor">
+          
+          <!-- Market Watch & Trading Deck -->
+          <div class="terminal-pane">
+            <div class="terminal-title">
+              <span>Active Order Deck</span>
+              <span style="font-size:9px; color:var(--muted)">Tick Speed: 2.5s</span>
+            </div>
+
+            <table class="order-table">
+              <thead>
+                <tr>
+                  <th>Instrument</th>
+                  <th>Tier Req</th>
+                  <th>Live Ask</th>
+                  <th>Change</th>
+                  <th>Holdings</th>
+                  <th>Trade Order</th>
+                </tr>
+              </thead>
+              <tbody id="assetsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Right Column: Syndicate Rooms & Bounties -->
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            
+            <!-- Rooms / Leaderboard -->
+            <div class="terminal-pane">
+              <div class="terminal-title">
+                <span>Trading Syndicate</span>
+              </div>
+
+              <div class="room-tabs">
+                <button class="room-btn active" id="publicRoomBtn" onclick="toggleRoom('public')">Public Global</button>
+                <button class="room-btn" id="privateRoomBtn" onclick="toggleRoom('private')">Private Room</button>
+              </div>
+
+              <div id="leaderboardContainer">
+                <div class="leader-row">
+                  <span><strong style="color:var(--neon-cyan)">#1</strong> K. Thorne</span>
+                  <span style="color:var(--neon-green)">$1,450,200 (+1,350%)</span>
+                </div>
+                <div class="leader-row">
+                  <span><strong style="color:var(--neon-cyan)">#2</strong> Cipher_Capital</span>
+                  <span style="color:var(--neon-green)">$980,400 (+880%)</span>
+                </div>
+                <div class="leader-row" style="border-color:var(--neon-cyan)">
+                  <span><strong style="color:var(--neon-cyan)">#3</strong> You (Operative)</span>
+                  <span id="userLeaderboardWorth" style="color:var(--neon-cyan)">$100,000 (0%)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bounties & Achievements -->
+            <div class="terminal-pane">
+              <div class="terminal-title">
+                <span>Micro Bounties</span>
+              </div>
+              <div class="bounty-list">
+                <div id="badgeFirst" class="bounty-box">
+                  <span class="bounty-name">First Fill</span>
+                  <span class="bounty-sub">Execute 1 order</span>
+                  <span style="font-size:8px; color:var(--neon-green); margin-top:2px;">+$500 Bonus</span>
+                </div>
+                <div id="badgeDiversify" class="bounty-box">
+                  <span class="bounty-name">Multi-Asset</span>
+                  <span class="bounty-sub">Hold 3 tiers</span>
+                  <span style="font-size:8px; color:var(--neon-green); margin-top:2px;">+$2,000 Bonus</span>
+                </div>
+                <div id="badgeApex" class="bounty-box">
+                  <span class="bounty-name">Apex Trader</span>
+                  <span class="bounty-sub">Cross $1M mark</span>
+                  <span style="font-size:8px; color:var(--neon-cyan); margin-top:2px;">LinkedIn Pass</span>
+                </div>
+                <div id="badgeLeverage" class="bounty-box">
+                  <span class="bounty-name">Risk Architect</span>
+                  <span class="bounty-sub">Trade Tier 4</span>
+                  <span style="font-size:8px; color:var(--neon-cyan); margin-top:2px;">+300 XP</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
 
   </div>
 
-  <!-- Certificate Modal -->
+  <!-- LinkedIn Accreditation Modal -->
   <div id="certModal" class="modal">
     <div class="cert-frame">
       <div class="cert-title">Vellorum Certified Alpha Architect</div>
-      <div class="cert-sub">Institutional Quantitative Competence Certification</div>
+      <div class="cert-sub">Institutional Quantitative Competence Verification</div>
       <div class="cert-body">
-        This is to certify that the operative has demonstrated disciplined capital allocation, navigating simulated volatility, multi-tiered asset gates, and strict risk bounds to surpass <strong>$1,000,000 net portfolio liquidity</strong>.
+        This certifies that the operative has demonstrated institutional risk discipline, survived simulated market volatility, and surpassed <strong>$1,000,000 net portfolio liquidity</strong> across progressive market gates.
       </div>
-      <div class="cert-code" id="certCredentialId">CREDENTIAL ID: VEL-ALPHA-9281X</div>
+      <div class="cert-code" id="certId">CREDENTIAL: VEL-ALPHA-8921-VERIFIED</div>
       <div class="cert-actions">
-        <button class="currency-btn active" onclick="shareToLinkedIn()">Post on LinkedIn</button>
-        <button class="currency-btn" onclick="closeCert()">Dismiss</button>
+        <button class="trade-btn buy" style="padding:8px 16px; font-size:11px;" onclick="shareLinkedIn()">Post Credential to LinkedIn</button>
+        <button class="trade-btn sell" style="padding:8px 16px; font-size:11px;" onclick="closeCert()">Dismiss</button>
       </div>
     </div>
   </div>
 
   <script>
-    // System Currencies & FX Base (USD = 1.0)
+    // ═══════════════ TOP SWITCHER ═══════════════
+    function switchView(mode) {
+      document.getElementById('decisionView').classList.toggle('active', mode === 'decision');
+      document.getElementById('marketView').classList.toggle('active', mode === 'market');
+      document.getElementById('tabDecision').classList.toggle('active', mode === 'decision');
+      document.getElementById('tabMarket').classList.toggle('active', mode === 'market');
+    }
+
+    // ═══════════════ CONSUMER LAB ENGINE ═══════════════
+    function formatINR(val) {
+      return '₹' + Math.round(val).toLocaleString('en-IN');
+    }
+
+    function applyPreset(cost, salary, savings, fixed) {
+      document.getElementById('costInput').value = cost;
+      document.getElementById('salaryInput').value = salary;
+      document.getElementById('savingsInput').value = savings;
+      document.getElementById('fixedInput').value = fixed;
+      document.getElementById('emiToggle').checked = false;
+      runSimulation();
+    }
+
+    function runSimulation() {
+      const cost = parseFloat(document.getElementById('costInput').value);
+      const savings = parseFloat(document.getElementById('savingsInput').value);
+      const salary = parseFloat(document.getElementById('salaryInput').value);
+      const fixed = parseFloat(document.getElementById('fixedInput').value);
+      const isEMI = document.getElementById('emiToggle').checked;
+
+      document.getElementById('costDisplay').textContent = formatINR(cost);
+      document.getElementById('savingsDisplay').textContent = formatINR(savings);
+      document.getElementById('salaryDisplay').textContent = formatINR(salary);
+      document.getElementById('fixedDisplay').textContent = formatINR(fixed);
+
+      // Hourly work calculation (160 hrs/mo)
+      const hourlyWage = salary / 160;
+      const hoursRequired = Math.round(cost / hourlyWage);
+      document.getElementById('hoursVal').textContent = hoursRequired + ' hrs';
+      document.getElementById('daysVal').textContent = (hoursRequired / 8).toFixed(1) + ' work days';
+
+      let startBal = savings;
+      let emiPerMonth = 0;
+      if (isEMI) {
+        emiPerMonth = cost / 6;
+      } else {
+        startBal -= cost;
+      }
+
+      const totalMonthlyBurn = fixed + emiPerMonth;
+      const netPerMonth = salary - totalMonthlyBurn;
+
+      // Trajectory values
+      const b0 = Math.max(0, startBal);
+      const b1 = Math.max(0, b0 + netPerMonth);
+      const b2 = Math.max(0, b1 + netPerMonth);
+      const b3 = Math.max(0, b2 + netPerMonth);
+      const lowestBalance = Math.min(b0, b1, b2, b3);
+
+      // Bar heights relative to highest peak
+      const peak = Math.max(b0, b1, b2, b3, 10000);
+      document.getElementById('barM0').style.height = `${Math.max(5, (b0 / peak) * 100)}%`;
+      document.getElementById('barM1').style.height = `${Math.max(5, (b1 / peak) * 100)}%`;
+      document.getElementById('barM2').style.height = `${Math.max(5, (b2 / peak) * 100)}%`;
+      document.getElementById('barM3').style.height = `${Math.max(5, (b3 / peak) * 100)}%`;
+
+      const runway = (startBal > 0 && totalMonthlyBurn > 0) ? (startBal / totalMonthlyBurn).toFixed(1) : '0.0';
+
+      let score = 100;
+      if (lowestBalance < 0) score -= 65;
+      else if (lowestBalance < fixed) score -= 35;
+      if (runway < 1.0) score -= 25;
+      else if (runway < 3.0) score -= 10;
+      score = Math.max(5, Math.min(99, score));
+
+      document.getElementById('safeScoreVal').textContent = score + '%';
+      document.getElementById('runwayVal').textContent = runway + ' mo';
+      document.getElementById('floorVal').textContent = formatINR(lowestBalance);
+
+      const vBox = document.getElementById('verdictContainer');
+      const vText = document.getElementById('verdictText');
+      const vSub = document.getElementById('verdictSub');
+
+      if (score >= 80) {
+        vText.textContent = "SAFE TO PURCHASE";
+        vText.style.color = "var(--neon-green)";
+        vSub.textContent = "Emergency buffer remains fully intact across 90 days.";
+        vBox.style.borderColor = "var(--neon-green)";
+      } else if (score >= 50) {
+        vText.textContent = "CAUTION // TIGHT BUFFER";
+        vText.style.color = "var(--terminal-gold)";
+        vSub.textContent = "Runway drops under 1.5 months. Strict spending discipline required.";
+        vBox.style.borderColor = "var(--terminal-gold)";
+      } else {
+        vText.textContent = "HIGH RISK OF DEBT";
+        vText.style.color = "var(--neon-red)";
+        vSub.textContent = "Any unexpected medical or repair bill triggers revolving debt.";
+        vBox.style.borderColor = "var(--neon-red)";
+      }
+    }
+
+    // ═══════════════ PRO MARKET TERMINAL ENGINE ═══════════════
     let currentCurrency = 'USD';
     const fxRates = {
-      USD: { symbol: '$', rate: 1.0, target: 1000000, startCash: 100000 },
-      INR: { symbol: '₹', rate: 83.0, target: 83000000, startCash: 8300000 },
-      EUR: { symbol: '€', rate: 0.92, target: 920000, startCash: 92000 }
+      USD: { symbol: '$', rate: 1.0, target: 1000000 },
+      INR: { symbol: '₹', rate: 83.0, target: 83000000 },
+      EUR: { symbol: '€', rate: 0.92, target: 920000 }
     };
 
-    // Player State
     let cashUSD = 100000;
     let xp = 0;
     let playerTier = 1;
-    let portfolio = {}; // { assetId: shares }
+    let portfolio = {};
     let hasCertified = false;
 
-    // Assets Catalog
     const assets = [
-      { id: 'micro_nano', name: 'NanoFab Semiconductor', tag: 'Micro Cap', tier: 1, baseUSD: 14.50, priceUSD: 14.50, change: 0 },
-      { id: 'micro_bio', name: 'BioGenix Labs', tag: 'Penny Spec', tier: 1, baseUSD: 4.20, priceUSD: 4.20, change: 0 },
-      { id: 'mid_tech', name: 'Apex Intelligence Cloud', tag: 'Mid Tech', tier: 2, baseUSD: 85.00, priceUSD: 85.00, change: 0 },
-      { id: 'mid_ev', name: 'Volt Mobility Global', tag: 'Growth Mid', tier: 2, baseUSD: 120.00, priceUSD: 120.00, change: 0 },
-      { id: 'blue_titan', name: 'Titan Global Equities', tag: 'Tier-1 Blue Chip', tier: 3, baseUSD: 340.00, priceUSD: 340.00, change: 0 },
-      { id: 'gold_vault', name: 'Physical Gold Bullion Trust', tag: 'Commodity', tier: 3, baseUSD: 1950.00, priceUSD: 1950.00, change: 0 },
-      { id: 'btc_fund', name: 'Decentralized Alpha Index', tag: 'Derivatives / Crypto', tier: 4, baseUSD: 64000.00, priceUSD: 64000.00, change: 0 }
+      { id: 'nano_spec', name: 'MicroNano Semi', tag: 'Micro Cap', tier: 1, priceUSD: 12.80, change: 0 },
+      { id: 'bio_gen', name: 'BioGenix Labs', tag: 'Penny Spec', tier: 1, priceUSD: 4.10, change: 0 },
+      { id: 'apex_ai', name: 'Apex AI Systems', tag: 'Mid Tech', tier: 2, priceUSD: 94.50, change: 0 },
+      { id: 'volt_ev', name: 'Volt Mobility Global', tag: 'Growth Mid', tier: 2, priceUSD: 142.00, change: 0 },
+      { id: 'titan_blue', name: 'Titan Global Trust', tag: 'Blue Chip', tier: 3, priceUSD: 380.00, change: 0 },
+      { id: 'gold_vault', name: 'Physical Gold Trust', tag: 'Commodity', tier: 3, priceUSD: 2050.00, change: 0 },
+      { id: 'alpha_btc', name: 'Alpha Crypto Index', tag: 'Derivatives', tier: 4, priceUSD: 66500.00, change: 0 }
     ];
 
     function formatMoney(amountUSD) {
-      const config = fxRates[currentCurrency];
-      const converted = amountUSD * config.rate;
-      return config.symbol + Math.round(converted).toLocaleString();
+      const cfg = fxRates[currentCurrency];
+      return cfg.symbol + Math.round(amountUSD * cfg.rate).toLocaleString();
     }
 
     function setCurrency(cur) {
       currentCurrency = cur;
-      document.querySelectorAll('.currency-btn').forEach(b => {
+      document.querySelectorAll('.cur-btn').forEach(b => {
         b.classList.toggle('active', b.innerText.includes(cur));
       });
-      renderDashboard();
+      renderTerminal();
     }
 
-    function calculateNetWorthUSD() {
+    function calculateNetWorth() {
       let total = cashUSD;
       assets.forEach(a => {
-        const qty = portfolio[a.id] || 0;
-        total += qty * a.priceUSD;
+        total += (portfolio[a.id] || 0) * a.priceUSD;
       });
       return total;
     }
 
-    function updateTierAndMilestones() {
-      const netWorth = calculateNetWorthUSD();
-      
-      // Tier unlock logic
+    function renderTerminal() {
+      const netWorth = calculateNetWorth();
+      document.getElementById('netWorthDisplay').innerText = formatMoney(netWorth);
+      document.getElementById('cashDisplay').innerText = formatMoney(cashUSD);
+      document.getElementById('targetDisplay').innerText = formatMoney(1000000);
+      document.getElementById('xpDisplay').innerText = xp;
+      document.getElementById('userLeaderboardWorth').innerText = `${formatMoney(netWorth)} (${(((netWorth - 100000) / 100000) * 100).toFixed(1)}%)`;
+
+      // Tier Calculation
       if (netWorth >= 500000) playerTier = 4;
       else if (netWorth >= 250000) playerTier = 3;
       else if (netWorth >= 140000) playerTier = 2;
       else playerTier = 1;
 
-      // Tier title string
-      const tierTitles = {
-        1: 'Level 1: Novice',
-        2: 'Level 2: Growth Operator',
-        3: 'Level 3: Blue-Chip Partner',
-        4: 'Level 4: Apex Allocator'
+      const titles = {
+        1: 'Tier 1: Novice',
+        2: 'Tier 2: Growth Operator',
+        3: 'Tier 3: Blue-Chip Partner',
+        4: 'Tier 4: Apex Allocator'
       };
-      document.getElementById('tierDisplay').innerText = tierTitles[playerTier];
+      document.getElementById('tierDisplay').innerText = titles[playerTier];
 
-      // Accreditation Gate at $1M
-      const targetUSD = 1000000;
-      const progressPct = Math.min(100, Math.max(5, (netWorth / targetUSD) * 100));
-      document.getElementById('goalProgressBar').style.width = progressPct + '%';
+      // Accreditation Gate
+      const progress = Math.min(100, Math.max(5, (netWorth / 1000000) * 100));
+      document.getElementById('goalProgressBar').style.width = progress + '%';
 
-      if (netWorth >= targetUSD && !hasCertified) {
+      if (netWorth >= 1000000 && !hasCertified) {
         hasCertified = true;
-        document.getElementById('certStatus').innerHTML = '<span style="color:var(--gold); cursor:pointer; text-decoration:underline;" onclick="openCert()">VIEW ACCREDITATION</span>';
-        document.getElementById('certActionNotice').innerText = 'Eligible for LinkedIn Certification';
-        document.getElementById('badgeMillionaire').classList.add('unlocked');
+        document.getElementById('certStatus').innerHTML = '<span style="color:var(--neon-cyan); cursor:pointer; text-decoration:underline;" onclick="openCert()">VIEW ACCREDITATION</span>';
+        document.getElementById('certNotice').innerText = 'Eligible for LinkedIn Export';
+        document.getElementById('badgeApex').classList.add('cleared');
         openCert();
       }
-    }
 
-    function renderDashboard() {
-      const netWorth = calculateNetWorthUSD();
-      document.getElementById('netWorthDisplay').innerText = formatMoney(netWorth);
-      document.getElementById('cashDisplay').innerText = formatMoney(cashUSD);
-      document.getElementById('targetDisplay').innerText = formatMoney(1000000);
-      document.getElementById('xpDisplay').innerText = xp;
-      document.getElementById('userLeaderboardWorth').innerText = `${formatMoney(netWorth)} (${(((netWorth - 100000)/100000)*100).toFixed(1)}%)`;
-
-      // Render Asset Table
+      // Render Order Table
       const tbody = document.getElementById('assetsTableBody');
       tbody.innerHTML = '';
 
       assets.forEach(a => {
         const isLocked = a.tier > playerTier;
         const currentQty = portfolio[a.id] || 0;
-        const row = document.createElement('tr');
-        if (isLocked) row.className = 'locked-row';
+        const tr = document.createElement('tr');
+        if (isLocked) tr.className = 'locked-asset';
 
-        const changeSign = a.change >= 0 ? '+' : '';
-        const changeColor = a.change >= 0 ? 'var(--success)' : 'var(--danger)';
+        const chgSign = a.change >= 0 ? '+' : '';
+        const chgColor = a.change >= 0 ? 'var(--neon-green)' : 'var(--neon-red)';
 
-        row.innerHTML = `
-          <td>
-            <span class="asset-name">${a.name}</span>
-            <span class="asset-tag">${a.tag}</span>
-          </td>
+        tr.innerHTML = `
+          <td><strong>${a.name}</strong> <span class="asset-tag-pill">${a.tag}</span></td>
           <td style="color:var(--muted)">Tier ${a.tier}</td>
           <td style="font-weight:700">${formatMoney(a.priceUSD)}</td>
-          <td style="color:${changeColor}">${changeSign}${a.change.toFixed(2)}%</td>
+          <td style="color:${chgColor}">${chgSign}${a.change.toFixed(2)}%</td>
           <td style="font-weight:700">${currentQty}</td>
           <td>
             ${isLocked 
-              ? `<span style="font-size:10px; color:var(--muted)">Locked (Requires Tier ${a.tier})</span>`
-              : `<button class="action-btn buy" onclick="buyAsset('${a.id}')">Buy</button>
-                 <button class="action-btn sell" onclick="sellAsset('${a.id}')">Sell</button>`
+              ? `<span style="font-size:9px; color:var(--muted)">Locked (Requires Tier ${a.tier})</span>`
+              : `<button class="trade-btn buy" onclick="tradeBuy('${a.id}')">Buy</button>
+                 <button class="trade-btn sell" onclick="tradeSell('${a.id}')">Sell</button>`
             }
           </td>
         `;
-        tbody.appendChild(row);
+        tbody.appendChild(tr);
       });
-
-      updateTierAndMilestones();
     }
 
-    function buyAsset(assetId) {
-      const asset = assets.find(a => a.id === assetId);
-      if (!asset) return;
+    function tradeBuy(id) {
+      const a = assets.find(x => x.id === id);
+      if (!a) return;
 
-      if (cashUSD >= asset.priceUSD) {
-        cashUSD -= asset.priceUSD;
-        portfolio[asset.id] = (portfolio[asset.id] || 0) + 1;
-        xp += 20;
+      if (cashUSD >= a.priceUSD) {
+        cashUSD -= a.priceUSD;
+        portfolio[a.id] = (portfolio[a.id] || 0) + 1;
+        xp += 25;
 
-        // Badge check: first order
-        document.getElementById('badgeFirstTrade').classList.add('unlocked');
-
-        // Badge check: 3 asset classes
-        const heldCount = Object.keys(portfolio).filter(k => portfolio[k] > 0).length;
-        if (heldCount >= 3) {
-          document.getElementById('badgeDiversify').classList.add('unlocked');
+        // Bounties
+        document.getElementById('badgeFirst').classList.add('cleared');
+        if (Object.keys(portfolio).filter(k => portfolio[k] > 0).length >= 3) {
+          document.getElementById('badgeDiversify').classList.add('cleared');
+        }
+        if (a.tier === 4) {
+          document.getElementById('badgeLeverage').classList.add('cleared');
         }
 
-        renderDashboard();
+        renderTerminal();
       } else {
-        alert('Insufficient liquidity to execute market fill.');
+        alert('Insufficient unallocated liquidity to execute buy order.');
       }
     }
 
-    function sellAsset(assetId) {
-      const asset = assets.find(a => a.id === assetId);
-      if (!asset) return;
+    function tradeSell(id) {
+      const a = assets.find(x => x.id === id);
+      if (!a) return;
 
-      if ((portfolio[asset.id] || 0) > 0) {
-        portfolio[asset.id] -= 1;
-        cashUSD += asset.priceUSD;
-        xp += 15;
-        renderDashboard();
+      if ((portfolio[a.id] || 0) > 0) {
+        portfolio[a.id] -= 1;
+        cashUSD += a.priceUSD;
+        xp += 20;
+        renderTerminal();
       }
     }
 
-    // Dynamic Price Fluctuation Tick (Simulated Market Depth)
+    // Live Tick Fluctuation Engine (Every 2.5s)
     setInterval(() => {
       assets.forEach(a => {
-        const volatility = a.tier === 1 ? 0.05 : (a.tier === 4 ? 0.06 : 0.02);
-        const shift = (Math.random() * (volatility * 2)) - volatility;
-        a.priceUSD = Math.max(0.5, a.priceUSD * (1 + shift));
-        a.change = shift * 100;
+        const volatility = a.tier === 1 ? 0.05 : (a.tier === 4 ? 0.07 : 0.02);
+        const delta = (Math.random() * (volatility * 2)) - volatility;
+        a.priceUSD = Math.max(1, a.priceUSD * (1 + delta));
+        a.change = delta * 100;
       });
-      renderDashboard();
-    }, 3000);
+      renderTerminal();
+    }, 2500);
 
-    // Certificate Handlers
-    function openCert() {
-      document.getElementById('certModal').classList.add('active');
+    // Certificate
+    function openCert() { document.getElementById('certModal').classList.add('active'); }
+    function closeCert() { document.getElementById('certModal').classList.remove('active'); }
+    function shareLinkedIn() {
+      const text = encodeURIComponent("I crossed $1,000,000 in simulated liquidity and earned the Vellorum Certified Alpha Architect credential.");
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}&summary=${text}`, '_blank');
     }
 
-    function closeCert() {
-      document.getElementById('certModal').classList.remove('active');
-    }
+    // Syndicate Switcher
+    function toggleRoom(type) {
+      document.getElementById('publicRoomBtn').classList.toggle('active', type === 'public');
+      document.getElementById('privateRoomBtn').classList.toggle('active', type === 'private');
+      const container = document.getElementById('leaderboardContainer');
 
-    function shareToLinkedIn() {
-      const text = encodeURIComponent("I just crossed $1,000,000 in simulated net worth and unlocked the Certified Alpha Architect credential on the Vellorum Decision Architecture OS.");
-      const url = encodeURIComponent(window.location.href);
-      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${text}`, '_blank');
-    }
-
-    function switchServerTab(tab) {
-      document.getElementById('publicTabBtn').classList.toggle('active', tab === 'public');
-      document.getElementById('privateTabBtn').classList.toggle('active', tab === 'private');
-
-      const serverList = document.getElementById('leaderboardList');
-      if (tab === 'private') {
-        serverList.innerHTML = `
-          <div style="padding:10px; font-size:11px; color:var(--muted); text-align:center;">
-            Private Syndicate Lobby #ALPHA-CORP<br/>
-            <span style="color:var(--gold)">Room Status: Active (4 Members)</span>
+      if (type === 'private') {
+        container.innerHTML = `
+          <div style="padding:6px; font-size:10px; color:var(--muted); text-align:center;">
+            Private Syndicate: #ALPHA-SYNDICATE<br/>
+            <span style="color:var(--neon-cyan)">3 Traders Connected</span>
           </div>
-          <li class="leaderboard-item"><span><span class="leaderboard-rank">#1</span> You (Current)</span><span style="color:var(--gold)">$100,000</span></li>
-          <li class="leaderboard-item"><span><span class="leaderboard-rank">#2</span> Marco_V</span><span>$94,200</span></li>
-          <li class="leaderboard-item"><span><span class="leaderboard-rank">#3</span> DevSec_Trader</span><span>$88,100</span></li>
+          <div class="leader-row"><span><strong style="color:var(--neon-cyan)">#1</strong> You (Operative)</span><span style="color:var(--neon-cyan)">$100,000</span></div>
+          <div class="leader-row"><span><strong style="color:var(--neon-cyan)">#2</strong> Marco_Apex</span><span>$92,400</span></div>
+          <div class="leader-row"><span><strong style="color:var(--neon-cyan)">#3</strong> Zero_Hedge</span><span>$84,100</span></div>
         `;
       } else {
-        renderDashboard();
+        renderTerminal();
       }
     }
 
-    // Initial Engine Bootstrap
-    renderDashboard();
+    // Initialize Both Engines
+    runSimulation();
+    renderTerminal();
   </script>
 </body>
 </html>
