@@ -1,761 +1,725 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VELLORUM // Consumer Decision Lab & Intelligence</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Newsreader:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vellorum // Consumer Decision Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet" />
   <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     :root {
-      --bg-dark: #090c0b;
-      --card-bg: #0c120f;
-      --card-inner: #0f1714;
-      --grid-line: rgba(255, 255, 255, 0.035);
-      --gold-primary: #b8963e;
+      --bg: #090c0b;
+      --card-bg: #111614;
+      --card-border: #1b2320;
+      --gold: #b8963e;
       --gold-bright: #dcb368;
-      --border-line: #1b2320;
-      --border-accent: rgba(220, 179, 104, 0.28);
+      --gold-dim: rgba(184, 150, 62, 0.15);
+      --text: #e6eae7;
+      --muted: #728078;
+      --danger: #d9534f;
+      --warning: #f0ad4e;
+      --success: #4cae4c;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-serif: 'Playfair Display', serif;
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: #cfd8d3;
-      font-family: 'JetBrains Mono', monospace;
-      background-image: 
-        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-      background-size: 48px 48px;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px 80px 16px;
+      line-height: 1.5;
     }
 
-    .font-editorial { font-family: 'Cinzel', serif; }
-    .font-italic-serif { font-family: 'Newsreader', serif; font-style: italic; }
+    /* Top Navigation */
+    .top-nav {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 40px;
+    }
 
-    /* Custom range sliders styling */
-    input[type=range] {
-      accent-color: var(--gold-bright);
-      height: 6px;
-      background: #151e1a;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .brand-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .nav-link {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid var(--gold);
+      padding: 6px 14px;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background: var(--gold);
+      color: var(--bg);
+    }
+
+    /* Main Container */
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .header-area {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .header-area h1 {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .header-area p {
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Presets Bar */
+    .presets-container {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .preset-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 8px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.2s ease;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold-bright);
+    }
+
+    /* Grid Layout */
+    .decision-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 800px) {
+      .decision-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 4px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    /* Modal transitions */
-    .modal-backdrop {
-      background-color: rgba(9, 12, 11, 0.88);
-      backdrop-filter: blur(8px);
+    .card-title {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
+    }
+
+    /* Form Controls */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .input-val {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .toggle-row input {
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+
+    /* Engine Output */
+    .verdict-box {
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .verdict-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .verdict-text {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .verdict-sub {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      text-align: center;
+    }
+
+    .metric-item {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 12px 6px;
+    }
+
+    .metric-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .metric-label {
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Reality Shock: Work Hours */
+    .shock-card {
+      background: var(--gold-dim);
+      border: 1px solid rgba(184, 150, 62, 0.3);
+      padding: 16px;
+      border-radius: 4px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .shock-card span {
+      color: var(--gold-bright);
+      font-weight: 700;
+    }
+
+    /* Courses & Resources */
+    .edu-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .course-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .course-card:hover {
+      border-color: var(--gold);
+    }
+
+    .course-badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 2px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--gold);
+    }
+
+    .course-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .course-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .course-link {
+      font-size: 11px;
+      color: var(--gold-bright);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    /* Subscriptions Tier Grid */
+    .sub-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 650px) {
+      .sub-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sub-tier {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 24px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+    }
+
+    .sub-tier.featured {
+      border-color: var(--gold);
+      background: linear-gradient(180deg, #111614 0%, #171d1a 100%);
+    }
+
+    .tier-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .tier-title {
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .tier-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold-bright);
+    }
+
+    .tier-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .tier-features li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-features li::before {
+      content: "•";
+      color: var(--gold);
+    }
+
+    .sub-btn {
+      width: 100%;
+      padding: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .sub-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--bg);
+      font-weight: 700;
+    }
+
+    .sub-btn.active:hover {
+      background: var(--gold-bright);
     }
   </style>
 </head>
+<body>
 
-<body class="min-h-screen flex flex-col justify-between selection:bg-[#dcb368] selection:text-black">
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <a href="index.html" class="brand">
+      <span class="brand-dot"></span>
+      VELLORUM
+    </a>
+    <a href="index.html" class="nav-link">&larr; Main Site</a>
+  </nav>
 
-  <header class="border-b border-[#1b2320] px-6 py-4 flex justify-between items-center bg-[#090c0b]/90 backdrop-blur-md sticky top-0 z-50">
-    <div class="flex items-center gap-3">
-      <div class="w-2.5 h-2.5 rounded-full bg-[#dcb368] shadow-[0_0_8px_rgba(220,179,104,0.6)]"></div>
-      <a href="index.html" class="text-xs tracking-[0.25em] font-semibold text-white uppercase hover:text-[#dcb368] transition">VELLORUM</a>
-      <span class="text-[10px] text-[#4d5d56] hidden sm:inline-block">/ / DECISION OS</span>
+  <div class="container">
+
+    <!-- Header Section -->
+    <div class="header-area">
+      <h1>Consumer Decision Lab</h1>
+      <p>Instant financial viability stress-testing for discretionary spending.</p>
     </div>
 
-    <div class="flex items-center gap-3">
-      <a href="index.html" class="text-[10px] tracking-wider text-[#8ea39a] border border-[#1b2320] px-3 py-1.5 bg-[#0d1210] hover:border-[#dcb368] hover:text-[#dcb368] transition">
-        &larr; PORTFOLIO ENGINE
-      </a>
-      <button onclick="openModal()" class="text-[10px] tracking-widest text-[#090c0b] bg-[#dcb368] font-semibold px-3 py-1.5 hover:bg-[#c99f57] transition uppercase">
-        UPGRADE PASS
-      </button>
-      <div class="text-[10px] tracking-wider text-[#788a82] border border-[#1b2320] px-3 py-1.5 bg-[#0d1210] hidden md:block">
-        [ BLR // LIVE ]
-      </div>
-    </div>
-  </header>
-
-  <main class="max-w-6xl mx-auto px-6 pt-12 pb-16 w-full flex-grow">
-    
-    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-      <div class="border border-[#232f2a] bg-[#0c110f] px-3 py-1.5 text-[10px] tracking-widest uppercase text-[#8ea39a] flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>STATUS: 90-DAY STOCHASTIC CONSUMER SIMULATOR</span>
-      </div>
-      <div class="text-[11px] text-[#63756e]">
-        LATENCY: &lt;1.2ms &bull; REAL-TIME HORIZON
-      </div>
+    <!-- Quick Presets -->
+    <div class="presets-container">
+      <button class="preset-btn" onclick="applyPreset(75000, 65000, 80000, 28000)">📱 Flagship Gadget</button>
+      <button class="preset-btn" onclick="applyPreset(25000, 45000, 40000, 20000)">🏖️ Weekend Trip</button>
+      <button class="preset-btn" onclick="applyPreset(15000, 20000, 120000, 22000)">🛑 3-Month Job Break</button>
     </div>
 
-    <div class="border-t border-[#1b2320] pt-6 mb-6">
-      <h1 class="font-editorial text-5xl sm:text-7xl font-bold tracking-tight text-[#e8eee9] leading-[0.95]">
-        CAN I AFFORD <span class="text-[#dcb368]">THIS?</span>
-      </h1>
-    </div>
+    <!-- Simulator Core -->
+    <div class="decision-grid">
 
-    <div class="max-w-2xl space-y-1 mb-10 text-[#9fb3a9]">
-      <p class="font-italic-serif text-xl sm:text-2xl text-[#cfded6]">
-        Engineering objective liquidity clarity before you spend, quit, or borrow.
-      </p>
-      <p class="text-xs uppercase tracking-wider text-[#63756e]">
-        Testing personal cash flow volatility, living buffers, and life hours traded across 1,000 randomized shocks.
-      </p>
-    </div>
+      <!-- Sliders / Inputs -->
+      <div class="card">
+        <div class="card-title">Liquidity Parameters</div>
 
-    <div class="mb-8">
-      <span class="text-[10px] uppercase tracking-widest text-[#63756e] block mb-2 font-semibold">One-Click Archetypes:</span>
-      <div class="flex flex-wrap gap-2 text-xs">
-        <button onclick="setScenario('gadget')" class="px-3 py-2 border border-[#1b2320] hover:border-[#dcb368] bg-[#0c120f] text-[#cfd8d3] transition flex items-center gap-2">
-          <span>📱</span>
-          <span>Flagship Phone Upgrade (₹75,000)</span>
-        </button>
-        <button onclick="setScenario('trip')" class="px-3 py-2 border border-[#1b2320] hover:border-[#dcb368] bg-[#0c120f] text-[#cfd8d3] transition flex items-center gap-2">
-          <span>🏖️</span>
-          <span>Group Vacation Flight & Stay (₹28,000)</span>
-        </button>
-        <button onclick="setScenario('sabbatical')" class="px-3 py-2 border border-[#1b2320] hover:border-[#dcb368] bg-[#0c120f] text-[#cfd8d3] transition flex items-center gap-2">
-          <span>🛑</span>
-          <span>3-Month Freelance / Pivot Runway</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-[#0a0e0c] border border-[#1b2320] p-6 sm:p-8 rounded-lg">
-      
-      <!-- Input Controls (Left Column) -->
-      <div class="lg:col-span-5 space-y-6">
-        <div class="flex items-center justify-between pb-2 border-b border-[#1b2320]">
-          <h2 class="text-xs font-semibold text-[#dcb368] tracking-widest uppercase">Financial Parameters</h2>
-          <span class="text-[10px] text-[#63756e]">SLIDERS LIVE</span>
-        </div>
-
-        <div>
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-[#8ea39a]">Monthly In-Hand Net Salary</span>
-            <span id="labelSalary" class="text-white font-semibold">₹60,000</span>
+        <div class="input-group">
+          <div class="input-label-row">
+            <span>Purchase / Goal Cost</span>
+            <span id="costDisplay" class="input-val">₹45,000</span>
           </div>
-          <input id="inputSalary" type="range" min="15000" max="300000" step="5000" value="60000" class="w-full">
+          <input type="range" id="costInput" min="5000" max="250000" step="2500" value="45000" oninput="runSimulation()" />
         </div>
 
-        <div>
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-[#8ea39a]">Current Liquid Savings (Bank/FD)</span>
-            <span id="labelSavings" class="text-white font-semibold">₹70,000</span>
+        <div class="input-group">
+          <div class="input-label-row">
+            <span>Current Bank Balance</span>
+            <span id="savingsDisplay" class="input-val">₹60,000</span>
           </div>
-          <input id="inputSavings" type="range" min="5000" max="600000" step="5000" value="70000" class="w-full">
+          <input type="range" id="savingsInput" min="5000" max="500000" step="5000" value="60000" oninput="runSimulation()" />
         </div>
 
-        <div>
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-[#8ea39a]">Purchase / Outlay Amount</span>
-            <span id="labelCost" class="text-[#dcb368] font-bold">₹50,000</span>
+        <div class="input-group">
+          <div class="input-label-row">
+            <span>Monthly In-Hand Salary</span>
+            <span id="salaryDisplay" class="input-val">₹50,000</span>
           </div>
-          <input id="inputCost" type="range" min="2000" max="250000" step="2500" value="50000" class="w-full">
+          <input type="range" id="salaryInput" min="15000" max="300000" step="5000" value="50000" oninput="runSimulation()" />
         </div>
 
-        <div>
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-[#8ea39a]">Monthly Fixed Needs (Rent, Food, EMI)</span>
-            <span id="labelFixed" class="text-white font-semibold">₹32,000</span>
+        <div class="input-group">
+          <div class="input-label-row">
+            <span>Fixed Monthly Living Costs</span>
+            <span id="fixedDisplay" class="input-val">₹25,000</span>
           </div>
-          <input id="inputFixed" type="range" min="10000" max="150000" step="2000" value="32000" class="w-full">
+          <input type="range" id="fixedInput" min="10000" max="150000" step="2500" value="25000" oninput="runSimulation()" />
         </div>
 
-        <!-- No Cost EMI Audit Toggle -->
-        <div class="pt-2 border-t border-[#1b2320]">
-          <label class="flex items-center gap-3 cursor-pointer group">
-            <input type="checkbox" id="checkEMI" class="w-4 h-4 rounded border-[#232f2a] bg-[#0c120f] accent-[#dcb368] cursor-pointer">
-            <div class="text-xs">
-              <span class="text-white group-hover:text-[#dcb368] transition">Split into 6-Month "No-Cost" EMI</span>
-              <span class="block text-[10px] text-[#63756e]">Factor GST processing surcharge + monthly cash drag</span>
-            </div>
-          </label>
-        </div>
-
-        <!-- Life Hours Calculation Card -->
-        <div class="border border-[#1f2924] bg-[#0c1310] p-4 rounded text-xs space-y-1">
-          <div class="flex items-center justify-between text-[10px] text-[#8ea39a] uppercase tracking-wider">
-            <span>Life Hours Traded</span>
-            <span class="text-[#dcb368] font-bold">REALITY CHECK</span>
-          </div>
-          <div class="text-lg font-bold text-white pt-1">
-            <span id="lifeHoursVal">133</span> Working Hours
-            <span class="text-xs text-[#788a82] font-normal">(<span id="lifeDaysVal">16.6</span> Full 8-hr Days)</span>
-          </div>
-          <p class="text-[11px] text-[#63756e]">
-            This is the time you must spend sitting in meetings and working solely to zero out this single receipt.
-          </p>
-        </div>
-
-        <button onclick="runSimulation()" class="w-full bg-[#dcb368] hover:bg-[#c99f57] text-[#090c0b] text-xs uppercase tracking-widest py-3 font-bold transition rounded shadow-[0_2px_12px_rgba(220,179,104,0.2)]">
-          Execute Stochastic Audit
-        </button>
+        <label class="toggle-row">
+          <input type="checkbox" id="emiToggle" onchange="runSimulation()" />
+          Split with 6-Month No-Cost EMI
+        </label>
       </div>
 
-      <!-- Verdict, Metrics, and Chart (Right Column) -->
-      <div class="lg:col-span-7 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-[#1b2320] lg:pl-8 pt-6 lg:pt-0 space-y-6">
+      <!-- Live Analysis Box -->
+      <div class="card">
+        <div class="card-title">Dynamic Assessment</div>
+
+        <div id="verdictContainer" class="verdict-box">
+          <div class="verdict-label">Projected Status</div>
+          <div id="verdictText" class="verdict-text">ANALYZING</div>
+          <div id="verdictSub" class="verdict-sub">Adjust parameters to compute.</div>
+        </div>
+
+        <div class="metrics-row">
+          <div class="metric-item">
+            <div id="safeScoreVal" class="metric-value">0%</div>
+            <div class="metric-label">Solvency Odds</div>
+          </div>
+          <div class="metric-item">
+            <div id="runwayVal" class="metric-value">0 mo</div>
+            <div class="metric-label">Post Runway</div>
+          </div>
+          <div class="metric-item">
+            <div id="floorVal" class="metric-value">₹0</div>
+            <div class="metric-label">Lowest Floor</div>
+          </div>
+        </div>
+
+        <div class="shock-card">
+          <div>Life-Hours Conversion:</div>
+          <div>This transaction requires <span id="hoursVal">0 hrs</span> (<span id="daysVal">0 work days</span>) of dedicated labor.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Educational Resource Hub -->
+    <div class="edu-section">
+      <div class="card-title">Curated Financial Intelligence</div>
+      <div class="edu-grid">
+        <div class="course-card">
+          <span class="course-badge">Free</span>
+          <div class="course-name">Zerodha Varsity</div>
+          <div class="course-desc">Foundational personal finance, cash allocation, and risk management strategies.</div>
+          <a href="https://zerodha.com/varsity/" target="_blank" rel="noopener" class="course-link">Access Varsity &rarr;</a>
+        </div>
+        <div class="course-card">
+          <span class="course-badge">Free / Audit</span>
+          <div class="course-name">Financial Markets (Yale)</div>
+          <div class="course-desc">Behavioral finance, risk management, and macro liquidity structures.</div>
+          <a href="https://www.coursera.org/learn/financial-markets-global" target="_blank" rel="noopener" class="course-link">View Module &rarr;</a>
+        </div>
+        <div class="course-card">
+          <span class="course-badge">Paid / Cert</span>
+          <div class="course-name">NISM Series V-A</div>
+          <div class="course-desc">Institutional asset allocation, debt instrument audits, and wealth advisory.</div>
+          <a href="https://www.nism.ac.in/" target="_blank" rel="noopener" class="course-link">Examine Path &rarr;</a>
+        </div>
+        <div class="course-card">
+          <span class="course-badge">Behavioral</span>
+          <div class="course-name">Duke Behavioral Finance</div>
+          <div class="course-desc">Psychological spending biases, delayed gratification, and choice architecture.</div>
+          <a href="https://www.coursera.org/learn/behavioral-finance" target="_blank" rel="noopener" class="course-link">Study Bias &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscriptions Section -->
+    <div class="sub-section">
+      <div class="card-title">Vellorum Pass Memberships</div>
+      <div class="sub-grid">
         
-        <!-- Big Plain-English Verdict -->
-        <div id="verdictBox" class="border border-[#263830] bg-[#0c1411] p-5 rounded">
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-[10px] uppercase tracking-widest text-[#8ea39a]">Engine Verdict</span>
-            <span id="scoreTag" class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">SAFE TO PURCHASE</span>
+        <div class="sub-tier">
+          <div class="tier-header">
+            <span class="tier-title">Tier I: Base</span>
+            <span class="tier-price">Free</span>
           </div>
-          <div id="verdictHeadline" class="text-xl sm:text-2xl font-bold text-white mb-2 leading-snug">
-            "Green light. You can execute this with healthy stability."
-          </div>
-          <p id="verdictExplanation" class="text-xs text-[#9fb3a9] leading-relaxed">
-            Your emergency buffer withstands tail shocks over 90 days. Risk of debt is minimized.
-          </p>
+          <ul class="tier-features">
+            <li>Standard Affordability Engine</li>
+            <li>90-Day Liquidity Projections</li>
+            <li>Life-Hours Calculation</li>
+            <li>Public Curated Course Directory</li>
+          </ul>
+          <button class="sub-btn" disabled>Active Plan</button>
         </div>
 
-        <!-- 3 Core Metric Stats -->
-        <div class="grid grid-cols-3 gap-3">
-          <div class="border border-[#1b2320] bg-[#0b100e] p-3 rounded text-center">
-            <span class="text-[9px] uppercase tracking-wider text-[#63756e] block">Survival Odds</span>
-            <span id="statSurvival" class="text-lg font-bold text-[#dcb368]">94%</span>
+        <div class="sub-tier featured">
+          <div class="tier-header">
+            <span class="tier-title">Tier II: Black Pass</span>
+            <span class="tier-price">₹299 <span style="font-size:11px;color:var(--muted)">/mo</span></span>
           </div>
-          <div class="border border-[#1b2320] bg-[#0b100e] p-3 rounded text-center">
-            <span class="text-[9px] uppercase tracking-wider text-[#63756e] block">Remaining Runway</span>
-            <span id="statRunway" class="text-lg font-bold text-white">3.4 Mo</span>
-          </div>
-          <div class="border border-[#1b2320] bg-[#0b100e] p-3 rounded text-center">
-            <span class="text-[9px] uppercase tracking-wider text-[#63756e] block">90-Day Cash Floor</span>
-            <span id="statFloor" class="text-lg font-bold text-emerald-400">₹18,400</span>
-          </div>
-        </div>
-
-        <!-- Chart Trajectory Container -->
-        <div class="border border-[#1b2320] bg-[#0b100e] p-3 rounded">
-          <div class="flex justify-between items-center mb-1 text-[10px] text-[#63756e] uppercase">
-            <span>90-Day Simulated Cash Horizon (30 Randomized Paths)</span>
-            <span class="text-rose-400">&bull; Red = ₹0 Debt Line</span>
-          </div>
-          <div class="relative h-44 w-full">
-            <canvas id="consumerChart"></canvas>
-          </div>
-        </div>
-
-        <!-- Spend Permit Preview Box -->
-        <div id="permitWrapper" class="border border-[#dcb368]/30 bg-[#0e1612] p-4 rounded flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div class="space-y-1 text-center sm:text-left">
-            <div class="text-[10px] tracking-widest uppercase text-[#dcb368] font-bold">CLEARANCE CREDENTIAL ACTIVE</div>
-            <div id="permitSummary" class="text-xs text-white">Cleared for ₹50,000 spend with 94% liquidity stability.</div>
-          </div>
-          <button onclick="togglePermitCard()" class="px-3 py-1.5 border border-[#dcb368] text-[#dcb368] text-xs hover:bg-[#dcb368] hover:text-[#090c0b] transition font-semibold tracking-wider whitespace-nowrap">
-            VIEW CLEARANCE PASS
-          </button>
+          <ul class="tier-features">
+            <li>Full 365-Day Annual Stress Horizon</li>
+            <li>10,000-Path Monte Carlo Engine</li>
+            <li>No-Cost EMI Surcharge & Fee Audit</li>
+            <li>High-Res Shareable Clearance Slip</li>
+            <li>Sabbatical & Career Pivot Mode</li>
+          </ul>
+          <button class="sub-btn active" onclick="alert('Vellorum Black Pass reservations open soon.')">Join Waitlist</button>
         </div>
 
       </div>
     </div>
 
-    <div id="fullPermitModal" class="hidden mt-8 p-6 border-2 border-[#dcb368] bg-[#080d0b] rounded-lg max-w-2xl mx-auto shadow-[0_0_30px_rgba(220,179,104,0.15)] relative">
-      <button onclick="togglePermitCard()" class="absolute top-4 right-4 text-[#8ea39a] hover:text-white text-xs">[ CLOSE &times; ]</button>
-      <div class="border-b border-[#232f2a] pb-4 mb-4 text-center">
-        <div class="text-[10px] tracking-[0.3em] uppercase text-[#dcb368] font-semibold">VELLORUM RISK CONSENSUS</div>
-        <div class="font-editorial text-2xl text-white font-bold tracking-wider mt-1">CLEARANCE PERMIT</div>
-      </div>
-      <div class="grid grid-cols-2 gap-4 text-xs mb-6">
-        <div>
-          <span class="text-[#63756e] block text-[10px]">AUTHORIZED PURCHASE</span>
-          <span id="permitValCost" class="text-white font-bold text-sm">₹50,000</span>
-        </div>
-        <div>
-          <span class="text-[#63756e] block text-[10px]">PREDICTED SAFETY MARGIN</span>
-          <span id="permitValOdds" class="text-[#dcb368] font-bold text-sm">94% Stability</span>
-        </div>
-        <div>
-          <span class="text-[#63756e] block text-[10px]">POST-PURCHASE RUNWAY</span>
-          <span id="permitValRunway" class="text-white font-bold text-sm">3.4 Months</span>
-        </div>
-        <div>
-          <span class="text-[#63756e] block text-[10px]">TIME TO BREAK EVEN</span>
-          <span id="permitValWork" class="text-white font-bold text-sm">16.6 Work Days</span>
-        </div>
-      </div>
-      <p class="text-[11px] text-[#8ea39a] italic text-center border-t border-[#1b2320] pt-4">
-        "Audit completed. Decision parameters comply with institutional capital survival tolerances."
-      </p>
-    </div>
-
-    <section class="mt-16 border-t border-[#1b2320] pt-12">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
-        <div>
-          <div class="text-[10px] tracking-[0.2em] text-[#dcb368] uppercase font-bold mb-1">INTELLIGENCE ACCELERATION</div>
-          <h2 class="font-editorial text-2xl sm:text-3xl font-bold text-white">Curated Financial Curriculums</h2>
-          <p class="text-xs text-[#788a82] mt-1">Recommended learning modules dynamically highlighted based on your simulation outcome.</p>
-        </div>
-        
-        <!-- Filter Tabs -->
-        <div class="flex gap-2 text-xs">
-          <button onclick="filterCourses('all')" id="btnFilterAll" class="px-3 py-1 bg-[#1a231f] text-white border border-[#263830] transition">All</button>
-          <button onclick="filterCourses('free')" id="btnFilterFree" class="px-3 py-1 bg-[#0c120f] text-[#8ea39a] border border-[#1b2320] hover:text-white transition">Free</button>
-          <button onclick="filterCourses('cert')" id="btnFilterCert" class="px-3 py-1 bg-[#0c120f] text-[#8ea39a] border border-[#1b2320] hover:text-white transition">Certification</button>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coursesGrid">
-        
-        <!-- Course 1: Zerodha Varsity -->
-        <div class="course-card border border-[#1b2320] bg-[#0c120f] p-5 rounded flex flex-col justify-between" data-type="free" data-context="debt">
-          <div>
-            <div class="flex justify-between items-center mb-3">
-              <span class="text-[9px] uppercase tracking-wider px-2 py-0.5 bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20">FREE</span>
-              <span class="badge-recommend hidden text-[9px] uppercase tracking-wider px-2 py-0.5 bg-[#dcb368]/20 text-[#dcb368] font-bold">RECOMMENDED</span>
-            </div>
-            <h3 class="text-sm font-bold text-white mb-1">Zerodha Varsity: Personal Finance</h3>
-            <p class="text-[11px] text-[#788a82] mb-4">Master cash buffers, insurance necessity, asset allocation, and emergency reserve rules.</p>
-          </div>
-          <div>
-            <div class="text-[10px] text-[#556960] mb-2 uppercase">Platform: Zerodha India</div>
-            <a href="https://zerodha.com/varsity/module/personalfinance/" target="_blank" rel="noopener noreferrer" class="block text-center text-xs border border-[#1b2320] hover:border-[#dcb368] py-2 text-[#cfd8d3] hover:text-[#dcb368] transition">
-              Explore Syllabus &rarr;
-            </a>
-          </div>
-        </div>
-
-        <!-- Course 2: Yale Coursera -->
-        <div class="course-card border border-[#1b2320] bg-[#0c120f] p-5 rounded flex flex-col justify-between" data-type="free" data-context="wealth">
-          <div>
-            <div class="flex justify-between items-center mb-3">
-              <span class="text-[9px] uppercase tracking-wider px-2 py-0.5 bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20">FREE AUDIT</span>
-              <span class="badge-recommend hidden text-[9px] uppercase tracking-wider px-2 py-0.5 bg-[#dcb368]/20 text-[#dcb368] font-bold">RECOMMENDED</span>
-            </div>
-            <h3 class="text-sm font-bold text-white mb-1">Financial Markets by Robert Shiller</h3>
-            <p class="text-[11px] text-[#788a82] mb-4">Yale University's hallmark course on risk management, behavioral finance, and market theory.</p>
-          </div>
-          <div>
-            <div class="text-[10px] text-[#556960] mb-2 uppercase">Platform: Coursera / Yale</div>
-            <a href="https://www.coursera.org/learn/financial-markets-global" target="_blank" rel="noopener noreferrer" class="block text-center text-xs border border-[#1b2320] hover:border-[#dcb368] py-2 text-[#cfd8d3] hover:text-[#dcb368] transition">
-              Explore Syllabus &rarr;
-            </a>
-          </div>
-        </div>
-
-        <!-- Course 3: NISM Wealth Management -->
-        <div class="course-card border border-[#1b2320] bg-[#0c120f] p-5 rounded flex flex-col justify-between" data-type="cert" data-context="wealth">
-          <div>
-            <div class="flex justify-between items-center mb-3">
-              <span class="text-[9px] uppercase tracking-wider px-2 py-0.5 bg-amber-500/10 text-amber-400 font-bold border border-amber-500/20">GOVT CERT</span>
-              <span class="badge-recommend hidden text-[9px] uppercase tracking-wider px-2 py-0.5 bg-[#dcb368]/20 text-[#dcb368] font-bold">RECOMMENDED</span>
-            </div>
-            <h3 class="text-sm font-bold text-white mb-1">NISM-Series-X-A: Wealth Planning</h3>
-            <p class="text-[11px] text-[#788a82] mb-4">Regulatory certified benchmark for institutional investment products, taxation, and estate planning.</p>
-          </div>
-          <div>
-            <div class="text-[10px] text-[#556960] mb-2 uppercase">Platform: NISM India</div>
-            <a href="https://www.nism.ac.in" target="_blank" rel="noopener noreferrer" class="block text-center text-xs border border-[#1b2320] hover:border-[#dcb368] py-2 text-[#cfd8d3] hover:text-[#dcb368] transition">
-              Explore Syllabus &rarr;
-            </a>
-          </div>
-        </div>
-
-        <!-- Course 4: Behavioral Economics (Duke) -->
-        <div class="course-card border border-[#1b2320] bg-[#0c120f] p-5 rounded flex flex-col justify-between" data-type="free" data-context="debt">
-          <div>
-            <div class="flex justify-between items-center mb-3">
-              <span class="text-[9px] uppercase tracking-wider px-2 py-0.5 bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20">FREE AUDIT</span>
-              <span class="badge-recommend hidden text-[9px] uppercase tracking-wider px-2 py-0.5 bg-[#dcb368]/20 text-[#dcb368] font-bold">RECOMMENDED</span>
-            </div>
-            <h3 class="text-sm font-bold text-white mb-1">Behavioral Finance & Spending</h3>
-            <p class="text-[11px] text-[#788a82] mb-4">Understand psychological biases, retail temptation locks, and mental accounting traps.</p>
-          </div>
-          <div>
-            <div class="text-[10px] text-[#556960] mb-2 uppercase">Platform: Coursera / Duke</div>
-            <a href="https://www.coursera.org/learn/behavioral-finance" target="_blank" rel="noopener noreferrer" class="block text-center text-xs border border-[#1b2320] hover:border-[#dcb368] py-2 text-[#cfd8d3] hover:text-[#dcb368] transition">
-              Explore Syllabus &rarr;
-            </a>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="mt-20 border-t border-[#1b2320] pt-12">
-      <div class="text-center max-w-xl mx-auto mb-10">
-        <div class="text-[10px] tracking-[0.25em] text-[#dcb368] uppercase font-bold mb-1">MEMBERSHIP ARCHITECTURE</div>
-        <h2 class="font-editorial text-3xl font-bold text-white">The Vellorum Pass</h2>
-        <p class="text-xs text-[#788a82] mt-2">Unlock unlimited stochastic runs, full-horizon stress tests, and automated EMI risk audits.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        
-        <!-- Tier I: Base (Free) -->
-        <div class="border border-[#1b2320] bg-[#0a0e0c] p-6 rounded flex flex-col justify-between">
-          <div>
-            <div class="text-[10px] uppercase tracking-widest text-[#788a82] font-semibold">Tier I // Base Access</div>
-            <div class="text-2xl font-bold text-white mt-1">₹0 <span class="text-xs text-[#556960] font-normal">/ perpetual</span></div>
-            <p class="text-xs text-[#788a82] mt-3 pb-4 border-b border-[#1b2320]">
-              Standard decision support for straightforward everyday consumer checks.
-            </p>
-            <ul class="text-xs space-y-2.5 my-4 text-[#8ea39a]">
-              <li class="flex items-center gap-2">&check; Standard Affordability Sliders</li>
-              <li class="flex items-center gap-2">&check; 30 Simulated Life Paths (90-Day Horizon)</li>
-              <li class="flex items-center gap-2">&check; Life Hours Worked Calculation</li>
-              <li class="flex items-center gap-2 text-[#46544e]">&times; Deep 10,000-Path Monte Carlo Engine</li>
-              <li class="flex items-center gap-2 text-[#46544e]">&times; 365-Day Long-Horizon Stress Test</li>
-            </ul>
-          </div>
-          <button class="w-full py-2.5 border border-[#232f2a] text-[#8ea39a] text-xs uppercase tracking-wider cursor-default">
-            Current Tier
-          </button>
-        </div>
-
-        <!-- Tier II: Black Pass (Paid) -->
-        <div class="border-2 border-[#dcb368] bg-[#0c1411] p-6 rounded flex flex-col justify-between relative shadow-[0_0_24px_rgba(220,179,104,0.12)]">
-          <div class="absolute -top-3 right-6 bg-[#dcb368] text-[#090c0b] text-[9px] font-bold px-2 py-0.5 uppercase tracking-widest rounded">
-            MOST POPULAR
-          </div>
-          <div>
-            <div class="text-[10px] uppercase tracking-widest text-[#dcb368] font-bold">Tier II // Vellorum Black Pass</div>
-            <div class="text-2xl font-bold text-white mt-1">₹299 <span class="text-xs text-[#8ea39a] font-normal">/ month</span></div>
-            <p class="text-xs text-[#9fb3a9] mt-3 pb-4 border-b border-[#232f2a]">
-              Institutional-grade stochastic models and tail-risk defense for career & lifestyle pivots.
-            </p>
-            <ul class="text-xs space-y-2.5 my-4 text-[#cfded6]">
-              <li class="flex items-center gap-2"><span class="text-[#dcb368]">&starf;</span> 10,000-Path High-Res Monte Carlo</li>
-              <li class="flex items-center gap-2"><span class="text-[#dcb368]">&starf;</span> Full-Year (365-Day) Runway Simulation</li>
-              <li class="flex items-center gap-2"><span class="text-[#dcb368]">&starf;</span> "No-Cost" EMI Hidden Trap Audit</li>
-              <li class="flex items-center gap-2"><span class="text-[#dcb368]">&starf;</span> Shareable VIP Clearance Permits</li>
-              <li class="flex items-center gap-2"><span class="text-[#dcb368]">&starf;</span> The Vellorum Ledger: Monthly Macro Briefing</li>
-            </ul>
-          </div>
-          <button onclick="openModal()" class="w-full py-2.5 bg-[#dcb368] hover:bg-[#c99f57] text-[#090c0b] font-bold text-xs uppercase tracking-widest transition">
-            Upgrade to Black Pass &rarr;
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-  <div id="subModal" class="fixed inset-0 modal-backdrop hidden items-center justify-center p-4 z-50">
-    <div class="bg-[#0b100e] border border-[#dcb368] max-w-md w-full p-6 rounded shadow-2xl relative">
-      <button onclick="closeModal()" class="absolute top-4 right-4 text-[#788a82] hover:text-white text-sm">&times;</button>
-      
-      <div class="text-[10px] uppercase tracking-[0.2em] text-[#dcb368] font-bold mb-1">MEMBERSHIP ONBOARDING</div>
-      <h3 class="font-editorial text-xl font-bold text-white">Join Vellorum Black Pass</h3>
-      <p class="text-xs text-[#788a82] mt-1 mb-5">Gain immediate access to 10,000 Monte Carlo paths and institutional personal runway tools.</p>
-
-      <div class="space-y-3 mb-6 text-xs">
-        <div>
-          <label class="block text-[#8ea39a] text-[10px] uppercase tracking-wider mb-1">Your Full Name</label>
-          <input type="text" placeholder="e.g. Alex Sharma" class="w-full bg-[#070b09] border border-[#1b2320] text-white p-2.5 rounded focus:border-[#dcb368] outline-none">
-        </div>
-        <div>
-          <label class="block text-[#8ea39a] text-[10px] uppercase tracking-wider mb-1">Work / Preferred Email</label>
-          <input type="email" placeholder="alex@domain.com" class="w-full bg-[#070b09] border border-[#1b2320] text-white p-2.5 rounded focus:border-[#dcb368] outline-none">
-        </div>
-        <div>
-          <label class="block text-[#8ea39a] text-[10px] uppercase tracking-wider mb-1">Selected Plan</label>
-          <div class="p-2.5 border border-[#232f2a] bg-[#080d0b] text-[#dcb368] font-semibold flex justify-between">
-            <span>Black Pass (Monthly)</span>
-            <span>₹299 / mo</span>
-          </div>
-        </div>
-      </div>
-
-      <button onclick="mockPaymentSuccess()" class="w-full bg-[#dcb368] hover:bg-[#c99f57] text-[#090c0b] font-bold text-xs uppercase tracking-widest py-3 transition rounded">
-        Proceed to UPI / Card Checkout
-      </button>
-
-      <p class="text-[10px] text-[#556960] text-center mt-3">
-        Zero lock-in. Cancel any time directly via single-click dashboard.
-      </p>
-    </div>
   </div>
 
-  <footer class="border-t border-[#1b2320] px-6 py-6 bg-[#070a09] text-[10px] text-[#556960] uppercase tracking-widest flex flex-col sm:flex-row justify-between items-center gap-4">
-    <div>VELLORUM RESEARCH // BENGALURU, INDIA</div>
-    <div class="flex gap-4">
-      <a href="index.html" class="hover:text-[#dcb368] transition">PORTFOLIO</a>
-      <span>&bull;</span>
-      <a href="afford.html" class="text-[#dcb368]">DECISION LAB</a>
-      <span>&bull;</span>
-      <button onclick="openModal()" class="hover:text-[#dcb368] transition">BLACK PASS</button>
-    </div>
-  </footer>
-
   <script>
-    let simChart = null;
+    function formatINR(val) {
+      return '₹' + Math.round(val).toLocaleString('en-IN');
+    }
 
-    // Archetype Presets
-    function setScenario(type) {
-      if (type === 'gadget') {
-        document.getElementById('inputCost').value = 75000;
-        document.getElementById('inputSalary').value = 65000;
-        document.getElementById('inputSavings').value = 85000;
-        document.getElementById('inputFixed').value = 35000;
-        document.getElementById('checkEMI').checked = false;
-      } else if (type === 'trip') {
-        document.getElementById('inputCost').value = 28000;
-        document.getElementById('inputSalary').value = 50000;
-        document.getElementById('inputSavings').value = 45000;
-        document.getElementById('inputFixed').value = 26000;
-        document.getElementById('checkEMI').checked = false;
-      } else if (type === 'sabbatical') {
-        document.getElementById('inputCost').value = 18000;
-        document.getElementById('inputSalary').value = 25000;
-        document.getElementById('inputSavings').value = 140000;
-        document.getElementById('inputFixed').value = 32000;
-        document.getElementById('checkEMI').checked = false;
-      }
+    function applyPreset(cost, salary, savings, fixed) {
+      document.getElementById('costInput').value = cost;
+      document.getElementById('salaryInput').value = salary;
+      document.getElementById('savingsInput').value = savings;
+      document.getElementById('fixedInput').value = fixed;
+      document.getElementById('emiToggle').checked = false;
       runSimulation();
     }
 
-    // Main Simulation Function
     function runSimulation() {
-      const salary = parseFloat(document.getElementById('inputSalary').value);
-      const savings = parseFloat(document.getElementById('inputSavings').value);
-      const rawCost = parseFloat(document.getElementById('inputCost').value);
-      const fixedNeeds = parseFloat(document.getElementById('inputFixed').value);
-      const isEMI = document.getElementById('checkEMI').checked;
+      const cost = parseFloat(document.getElementById('costInput').value);
+      const savings = parseFloat(document.getElementById('savingsInput').value);
+      const salary = parseFloat(document.getElementById('salaryInput').value);
+      const fixed = parseFloat(document.getElementById('fixedInput').value);
+      const isEMI = document.getElementById('emiToggle').checked;
 
-      // Update text labels
-      document.getElementById('labelSalary').innerText = '₹' + salary.toLocaleString('en-IN');
-      document.getElementById('labelSavings').innerText = '₹' + savings.toLocaleString('en-IN');
-      document.getElementById('labelCost').innerText = '₹' + rawCost.toLocaleString('en-IN');
-      document.getElementById('labelFixed').innerText = '₹' + fixedNeeds.toLocaleString('en-IN');
+      // Update text displays
+      document.getElementById('costDisplay').textContent = formatINR(cost);
+      document.getElementById('savingsDisplay').textContent = formatINR(savings);
+      document.getElementById('salaryDisplay').textContent = formatINR(salary);
+      document.getElementById('fixedDisplay').textContent = formatINR(fixed);
 
-      // 1. Life Hours Calculation (Assuming 160 work hours per month)
-      const hourlyWage = Math.max(1, salary / 160);
-      const lifeHours = (rawCost / hourlyWage).toFixed(0);
-      const lifeDays = (lifeHours / 8).toFixed(1);
-      document.getElementById('lifeHoursVal').innerText = lifeHours;
-      document.getElementById('lifeDaysVal').innerText = lifeDays;
+      // Hourly work computation (160 work hrs/month)
+      const hourlyWage = salary / 160;
+      const hoursRequired = Math.round(cost / hourlyWage);
+      const daysRequired = (hoursRequired / 8).toFixed(1);
+      document.getElementById('hoursVal').textContent = hoursRequired + ' hrs';
+      document.getElementById('daysVal').textContent = daysRequired + ' work days';
 
-      // 2. Simulation Logic (90 Days)
-      const days = 90;
-      const dailyFixed = fixedNeeds / 30;
-      
-      // If EMI is checked, upfront hit is smaller (down payment + 1st month EMI), but monthly expense rises
-      let initialSpend = rawCost;
-      let monthlyEmiAmount = 0;
+      // Simulation logic
+      let startingLiquidity = savings;
+      let monthlyEmiExpense = 0;
+
       if (isEMI) {
-        // 6-month EMI with 18% GST processing fee impact
-        monthlyEmiAmount = (rawCost * 1.04) / 6;
-        initialSpend = monthlyEmiAmount;
-      }
-
-      let postPurchaseSavings = savings - initialSpend;
-
-      const simulatedPaths = [];
-      const terminalBalances = [];
-
-      for (let p = 0; p < 30; p++) {
-        let currentCash = postPurchaseSavings;
-        const trajectory = [Math.round(currentCash)];
-
-        for (let d = 1; d <= days; d++) {
-          // Paycheck credited on day 30, 60, 90
-          if (d % 30 === 0) {
-            currentCash += salary;
-            if (isEMI) currentCash -= monthlyEmiAmount;
-          }
-
-          // Daily fixed expenses
-          currentCash -= dailyFixed;
-
-          // Realistic unexpected shock generator (8% chance each day: medical, transit, family)
-          if (Math.random() < 0.08) {
-            const shock = (Math.random() * 4000) + 1000;
-            currentCash -= shock;
-          }
-
-          trajectory.push(Math.round(currentCash));
-        }
-
-        simulatedPaths.push(trajectory);
-        terminalBalances.push(currentCash);
-      }
-
-      // 3. Metric Calculations
-      terminalBalances.sort((a, b) => a - b);
-      const worstFloor = Math.round(terminalBalances[Math.floor(terminalBalances.length * 0.05)]);
-      const safeRunwayMonths = Math.max(0, (postPurchaseSavings / (fixedNeeds || 1))).toFixed(1);
-
-      document.getElementById('statRunway').innerText = safeRunwayMonths + ' Mo';
-      document.getElementById('statFloor').innerText = (worstFloor < 0 ? '-₹' : '₹') + Math.abs(worstFloor).toLocaleString('en-IN');
-
-      const vBox = document.getElementById('verdictBox');
-      const vTag = document.getElementById('scoreTag');
-      const vHead = document.getElementById('verdictHeadline');
-      const vExp = document.getElementById('verdictExplanation');
-      const statSurvival = document.getElementById('statSurvival');
-      const floorEl = document.getElementById('statFloor');
-
-      let statusOutcome = 'safe';
-
-      if (postPurchaseSavings < 5000 || worstFloor < 0) {
-        statusOutcome = 'danger';
-        vTag.className = "text-xs font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-400";
-        vTag.innerText = "DANGER: HIGH DEBT RISK";
-        vHead.innerText = "Do not execute this purchase right now.";
-        vExp.innerText = "This outlay depletes your liquidity buffer. A single surprise expense within 60 days will force you into credit card rollover debt.";
-        statSurvival.innerText = "38%";
-        floorEl.className = "text-lg font-bold text-rose-400";
-      } else if (postPurchaseSavings < fixedNeeds) {
-        statusOutcome = 'tight';
-        vTag.className = "text-xs font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400";
-        vTag.innerText = "TIGHT: EXTREME DISCIPLINE REQUIRED";
-        vHead.innerText = "You can afford it, but with zero room for error.";
-        vExp.innerText = "You have less than one month of emergency buffer remaining. Cut discretionary dining and leisure to preserve capital.";
-        statSurvival.innerText = "69%";
-        floorEl.className = "text-lg font-bold text-amber-400";
+        monthlyEmiExpense = cost / 6;
       } else {
-        statusOutcome = 'safe';
-        vTag.className = "text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400";
-        vTag.innerText = "SAFE TO PURCHASE";
-        vHead.innerText = "Green light. Execute guilt-free.";
-        vExp.innerText = "Your emergency cushion remains well-protected. Even under conservative stochastic paths, you complete the quarter safely.";
-        statSurvival.innerText = "94%";
-        floorEl.className = "text-lg font-bold text-emerald-400";
+        startingLiquidity -= cost;
       }
 
-      // Update Spending Permit Elements
-      document.getElementById('permitValCost').innerText = '₹' + rawCost.toLocaleString('en-IN');
-      document.getElementById('permitValOdds').innerText = statSurvival.innerText + ' Stability';
-      document.getElementById('permitValRunway').innerText = safeRunwayMonths + ' Months';
-      document.getElementById('permitValWork').innerText = lifeDays + ' Work Days';
-      document.getElementById('permitSummary').innerText = `Cleared for ₹${rawCost.toLocaleString('en-IN')} spend with ${statSurvival.innerText} liquidity stability.`;
+      const totalMonthlyExpenses = fixed + monthlyEmiExpense;
+      const monthlyNetCashFlow = salary - totalMonthlyExpenses;
 
-      // Update Dynamic Course Recommendations
-      updateCourseHighlights(statusOutcome);
+      // Project lowest balance over 90 days (Month 1, 2, and 3)
+      const balM1 = startingLiquidity + monthlyNetCashFlow;
+      const balM2 = balM1 + monthlyNetCashFlow;
+      const balM3 = balM2 + monthlyNetCashFlow;
+      const lowestBalance = Math.min(startingLiquidity, balM1, balM2, balM3);
 
-      // Render Trajectory Chart
-      renderChart(simulatedPaths, days);
-    }
+      // Runway post-purchase
+      const runwayMonths = (startingLiquidity > 0 && totalMonthlyExpenses > 0) 
+        ? (startingLiquidity / totalMonthlyExpenses).toFixed(1) 
+        : '0.0';
 
-    // Chart.js Trajectory Visualizer
-    function renderChart(paths, days) {
-      const ctx = document.getElementById('consumerChart').getContext('2d');
-      const labels = Array.from({ length: days + 1 }, (_, i) => i % 15 === 0 ? `D${i}` : '');
+      // Solvency odds calculation
+      let score = 100;
+      if (lowestBalance < 0) score -= 65;
+      else if (lowestBalance < fixed) score -= 35;
+      if (runwayMonths < 1.0) score -= 25;
+      else if (runwayMonths < 3.0) score -= 10;
+      score = Math.max(5, Math.min(99, score));
 
-      const datasets = paths.map(path => ({
-        data: path,
-        borderColor: path[path.length - 1] >= 0 ? 'rgba(220, 179, 104, 0.22)' : 'rgba(244, 63, 94, 0.35)',
-        borderWidth: 1,
-        pointRadius: 0,
-        tension: 0.15
-      }));
+      // Update indicators
+      document.getElementById('safeScoreVal').textContent = score + '%';
+      document.getElementById('runwayVal').textContent = runwayMonths + ' mo';
+      document.getElementById('floorVal').textContent = formatINR(lowestBalance);
 
-      // Add zero line indicator
-      datasets.push({
-        data: Array(days + 1).fill(0),
-        borderColor: '#f43f5e',
-        borderWidth: 1.5,
-        borderDash: [5, 5],
-        pointRadius: 0
-      });
+      const verdictContainer = document.getElementById('verdictContainer');
+      const verdictText = document.getElementById('verdictText');
+      const verdictSub = document.getElementById('verdictSub');
 
-      if (simChart) simChart.destroy();
-
-      simChart = new Chart(ctx, {
-        type: 'line',
-        data: { labels, datasets },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: { enabled: false } },
-          scales: {
-            x: {
-              grid: { color: 'rgba(255, 255, 255, 0.02)' },
-              ticks: { color: '#4d5d56', font: { size: 9, family: 'JetBrains Mono' } }
-            },
-            y: {
-              grid: { color: 'rgba(255, 255, 255, 0.02)' },
-              ticks: { color: '#4d5d56', font: { size: 9, family: 'JetBrains Mono' } }
-            }
-          }
-        }
-      });
-    }
-
-    // Dynamic Course Highlights based on Simulation Outcome
-    function updateCourseHighlights(outcome) {
-      const cards = document.querySelectorAll('.course-card');
-      cards.forEach(card => {
-        const context = card.getAttribute('data-context');
-        const badge = card.querySelector('.badge-recommend');
-        
-        if ((outcome === 'danger' || outcome === 'tight') && context === 'debt') {
-          badge.classList.remove('hidden');
-          card.classList.add('border-[#dcb368]');
-        } else if (outcome === 'safe' && context === 'wealth') {
-          badge.classList.remove('hidden');
-          card.classList.add('border-[#dcb368]');
-        } else {
-          badge.classList.add('hidden');
-          card.classList.remove('border-[#dcb368]');
-        }
-      });
-    }
-
-    // Filter courses by type
-    function filterCourses(filter) {
-      const cards = document.querySelectorAll('.course-card');
-      const btnAll = document.getElementById('btnFilterAll');
-      const btnFree = document.getElementById('btnFilterFree');
-      const btnCert = document.getElementById('btnFilterCert');
-
-      [btnAll, btnFree, btnCert].forEach(b => {
-        b.className = "px-3 py-1 bg-[#0c120f] text-[#8ea39a] border border-[#1b2320] hover:text-white transition";
-      });
-
-      if (filter === 'all') {
-        btnAll.className = "px-3 py-1 bg-[#1a231f] text-white border border-[#263830] transition";
-      } else if (filter === 'free') {
-        btnFree.className = "px-3 py-1 bg-[#1a231f] text-white border border-[#263830] transition";
-      } else if (filter === 'cert') {
-        btnCert.className = "px-3 py-1 bg-[#1a231f] text-white border border-[#263830] transition";
-      }
-
-      cards.forEach(card => {
-        if (filter === 'all' || card.getAttribute('data-type') === filter) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-    }
-
-    // Permit Modal Toggle
-    function togglePermitCard() {
-      const p = document.getElementById('fullPermitModal');
-      p.classList.toggle('hidden');
-      if (!p.classList.contains('hidden')) {
-        p.scrollIntoView({ behavior: 'smooth' });
+      if (score >= 80) {
+        verdictText.textContent = "SAFE TO PROCEED";
+        verdictText.style.color = "var(--success)";
+        verdictSub.textContent = "High solvency cushion. Emergency buffer remains intact over 90 days.";
+        verdictContainer.style.borderColor = "var(--success)";
+      } else if (score >= 50) {
+        verdictText.textContent = "CAUTION // TIGHT BUFFER";
+        verdictText.style.color = "var(--warning)";
+        verdictSub.textContent = "Viable only with strict spending discipline. Runway falls below standard safety levels.";
+        verdictContainer.style.borderColor = "var(--warning)";
+      } else {
+        verdictText.textContent = "HIGH RISK OF DEBT";
+        verdictText.style.color = "var(--danger)";
+        verdictSub.textContent = "Adverse liquidity scenario. A single shock expense could cause debt accumulation.";
+        verdictContainer.style.borderColor = "var(--danger)";
       }
     }
 
-    // Upgrade Modal Controls
-    function openModal() {
-      const m = document.getElementById('subModal');
-      m.classList.remove('hidden');
-      m.classList.add('flex');
-    }
-
-    function closeModal() {
-      const m = document.getElementById('subModal');
-      m.classList.add('hidden');
-      m.classList.remove('flex');
-    }
-
-    function mockPaymentSuccess() {
-      alert("Redirecting to Razorpay / Stripe gateway for Vellorum Black Pass activation.");
-      closeModal();
-    }
-
-    // Event Listeners for Sliders & Toggles
-    ['inputSalary', 'inputSavings', 'inputCost', 'inputFixed'].forEach(id => {
-      document.getElementById(id).addEventListener('input', runSimulation);
-    });
-    document.getElementById('checkEMI').addEventListener('change', runSimulation);
-
-    // Initial Execution
-    window.onload = function() {
-      runSimulation();
-    };
+    // Initialize on load
+    runSimulation();
   </script>
 </body>
 </html>
